@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  matching-engine:
+    build:
+      context: ./hft-orderbook-predictor
+      dockerfile: Dockerfile
+    ports:
+      - "8887:8887"
+    restart: unless-stopped
+    container_name: hft-matching-engine
+
+  trading-dashboard:
+    build:
+      context: ./hft-dashboard
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    depends_on:
+      - matching-engine
+    restart: unless-stopped
+    container_name: hft-trading-dashboard
