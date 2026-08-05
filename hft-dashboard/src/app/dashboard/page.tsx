@@ -14,6 +14,7 @@ import {
   Wifi,
   WifiOff,
 } from "lucide-react";
+import ConsensusMatrix from "@/components/ConsensusMatrix";
 
 /* ============================================================
    TYPES — strict WebSocket payload contracts
@@ -1049,13 +1050,16 @@ export default function Home() {
           <DepthLadder bids={metrics.bids} asks={metrics.asks} />
         </div>
 
-        {/* Analytics + sparkline */}
-        <div className="mt-4 grid grid-cols-1 gap-4 lg:grid-cols-3">
+        {/* Analytics + sparkline + signals */}
+        <div className="mt-4 grid grid-cols-1 gap-4 lg:grid-cols-4">
           <div className="lg:col-span-2">
             <AnalyticsPanel metrics={metrics} />
           </div>
           <div className="lg:col-span-1">
             <Sparkline data={sparkline} />
+          </div>
+          <div className="lg:col-span-1">
+            <ConsensusMatrix />
           </div>
         </div>
       </section>
