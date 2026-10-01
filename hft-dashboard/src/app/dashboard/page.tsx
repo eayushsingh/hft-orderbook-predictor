@@ -13,6 +13,7 @@ import {
   ChevronDown,
   Wifi,
   WifiOff,
+  Zap,
 } from "lucide-react";
 import ConsensusMatrix from "@/components/ConsensusMatrix";
 import IndianMarketMatrix from "@/components/IndianMarketMatrix";
@@ -130,7 +131,6 @@ function useCountUp(target: number, durationMs = 500): number {
     const tick = (now: number) => {
       const elapsed = now - start;
       const t = clamp(elapsed / durationMs, 0, 1);
-      // ease-out cubic
       const eased = 1 - Math.pow(1 - t, 3);
       const value = from + (to - from) * eased;
       setDisplay(value);
@@ -213,13 +213,11 @@ function computeMetrics(
   const askWeight = bestAsk.qty || 0;
   const totalWeight = bidWeight + askWeight;
 
-  // Micro-price: volume-weighted baseline drift toward the heavier side
   const microPrice =
     totalWeight > 0
       ? (bestBid.price * askWeight + bestAsk.price * bidWeight) / totalWeight
       : midPrice;
 
-  // Order Book Imbalance: -1 (sell pressure) to +1 (buy pressure)
   const obi = totalWeight > 0 ? (bidWeight - askWeight) / totalWeight : 0;
 
   let signal: EngineMetrics["signal"] = "NEUTRAL";
@@ -319,12 +317,12 @@ function useMarketEngine() {
           setMetrics(next);
           pushSparkline(next.microPrice);
         } catch {
-          // Malformed frame — skip silently, keep last known good state
+          // Malformed frame — skip
         }
       };
 
       ws.onerror = () => {
-        // onclose fires immediately after and handles reconnect logic
+        // Handled by onclose
       };
 
       ws.onclose = () => {
@@ -364,7 +362,7 @@ function useMarketEngine() {
 }
 
 /* ============================================================
-   SUB-COMPONENT: Header Navigation
+   SUB-COMPONENT: Header Navigation (Optimized for Mobile & Desktop)
    ============================================================ */
 
 function HeaderNav({
@@ -406,16 +404,16 @@ function HeaderNav({
 
   return (
     <header className="sticky top-0 z-50 border-b border-white/[0.08] bg-[#08080a]/90 backdrop-blur-xl">
-      <div className="mx-auto flex h-14 sm:h-16 max-w-[1600px] items-center justify-between px-4 sm:px-6">
-        {/* Brand */}
-        <div className="flex items-center gap-2.5">
+      <div className="mx-auto flex h-14 sm:h-16 max-w-[1600px] items-center justify-between px-3.5 sm:px-6">
+        {/* Brand Logo & Name */}
+        <div className="flex items-center gap-2 sm:gap-2.5">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/logo.png" alt="LALAN Logo" className="h-10 sm:h-14 w-auto object-contain" />
+          <img src="/logo.png" alt="LALAN Logo" className="h-8 sm:h-12 w-auto object-contain" />
           <div className="flex flex-col leading-none">
-            <span className="text-base sm:text-xl font-black uppercase tracking-[0.2em] text-zinc-100">
+            <span className="text-sm sm:text-xl font-black uppercase tracking-[0.18em] text-zinc-100">
               LALAN
             </span>
-            <span className="text-[9px] sm:text-[10px] font-medium uppercase tracking-[0.15em] text-zinc-500 hidden sm:block">
+            <span className="text-[8px] sm:text-[10px] font-medium uppercase tracking-[0.15em] text-zinc-500 hidden xs:block">
               Quantitative Engine
             </span>
           </div>
@@ -464,8 +462,8 @@ function HeaderNav({
           </span>
         </div>
 
-        {/* Quick actions */}
-        <div className="flex items-center gap-2">
+        {/* Quick Actions */}
+        <div className="flex items-center gap-1.5 sm:gap-2">
           <div className="relative hidden sm:block">
             <button
               onClick={() => setDocsOpen((v) => !v)}
@@ -501,7 +499,7 @@ function HeaderNav({
           </div>
           <a
             href="/"
-            className="flex items-center gap-1.5 rounded-lg bg-white text-zinc-950 px-3 sm:px-3.5 py-1.5 sm:py-2 text-[11px] sm:text-xs font-semibold transition-transform hover:scale-[1.03] active:scale-[0.98]"
+            className="flex items-center gap-1.5 rounded-lg bg-white text-zinc-950 px-2.5 sm:px-3.5 py-1.5 sm:py-2 text-[10px] sm:text-xs font-bold transition-transform hover:scale-[1.03] active:scale-[0.98]"
           >
             <TerminalSquare className="h-3.5 w-3.5" />
             Home
@@ -522,17 +520,16 @@ function HeroSection({ metrics }: { metrics: EngineMetrics }) {
       label: "Total Orders Processed",
       value: metrics.totalOrdersProcessed.toLocaleString("en-US"),
     },
-    { label: "Ring Buffer Memory Overhead", value: "0 MB GC Pause" },
+    { label: "Ring Buffer Overhead", value: "0 MB GC Pause" },
     { label: "Active Latency", value: `${metrics.latencyMs.toFixed(2)} ms` },
     { label: "Matching Complexity", value: "O(1) LOB" },
     { label: "Concurrency Model", value: "Lock-Free Disruptor" },
   ];
 
   return (
-    <section className="relative overflow-hidden px-4 sm:px-6 pt-10 sm:pt-16 pb-8 sm:pb-14">
-      {/* Ambient background noise / radial gradients */}
+    <section className="relative overflow-hidden px-3.5 sm:px-6 pt-6 sm:pt-14 pb-6 sm:pb-12">
       <div className="pointer-events-none absolute inset-0 -z-10">
-        <div className="absolute left-1/2 top-0 h-[400px] sm:h-[600px] w-[600px] sm:w-[900px] -translate-x-1/2 rounded-full bg-indigo-600/[0.08] blur-[120px]" />
+        <div className="absolute left-1/2 top-0 h-[300px] sm:h-[600px] w-[500px] sm:w-[900px] -translate-x-1/2 rounded-full bg-indigo-600/[0.08] blur-[120px]" />
       </div>
 
       <div className="mx-auto max-w-[1600px]">
@@ -542,39 +539,39 @@ function HeroSection({ metrics }: { metrics: EngineMetrics }) {
           transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
           className="mx-auto max-w-3xl text-center"
         >
-          <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-white/[0.08] bg-white/[0.02] px-3 py-1 text-[10px] sm:text-[11px] font-medium uppercase tracking-[0.12em] text-zinc-400">
+          <div className="mb-3 sm:mb-4 inline-flex items-center gap-2 rounded-full border border-white/[0.08] bg-white/[0.02] px-3 py-1 text-[9px] sm:text-[11px] font-medium uppercase tracking-[0.12em] text-zinc-400">
             <Activity className="h-3 w-3 text-emerald-400" />
             Sub-Millisecond Market Microstructure Engine
           </div>
-          <h1 className="flex flex-col gap-2 sm:gap-3">
-            <span className="text-xl sm:text-3xl md:text-4xl font-medium tracking-tight text-zinc-400">
+          <h1 className="flex flex-col gap-1.5 sm:gap-3">
+            <span className="text-lg sm:text-3xl md:text-4xl font-medium tracking-tight text-zinc-400">
               We don&apos;t chase alpha.
             </span>
-            <span className="text-3xl sm:text-6xl md:text-7xl font-black tracking-tighter bg-gradient-to-r from-white via-zinc-200 to-zinc-500 bg-clip-text text-transparent leading-[1.05]">
+            <span className="text-2xl sm:text-6xl md:text-7xl font-black tracking-tighter bg-gradient-to-r from-white via-zinc-200 to-zinc-500 bg-clip-text text-transparent leading-[1.08] sm:leading-[1.05]">
               We eliminate risk,<br />and the alpha chases us.
             </span>
           </h1>
-          <p className="mx-auto mt-4 max-w-xl text-xs sm:text-base leading-relaxed text-zinc-400 px-2">
+          <p className="mx-auto mt-3 sm:mt-4 max-w-xl text-xs sm:text-base leading-relaxed text-zinc-400 px-1">
             Zero-allocation limit order book engine streaming live L2 depth — decomposing order flow into imbalance, drift, and directional signals.
           </p>
         </motion.div>
 
-        {/* Animated ticker ribbon */}
+        {/* Animated Ticker Ribbon */}
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
-          className="relative mx-auto mt-6 sm:mt-10 max-w-4xl overflow-hidden rounded-full border border-white/[0.08] bg-[#0f0f13]/80 py-2 sm:py-2.5 backdrop-blur-xl"
+          className="relative mx-auto mt-5 sm:mt-10 max-w-4xl overflow-hidden rounded-full border border-white/[0.08] bg-[#0f0f13]/80 py-2 sm:py-2.5 backdrop-blur-xl"
         >
           <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-8 sm:w-16 bg-gradient-to-r from-[#0f0f13] to-transparent" />
           <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-8 sm:w-16 bg-gradient-to-l from-[#0f0f13] to-transparent" />
-          <div className="flex w-max animate-[ticker_22s_linear_infinite] gap-6 sm:gap-10 px-4 sm:px-6">
+          <div className="flex w-max animate-[ticker_22s_linear_infinite] gap-4 sm:gap-10 px-4 sm:px-6">
             {[...tickerItems, ...tickerItems].map((item, i) => (
               <div key={i} className="flex shrink-0 items-center gap-2">
                 <span className="text-[10px] sm:text-[11px] uppercase tracking-wide text-zinc-500">
                   {item.label}
                 </span>
-                <span className="font-mono text-[11px] sm:text-xs font-medium text-zinc-200">
+                <span className="font-mono text-[10px] sm:text-xs font-medium text-zinc-200">
                   {item.value}
                 </span>
                 <span className="text-zinc-700">•</span>
@@ -631,7 +628,7 @@ function PredictorCard({ metrics }: { metrics: EngineMetrics }) {
       initial={{ opacity: 0, scale: 0.96 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{ type: "spring", stiffness: 300, damping: 30 }}
-      className={`relative col-span-2 row-span-2 overflow-hidden rounded-2xl border border-white/[0.08] bg-[#0f0f13]/80 p-6 backdrop-blur-xl ring-1 ${style.ring} md:col-span-1 lg:col-span-2`}
+      className={`relative col-span-1 sm:col-span-2 overflow-hidden rounded-2xl border border-white/[0.08] bg-[#0f0f13]/80 p-5 sm:p-6 backdrop-blur-xl ring-1 ${style.ring} md:col-span-1 lg:col-span-2`}
     >
       <div className="pointer-events-none absolute inset-0 -z-10">
         <div
@@ -646,13 +643,13 @@ function PredictorCard({ metrics }: { metrics: EngineMetrics }) {
       </div>
 
       <div className="flex items-center justify-between">
-        <span className="text-[11px] font-medium uppercase tracking-[0.15em] text-zinc-500">
+        <span className="text-[10px] sm:text-[11px] font-medium uppercase tracking-[0.15em] text-zinc-500">
           AI Predictor Matrix
         </span>
         <Gauge className="h-4 w-4 text-zinc-600" />
       </div>
 
-      <div className="mt-8 flex flex-col items-center justify-center py-6 text-center">
+      <div className="mt-4 sm:mt-8 flex flex-col items-center justify-center py-4 sm:py-6 text-center">
         <AnimatePresence mode="wait">
           <motion.span
             key={metrics.signal}
@@ -660,13 +657,13 @@ function PredictorCard({ metrics }: { metrics: EngineMetrics }) {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -8, scale: 0.95 }}
             transition={{ duration: 0.3 }}
-            className={`text-4xl font-bold tracking-tight md:text-5xl ${style.text} ${style.glow}`}
+            className={`text-3xl sm:text-5xl font-bold tracking-tight ${style.text} ${style.glow}`}
           >
             {metrics.signal}
           </motion.span>
         </AnimatePresence>
 
-        <div className="mt-6 w-full max-w-xs">
+        <div className="mt-4 sm:mt-6 w-full max-w-xs">
           <div className="mb-1.5 flex items-center justify-between text-[11px] text-zinc-500">
             <span>Confidence</span>
             <span className="font-mono text-zinc-300">
@@ -688,7 +685,7 @@ function PredictorCard({ metrics }: { metrics: EngineMetrics }) {
           </div>
         </div>
 
-        <div className="mt-5 flex items-center gap-1.5 text-xs text-zinc-500">
+        <div className="mt-4 sm:mt-5 flex items-center gap-1.5 text-xs text-zinc-500">
           <span>OBI Drift</span>
           <span className="font-mono font-medium text-zinc-300">
             {metrics.obi >= 0 ? "+" : ""}
@@ -726,10 +723,10 @@ function DepthCard({
       initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ type: "spring", stiffness: 300, damping: 30 }}
-      className="relative overflow-hidden rounded-2xl border border-white/[0.08] bg-[#0f0f13]/80 p-5 backdrop-blur-xl"
+      className="relative overflow-hidden rounded-2xl border border-white/[0.08] bg-[#0f0f13]/80 p-4 sm:p-5 backdrop-blur-xl"
     >
       <div className="flex items-center justify-between">
-        <span className="text-[11px] font-medium uppercase tracking-[0.15em] text-zinc-500">
+        <span className="text-[10px] sm:text-[11px] font-medium uppercase tracking-[0.15em] text-zinc-500">
           Best {isAsk ? "Ask" : "Bid"}
         </span>
         {isAsk ? (
@@ -740,7 +737,7 @@ function DepthCard({
       </div>
 
       <div
-        className={`mt-3 font-mono text-2xl font-semibold tabular-nums ${
+        className={`mt-2.5 sm:mt-3 font-mono text-xl sm:text-2xl font-semibold tabular-nums ${
           isAsk ? "text-[#f43f5e]" : "text-[#10b981]"
         }`}
       >
@@ -753,14 +750,14 @@ function DepthCard({
         />
       </div>
 
-      <div className="mt-1 text-xs text-zinc-500">
+      <div className="mt-1 text-[11px] sm:text-xs text-zinc-500">
         Liquidity Weight ·{" "}
         <span className="font-mono text-zinc-300">
           {formatBtc(level.qty)} BTC
         </span>
       </div>
 
-      <div className="mt-4 h-2 w-full overflow-hidden rounded-full bg-white/[0.06]">
+      <div className="mt-3 sm:mt-4 h-2 w-full overflow-hidden rounded-full bg-white/[0.06]">
         <motion.div
           animate={{ width: `${pct}%` }}
           transition={{ type: "spring", stiffness: 300, damping: 30 }}
@@ -798,21 +795,21 @@ function DepthLadder({
       initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ type: "spring", stiffness: 300, damping: 30 }}
-      className="col-span-2 overflow-hidden rounded-2xl border border-white/[0.08] bg-[#0f0f13]/80 p-5 backdrop-blur-xl md:col-span-1 lg:col-span-1"
+      className="col-span-1 sm:col-span-2 overflow-hidden rounded-2xl border border-white/[0.08] bg-[#0f0f13]/80 p-4 sm:p-5 backdrop-blur-xl md:col-span-1 lg:col-span-1"
     >
-      <div className="mb-3 flex items-center justify-between">
-        <span className="text-[11px] font-medium uppercase tracking-[0.15em] text-zinc-500">
+      <div className="mb-2.5 flex items-center justify-between">
+        <span className="text-[10px] sm:text-[11px] font-medium uppercase tracking-[0.15em] text-zinc-500">
           Microstructure Depth Ladder
         </span>
-        <span className="text-[10px] text-zinc-600">L2 · 5 Levels</span>
+        <span className="text-[9px] sm:text-[10px] text-zinc-600 font-mono">L2 · 5 Levels</span>
       </div>
 
-      <div className="grid grid-cols-2 gap-3 text-[11px] uppercase tracking-wide text-zinc-600">
+      <div className="grid grid-cols-2 gap-3 text-[10px] sm:text-[11px] uppercase tracking-wide text-zinc-600 font-mono">
         <span>Bids</span>
         <span className="text-right">Asks</span>
       </div>
 
-      <div className="mt-1.5 flex flex-col gap-1">
+      <div className="mt-1 flex flex-col gap-1">
         {rows.map((_, i) => {
           const bid = bids[i];
           const ask = asks[i];
@@ -826,23 +823,23 @@ function DepthLadder({
           return (
             <div
               key={i}
-              className="relative grid grid-cols-2 gap-3 py-1 text-xs"
+              className="relative grid grid-cols-2 gap-3 py-0.5 text-xs font-mono"
             >
-              <div className="relative flex items-center overflow-hidden rounded-md">
+              <div className="relative flex items-center overflow-hidden rounded-md px-1 py-0.5">
                 <div
                   className="absolute inset-y-0 right-0 rounded-md bg-emerald-500/10"
                   style={{ width: `${bidPct}%` }}
                 />
-                <span className="relative z-10 font-mono text-emerald-400">
+                <span className="relative z-10 text-emerald-400 text-[11px] sm:text-xs">
                   {bid ? formatUsd(bid.price) : "—"}
                 </span>
               </div>
-              <div className="relative flex items-center justify-end overflow-hidden rounded-md text-right">
+              <div className="relative flex items-center justify-end overflow-hidden rounded-md px-1 py-0.5 text-right">
                 <div
                   className="absolute inset-y-0 left-0 rounded-md bg-rose-500/10"
                   style={{ width: `${askPct}%` }}
                 />
-                <span className="relative z-10 font-mono text-rose-400">
+                <span className="relative z-10 text-rose-400 text-[11px] sm:text-xs">
                   {ask ? formatUsd(ask.price) : "—"}
                 </span>
               </div>
@@ -866,58 +863,58 @@ function AnalyticsPanel({ metrics }: { metrics: EngineMetrics }) {
       initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ type: "spring", stiffness: 300, damping: 30 }}
-      className="grid grid-cols-2 gap-4 rounded-2xl border border-white/[0.08] bg-[#0f0f13]/80 p-5 backdrop-blur-xl md:grid-cols-4"
+      className="grid grid-cols-2 gap-3 sm:gap-4 rounded-2xl border border-white/[0.08] bg-[#0f0f13]/80 p-4 sm:p-5 backdrop-blur-xl md:grid-cols-4"
     >
       <div>
-        <p className="text-[11px] uppercase tracking-[0.12em] text-zinc-500">
+        <p className="text-[10px] sm:text-[11px] uppercase tracking-[0.12em] text-zinc-500">
           Spread
         </p>
-        <p className="mt-1.5 font-mono text-lg font-semibold text-zinc-100">
+        <p className="mt-1 font-mono text-base sm:text-lg font-semibold text-zinc-100">
           {formatUsd(metrics.spread)}
         </p>
-        <p className="mt-0.5 text-[11px] text-zinc-600">
+        <p className="mt-0.5 text-[10px] sm:text-[11px] text-zinc-600">
           {metrics.spreadBps.toFixed(2)} bps
         </p>
       </div>
 
       <div>
-        <p className="text-[11px] uppercase tracking-[0.12em] text-zinc-500">
+        <p className="text-[10px] sm:text-[11px] uppercase tracking-[0.12em] text-zinc-500">
           Mid-Price
         </p>
-        <p className="mt-1.5 font-mono text-lg font-semibold text-zinc-100">
+        <p className="mt-1 font-mono text-base sm:text-lg font-semibold text-zinc-100">
           {formatUsd(metrics.midPrice)}
         </p>
-        <p className="mt-0.5 text-[11px] text-zinc-600">
+        <p className="mt-0.5 text-[10px] sm:text-[11px] text-zinc-600">
           Geometric midpoint
         </p>
       </div>
 
       <div>
-        <p className="text-[11px] uppercase tracking-[0.12em] text-zinc-500">
+        <p className="text-[10px] sm:text-[11px] uppercase tracking-[0.12em] text-zinc-500">
           Micro-Price
         </p>
-        <p className="mt-1.5 font-mono text-lg font-semibold text-indigo-400">
+        <p className="mt-1 font-mono text-base sm:text-lg font-semibold text-indigo-400">
           {formatUsd(metrics.microPrice)}
         </p>
-        <p className="mt-0.5 text-[11px] text-zinc-600">
+        <p className="mt-0.5 text-[10px] sm:text-[11px] text-zinc-600">
           VWAP-weighted drift
         </p>
       </div>
 
       <div>
-        <p className="text-[11px] uppercase tracking-[0.12em] text-zinc-500">
+        <p className="text-[10px] sm:text-[11px] uppercase tracking-[0.12em] text-zinc-500">
           Order Book Imbalance
         </p>
-        <div className="relative mt-3 h-1.5 w-full rounded-full bg-gradient-to-r from-[#FF073A]/40 via-white/10 to-[#39FF14]/40">
+        <div className="relative mt-2.5 h-1.5 w-full rounded-full bg-gradient-to-r from-[#FF073A]/40 via-white/10 to-[#39FF14]/40">
           <motion.div
             animate={{ left: `${obiPct}%` }}
             transition={{ type: "spring", stiffness: 300, damping: 30 }}
             className="absolute top-1/2 h-3 w-3 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-[#08080a] bg-white shadow-[0_0_8px_rgba(255,255,255,0.6)]"
           />
         </div>
-        <div className="mt-1.5 flex justify-between text-[10px] text-zinc-600">
+        <div className="mt-1.5 flex justify-between text-[9px] sm:text-[10px] text-zinc-600 font-mono">
           <span>-1.0</span>
-          <span className="font-mono text-zinc-300">
+          <span className="text-zinc-300 font-bold">
             {metrics.obi >= 0 ? "+" : ""}
             {metrics.obi.toFixed(2)}
           </span>
@@ -962,25 +959,25 @@ function Sparkline({ data }: { data: number[] }) {
       initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ type: "spring", stiffness: 300, damping: 30 }}
-      className="rounded-2xl border border-white/[0.08] bg-[#0f0f13]/80 p-5 backdrop-blur-xl"
+      className="rounded-2xl border border-white/[0.08] bg-[#0f0f13]/80 p-4 sm:p-5 backdrop-blur-xl"
     >
       <div className="mb-2 flex items-center justify-between">
-        <span className="text-[11px] font-medium uppercase tracking-[0.15em] text-zinc-500">
+        <span className="text-[10px] sm:text-[11px] font-medium uppercase tracking-[0.15em] text-zinc-500">
           Real-Time Tick Micro-Price
         </span>
-        <span className="text-[10px] text-zinc-600">
+        <span className="text-[9px] sm:text-[10px] text-zinc-600 font-mono">
           Last {SPARKLINE_LENGTH} ticks
         </span>
       </div>
 
       {data.length < 2 ? (
-        <div className="flex h-[120px] items-center justify-center text-xs text-zinc-600">
-          Awaiting live tick data…
+        <div className="flex h-[100px] sm:h-[120px] items-center justify-center text-xs text-zinc-600 font-mono">
+          Awaiting live tick stream…
         </div>
       ) : (
         <svg
           viewBox={`0 0 ${width} ${height}`}
-          className="h-[120px] w-full overflow-visible"
+          className="h-[100px] sm:h-[120px] w-full overflow-visible"
           preserveAspectRatio="none"
         >
           <defs>
@@ -1042,16 +1039,16 @@ export default function Home() {
   );
 
   return (
-    <main className="min-h-screen bg-[#08080a] text-zinc-100 antialiased">
+    <main className="min-h-screen bg-[#08080a] text-zinc-100 antialiased overflow-x-hidden">
       <HeaderNav
         connectionState={connectionState}
         latencyMs={metrics.latencyMs}
       />
       <HeroSection metrics={metrics} />
 
-      <section className="mx-auto max-w-[1600px] px-6 pb-24">
+      <section className="mx-auto max-w-[1600px] px-3.5 sm:px-6 pb-20 sm:pb-24">
         {/* Bento grid workspace */}
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
+        <div className="grid grid-cols-1 gap-3.5 sm:gap-4 md:grid-cols-2 lg:grid-cols-4">
           <PredictorCard metrics={metrics} />
           <DepthCard side="ask" level={metrics.bestAsk} maxQty={maxQty} />
           <DepthCard side="bid" level={metrics.bestBid} maxQty={maxQty} />
@@ -1059,7 +1056,7 @@ export default function Home() {
         </div>
 
         {/* Analytics + sparkline + signals */}
-        <div className="mt-4 grid grid-cols-1 gap-4 lg:grid-cols-4">
+        <div className="mt-3.5 sm:mt-4 grid grid-cols-1 gap-3.5 sm:gap-4 lg:grid-cols-4">
           <div className="lg:col-span-2">
             <AnalyticsPanel metrics={metrics} />
           </div>
@@ -1072,7 +1069,7 @@ export default function Home() {
         </div>
 
         {/* Indian Market & Multi-Broker Liquidity Section */}
-        <div className="mt-6">
+        <div className="mt-5 sm:mt-6">
           <IndianMarketMatrix />
         </div>
       </section>
