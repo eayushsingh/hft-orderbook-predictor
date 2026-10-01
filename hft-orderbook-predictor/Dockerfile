@@ -10,7 +10,7 @@ RUN mvn dependency:go-offline
 COPY src ./src
 RUN mvn clean package -DskipTests
 
-# Stage 2: Minimal Runtime Image
+# Stage 2: Minimal Low-Latency Runtime Image
 FROM eclipse-temurin:17-jre-jammy
 WORKDIR /app
 
@@ -20,5 +20,5 @@ COPY --from=builder /app/target/*-jar-with-dependencies.jar app.jar
 # Expose WebSocket port
 EXPOSE 8887
 
-# Execute the application
-ENTRYPOINT ["java", "-jar", "app.jar"]
+# Execute application with low-latency ZGC JVM options
+ENTRYPOINT ["java", "-XX:+UseZGC", "-XX:+UnlockExperimentalVMOptions", "-XX:ZAllocationSpikeTolerance=5", "-jar", "app.jar"]
