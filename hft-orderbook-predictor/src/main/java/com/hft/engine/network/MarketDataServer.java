@@ -2,7 +2,6 @@ package com.hft.engine.network;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonArray;
 import org.java_websocket.WebSocket;
 import org.java_websocket.handshake.ClientHandshake;
 import org.java_websocket.server.WebSocketServer;
@@ -10,9 +9,10 @@ import org.java_websocket.server.WebSocketServer;
 import java.net.InetSocketAddress;
 
 /**
- * Institutional low-latency WebSocket server.
+ * Institutional ultra low-latency WebSocket server.
+ * Operates with TCP_NODELAY enabled to eliminate socket packet buffering latency.
  * Broadcasts real-time Level 2 depth, OBI metrics, micro-price drift,
- * AI predictive signals, and iceberg/spoofing alerts to external client terminals.
+ * AI predictive signals, and iceberg/spoofing alerts.
  */
 public class MarketDataServer extends WebSocketServer {
     private final Gson gson;
@@ -20,6 +20,7 @@ public class MarketDataServer extends WebSocketServer {
     public MarketDataServer(int port) {
         super(new InetSocketAddress(port));
         this.gson = new Gson();
+        setTcpNoDelay(true); // Disable Nagle's algorithm for instant sub-millisecond packet transmission
     }
 
     @Override
@@ -34,19 +35,18 @@ public class MarketDataServer extends WebSocketServer {
 
     @Override
     public void onMessage(WebSocket conn, String message) {
-        // Broadcast engine is read-only push
+        // Read-only broadcast pipeline
     }
 
     @Override
     public void onError(WebSocket conn, Exception ex) {
-        System.err.println("[MarketDataServer] Error on " 
-            + (conn != null ? conn.getRemoteSocketAddress() : "socket") + ": " + ex.getMessage());
+        System.err.println("[MarketDataServer] Socket error: " + ex.getMessage());
     }
 
     @Override
     public void onStart() {
-        System.out.println("[MarketDataServer] WebSocket Server started on port: " + getPort());
-        setConnectionLostTimeout(100);
+        System.out.println("[MarketDataServer] Ultra Low-Latency Server running on port: " + getPort() + " (TCP_NODELAY: Enabled)");
+        setConnectionLostTimeout(60);
     }
 
     /**

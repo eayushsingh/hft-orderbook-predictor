@@ -9,9 +9,10 @@ import com.hft.engine.network.MarketDataServer;
 import com.lmax.disruptor.EventHandler;
 
 /**
- * High-performance parallel consumer on the Disruptor Ring Buffer.
+ * Ultra Low-Latency parallel consumer on the Disruptor Ring Buffer.
  * Extracts microstructure state, computes Order Book Imbalance (OBI), Volume-Weighted Micro-Price,
  * Volume-Synchronized Probability of Toxicity (VPIN), and AI Predictive Directional Drift.
+ * Broadcasts updates with sub-10ms / batch-boundary microsecond timing.
  */
 public class FeatureExtractor implements EventHandler<OrderCommandEvent> {
     private final MarketDataServer server;
@@ -100,13 +101,17 @@ public class FeatureExtractor implements EventHandler<OrderCommandEvent> {
             if (obAsk < Long.MAX_VALUE) bestAskPrice = obAsk;
         }
 
-        calculateFeatures();
+        calculateFeatures(endOfBatch);
+    }
+
+    public void calculateFeatures() {
+        calculateFeatures(true);
     }
 
     /**
-     * Computes quantitative features and directional signals.
+     * Computes quantitative features and broadcasts with sub-10ms latency or batch completion.
      */
-    public void calculateFeatures() {
+    public void calculateFeatures(boolean endOfBatch) {
         if (bestBidPrice > 0 && bestAskPrice > 0 && bestAskPrice > bestBidPrice) {
             spread = (double) bestAskPrice - bestBidPrice;
             midPrice = (bestAskPrice + bestBidPrice) / 2.0;
@@ -123,7 +128,6 @@ public class FeatureExtractor implements EventHandler<OrderCommandEvent> {
                 long totalBucket = buyVolumeBucket + sellVolumeBucket;
                 if (totalBucket > 50000) {
                     vpinToxicity = (double) Math.abs(buyVolumeBucket - sellVolumeBucket) / totalBucket;
-                    // Reset bucket after computation cycle
                     buyVolumeBucket = 0;
                     sellVolumeBucket = 0;
                 }
@@ -150,10 +154,10 @@ public class FeatureExtractor implements EventHandler<OrderCommandEvent> {
                 }
             }
 
-            // Broadcast metrics over WebSocket (throttled to 100ms)
+            // Sub-10ms ultra low-latency WebSocket broadcast on batch boundaries
             if (server != null) {
                 long currentTime = System.currentTimeMillis();
-                if (currentTime - lastBroadcastTime >= 100) {
+                if (endOfBatch || currentTime - lastBroadcastTime >= 10) {
                     server.broadcastDepth(bestBidPrice, bestBidVolume, bestAskPrice, bestAskVolume);
                     server.broadcastAnalytics(
                         spread,
@@ -177,7 +181,7 @@ public class FeatureExtractor implements EventHandler<OrderCommandEvent> {
         this.bestBidVolume = bidVol;
         this.bestAskPrice = askPrice;
         this.bestAskVolume = askVol;
-        calculateFeatures();
+        calculateFeatures(true);
     }
 
     public double getSpread() { return spread; }

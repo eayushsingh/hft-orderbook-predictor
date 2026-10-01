@@ -116,7 +116,7 @@ function clamp(value: number, min: number, max: number): number {
    HOOK — lightweight count-up animation (no external deps)
    ============================================================ */
 
-function useCountUp(target: number, durationMs = 500): number {
+function useCountUp(target: number, durationMs = 100): number {
   const [display, setDisplay] = useState(target);
   const fromRef = useRef(target);
   const rafRef = useRef<number | null>(null);
@@ -667,7 +667,7 @@ function PredictorCard({ metrics }: { metrics: EngineMetrics }) {
           <div className="mb-1.5 flex items-center justify-between text-[11px] text-zinc-500">
             <span>Confidence</span>
             <span className="font-mono text-zinc-300">
-              <CountUpDisplay end={metrics.confidence} decimals={1} duration={600} />%
+              <CountUpDisplay end={metrics.confidence} decimals={1} duration={100} />%
             </span>
           </div>
           <div className="h-1.5 w-full overflow-hidden rounded-full bg-white/[0.06]">
@@ -744,7 +744,7 @@ function DepthCard({
         <CountUpDisplay
           end={level.price || 0}
           decimals={2}
-          duration={500}
+          duration={100}
           prefix="$"
           separator=","
         />

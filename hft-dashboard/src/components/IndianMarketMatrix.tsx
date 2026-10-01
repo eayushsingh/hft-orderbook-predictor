@@ -172,7 +172,7 @@ export default function IndianMarketMatrix() {
           }),
         };
       });
-    }, 2500);
+    }, 400);
 
     return () => clearInterval(interval);
   }, [selectedTicker]);
