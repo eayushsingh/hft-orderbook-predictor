@@ -15,12 +15,26 @@ export interface AnalyticsData {
   midPrice: number;
   obi: number;
   microPrice: number;
+  signal?: string;
+  confidence?: number;
+  vpinToxicity?: number;
+  predictedDriftBps?: number;
+  timestamp: number;
+}
+
+export interface AlertData {
+  type: string;
+  alertType: string;
+  price: number;
+  volume: number;
+  message: string;
   timestamp: number;
 }
 
 export function useMarketData() {
   const [depth, setDepth] = useState<DepthData | null>(null);
   const [analytics, setAnalytics] = useState<AnalyticsData | null>(null);
+  const [alerts, setAlerts] = useState<AlertData[]>([]);
   const [isConnected, setIsConnected] = useState<boolean>(false);
 
   useEffect(() => {
@@ -29,7 +43,7 @@ export function useMarketData() {
 
     ws.onopen = () => {
       setIsConnected(true);
-      console.log('Connected to Market Data Server');
+      console.log('Connected to HFT Market Data Engine');
     };
 
     ws.onmessage = (event) => {
@@ -40,6 +54,8 @@ export function useMarketData() {
           setDepth(data);
         } else if (data.type === 'analytics') {
           setAnalytics(data);
+        } else if (data.type === 'alert') {
+          setAlerts((prev) => [data, ...prev.slice(0, 19)]);
         }
       } catch (err) {
         console.error('Failed to parse WebSocket message', err);
@@ -48,14 +64,13 @@ export function useMarketData() {
 
     ws.onclose = () => {
       setIsConnected(false);
-      console.log('Disconnected from Market Data Server');
+      console.log('Disconnected from HFT Market Data Engine');
     };
 
     ws.onerror = (error) => {
       console.error('WebSocket Error:', error);
     };
 
-    // Cleanup function: Close the socket on component unmount to prevent memory leaks
     return () => {
       if (ws.readyState === WebSocket.OPEN || ws.readyState === WebSocket.CONNECTING) {
         ws.close();
@@ -63,5 +78,5 @@ export function useMarketData() {
     };
   }, []);
 
-  return { depth, analytics, isConnected };
+  return { depth, analytics, alerts, isConnected };
 }

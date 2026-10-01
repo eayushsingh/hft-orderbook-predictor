@@ -26,7 +26,7 @@ public class HFTNode {
     private final MarketDataServer marketDataServer;
 
     public HFTNode(int ringBufferSize) {
-        this(ringBufferSize, 8887); // Default to port 8887
+        this(ringBufferSize, 8887); // Default port 8887
     }
 
     public HFTNode(int ringBufferSize, int websocketPort) {
@@ -48,16 +48,15 @@ public class HFTNode {
         );
 
         EngineEventHandler matchingHandler = new EngineEventHandler(matchingEngine);
-        this.featureExtractor = new FeatureExtractor(marketDataServer);
+        this.featureExtractor = new FeatureExtractor(marketDataServer, orderBook);
 
-        // Multicasting: Attach consumers in parallel. 
+        // Multicasting: Attach matching handler and feature extractor parallel consumers
         disruptor.handleEventsWith(matchingHandler, featureExtractor);
 
         this.publisher = new OrderCommandPublisher(disruptor.getRingBuffer());
     }
 
     public void start() {
-        // Start the WebSocket server and block for 1 second to ensure successful port binding
         marketDataServer.start();
         try {
             Thread.sleep(1000);
@@ -65,7 +64,6 @@ public class HFTNode {
             Thread.currentThread().interrupt();
         }
         
-        // Start the disruptor engine
         disruptor.start();
     }
 
@@ -88,5 +86,9 @@ public class HFTNode {
 
     public FeatureExtractor getFeatureExtractor() {
         return featureExtractor;
+    }
+
+    public MarketDataServer getMarketDataServer() {
+        return marketDataServer;
     }
 }

@@ -26,5 +26,10 @@ public class FeatureExtractorTest {
         
         // Micro-Price = (20 * 1000 + 80 * 1010) / 100 = (20000 + 80800) / 100 = 1008
         assertEquals(1008.0, extractor.getMicroPrice(), 0.001);
+
+        // Directional Signal Assertions
+        assertEquals("STRONG BUY", extractor.getSignal());
+        assertTrue(extractor.getConfidence() > 75.0);
+        assertTrue(extractor.getPredictedDriftBps() > 0.0);
     }
 }

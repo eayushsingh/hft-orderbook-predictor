@@ -2,12 +2,12 @@
 
 LALAN is a high-frequency trading intelligence terminal designed to provide institutional-grade microstructure analysis to retail traders. 
 
-Instead of relying on trailing indicators or historical candlestick charts, LALAN connects directly to live exchange WebSocket feeds (such as Binance or DhanHQ), capturing Level 2 order book data in real-time. By processing this hidden liquidity, LALAN acts as an "X-Ray," identifying trade intent and order book imbalances before the price physically moves.
+Instead of relying on trailing indicators or historical candlestick charts, LALAN connects directly to live exchange WebSocket feeds (such as Binance or DhanHQ), capturing Level 2 order book data in real-time. By processing this hidden liquidity, LALAN acts as an "X-Ray," identifying trade intent, order book imbalances, and hidden iceberg orders before price physically moves.
 
 ## Core Value Proposition
 
 * **Traditional Exchanges:** Show what has *already* happened (Price Action / Candlesticks).
-* **LALAN:** Shows what is *about to* happen (Order Intent / Imbalance).
+* **LALAN:** Shows what is *about to* happen (Order Intent / Imbalance / Icebergs).
 * **Objective:** Give retail and options traders the exact mathematical edge used by quantitative hedge funds, enabling sniper entries and extreme risk mitigation.
 
 ## System Architecture
@@ -15,38 +15,52 @@ Instead of relying on trailing indicators or historical candlestick charts, LALA
 LALAN is built for extreme low-latency processing, utilizing a bifurcated architecture:
 
 ### 1. The X-Ray Engine (Backend)
-Built in **Java**, leveraging the **LMAX Disruptor** design pattern.
+Built in **Java 17+**, leveraging the **LMAX Disruptor** design pattern.
 * **Why LMAX Disruptor?** It provides a lock-free ring buffer that eliminates Garbage Collection pauses and memory allocation overhead. It allows the engine to process millions of incoming Bid/Ask events per second with sub-millisecond latency.
-* **Data Ingestion:** Currently engineered for Binance WebSocket feeds, with active integration mapping for Indian Broker APIs (DhanHQ) to support NSE/BSE Options & Equities.
+* **Institutional Microstructure Suite**:
+  * **Iceberg & Spoofing Detector (`IcebergDetector`)**: Detects hidden volume refills and abnormal liquidity walls in real-time.
+  * **Order Flow Toxicity (VPIN)**: Volume-Synchronized Probability of Toxicity tracking buyer/seller aggressive volume imbalances.
+  * **AI Predictor Matrix**: Computes directional mid-price drift probability (in basis points) and signal state (`STRONG BUY`, `BUY`, `NEUTRAL`, `SELL`, `STRONG SELL`).
+* **Multi-Broker Feed Adapters**: Modular architecture supporting Binance L2 Depth, **DhanHQ Direct L2 Feed**, **Zerodha Kite Connect Ticker**, and synthetic market flow simulators.
 
 ### 2. The Intelligence Terminal (Frontend)
-Built with **Next.js** and **React**, styled for an elite, Bloomberg-terminal aesthetic.
-* Streams live WebSocket signals directly from the Java Engine.
-* Replaces standard charts with proprietary quantitative gauges: OBI (Order Book Imbalance), Micro-Price Drift, and AI Predictive Directional Flow.
-* **Indian Market Intelligence & Multi-Broker Matrix:** Live L2 depth, tick-level Order Book Imbalance, and cross-platform buying vs. selling ratio breakdowns for top NSE/BSE stocks & indices (NIFTY 50, RELIANCE, HDFCBANK, TATAMOTORS, INFY) across major Indian brokers (**DhanHQ, Zerodha Kite, Groww, Angel One, Upstox, ICICI Direct**).
+Built with **Next.js 15**, **React**, and **TypeScript**, styled for an elite, Bloomberg-terminal aesthetic.
+* Streams live WebSocket signals directly from the Java Engine (`ws://localhost:8887`).
+* Replaces standard charts with quantitative gauges: Order Book Imbalance (OBI), Micro-Price Drift, VPIN Toxicity, and AI Predictive Directional Flow.
+* **Indian Market Intelligence & Multi-Broker Matrix**: Live L2 depth, tick-level Order Book Imbalance, and cross-platform buying vs. selling ratio breakdowns for top NSE/BSE stocks & indices (NIFTY 50, RELIANCE, HDFCBANK, TATAMOTORS, INFY) across major Indian brokers (**DhanHQ, Zerodha Kite, Groww, Angel One, Upstox, ICICI Direct**).
 
 ## Core Mathematical Models
 
-LALAN does not guess price action; it calculates market weight. The primary quantitative model driving the AI Predictor Matrix is the **Order Book Imbalance (OBI)**.
-
 ### Order Book Imbalance (OBI)
-OBI measures the immediate pressure difference between buyers and sellers sitting at the top of the order book. 
+OBI measures the immediate pressure difference between buyers and sellers sitting at the top of the order book:
 
-**The Formula:**
-```
-OBI = (Volume_Bid - Volume_Ask) / (Volume_Bid + Volume_Ask)
-```
-*Where Volume is calculated from the Top 5 or Top 10 levels of the Level 2 depth.*
+$$\text{OBI} = \frac{V_{\text{bid}} - V_{\text{ask}}}{V_{\text{bid}} + V_{\text{ask}}}$$
 
 **Interpretation:**
 * **OBI = +1.0:** 100% Buying Pressure (Extreme Bullish Imbalance)
 * **OBI = -1.0:** 100% Selling Pressure (Extreme Bearish Imbalance)
 * **OBI = 0:** Perfect Equilibrium
 
-*Example:* If a massive invisible sell wall appears just above the current price, the OBI instantly drops to a heavy negative value. LALAN detects this mathematical blockade and flashes a "High Buy-Side Risk" warning, preventing a trader from entering a doomed long position.
+### Volume-Weighted Micro-Price
+$$\text{Micro-Price} = \frac{P_{\text{bid}} \cdot V_{\text{ask}} + P_{\text{ask}} \cdot V_{\text{bid}}}{V_{\text{bid}} + V_{\text{ask}}}$$
+
+Directly predicts the direction toward which price will slip based on relative liquidity weight at the top levels.
+
+---
+
+## Technical Stack & Features Summary
+
+| Component | Technology | Highlights |
+| :--- | :--- | :--- |
+| **Engine Core** | Java 17, LMAX Disruptor | Lock-Free Ring Buffer, Zero-GC Primitives, $O(1)$ Matching |
+| **Microstructure ML** | Custom Feature Extractor | OBI, Micro-Price Drift, VPIN Toxicity, Iceberg Detection |
+| **Network Protocol** | Java-WebSocket & JSON | High-Frequency Throttled Broadcasts (100ms) |
+| **Terminal UI** | Next.js, Framer Motion, Lucide | Bloomberg Dark Aesthetics, CountUp Animations, Mobile Responsive |
+| **Broker Suite** | DhanHQ, Zerodha Kite, Upstox, Binance | Multi-Broker Depth & Liquidity Matrix |
+
+---
 
 ## Licensing & Usage
 
-**Should this repository be Public or Private?**
-* **Frontend UI (Public):** The Next.js dashboard code can be public. It showcases your design capability and architectural skills.
-* **Backend Java LMAX Engine (Private):** It is highly recommended to keep the core LMAX quantitative engine **Private**. The proprietary math, low-latency optimizations, and specific broker API implementations are your core business "moat." If published publicly, algorithmic trading firms can clone your execution strategy for free. 
+* **Frontend UI (Public):** Showcase design capability and architectural implementation.
+* **Backend Java LMAX Engine (Private):** Core quantitative moat, low-latency Disruptor ring buffer, and proprietary signal generation algorithms.
