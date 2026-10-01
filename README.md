@@ -23,6 +23,7 @@ Built in **Java**, leveraging the **LMAX Disruptor** design pattern.
 Built with **Next.js** and **React**, styled for an elite, Bloomberg-terminal aesthetic.
 * Streams live WebSocket signals directly from the Java Engine.
 * Replaces standard charts with proprietary quantitative gauges: OBI (Order Book Imbalance), Micro-Price Drift, and AI Predictive Directional Flow.
+* **Indian Market Intelligence & Multi-Broker Matrix:** Live L2 depth, tick-level Order Book Imbalance, and cross-platform buying vs. selling ratio breakdowns for top NSE/BSE stocks & indices (NIFTY 50, RELIANCE, HDFCBANK, TATAMOTORS, INFY) across major Indian brokers (**DhanHQ, Zerodha Kite, Groww, Angel One, Upstox, ICICI Direct**).
 
 ## Core Mathematical Models
 

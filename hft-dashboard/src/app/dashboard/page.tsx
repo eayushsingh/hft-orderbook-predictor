@@ -15,6 +15,7 @@ import {
   WifiOff,
 } from "lucide-react";
 import ConsensusMatrix from "@/components/ConsensusMatrix";
+import IndianMarketMatrix from "@/components/IndianMarketMatrix";
 
 /* ============================================================
    TYPES — strict WebSocket payload contracts
@@ -1061,6 +1062,11 @@ export default function Home() {
           <div className="lg:col-span-1">
             <ConsensusMatrix />
           </div>
+        </div>
+
+        {/* Indian Market & Multi-Broker Liquidity Section */}
+        <div className="mt-6">
+          <IndianMarketMatrix />
         </div>
       </section>
     </main>
