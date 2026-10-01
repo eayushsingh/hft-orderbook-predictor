@@ -4,7 +4,6 @@ import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Search,
-  Activity,
   ScanLine,
   ArrowUpRight,
   ArrowDownRight,
@@ -20,10 +19,10 @@ export interface BrokerPlatformFlow {
   platform: string;
   brokerCode: string;
   logoColor: string;
-  buyRatio: number; // e.g. 65 = 65% Buy, 35% Sell
+  buyRatio: number;
   sellRatio: number;
-  obi: number; // -1.0 to +1.0
-  liquidityDepth: string; // e.g. "₹42.5 Cr"
+  obi: number;
+  liquidityDepth: string;
   latencyMs: number;
   status: "ACTIVE" | "HIGH DRIFT" | "EQUILIBRIUM";
 }
@@ -237,7 +236,7 @@ export default function IndianMarketMatrix() {
   };
 
   return (
-    <div className="w-full rounded-2xl border border-white/[0.08] bg-[#0c0c10]/95 p-4 sm:p-6 md:p-8 shadow-2xl backdrop-blur-2xl">
+    <div className="w-full rounded-2xl border border-white/[0.08] bg-[#0c0c10]/95 p-4 sm:p-6 md:p-8 shadow-2xl backdrop-blur-2xl transition-all">
       
       {/* ── HEADER ── */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6 border-b border-white/[0.08] pb-5">
@@ -266,8 +265,10 @@ export default function IndianMarketMatrix() {
         <div className="w-full md:w-auto overflow-x-auto no-scrollbar py-1">
           <div className="flex items-center gap-2 min-w-max">
             {Object.keys(DEFAULT_INDIAN_STOCKS).map((tkr) => (
-              <button
+              <motion.button
                 key={tkr}
+                whileHover={{ scale: 1.04 }}
+                whileTap={{ scale: 0.96 }}
                 onClick={() => handleSelectStock(tkr)}
                 className={`px-3 py-1.5 rounded-xl text-xs font-mono font-bold transition-all border whitespace-nowrap active:scale-95 ${
                   selectedTicker === tkr
@@ -276,7 +277,7 @@ export default function IndianMarketMatrix() {
                 }`}
               >
                 {tkr}
-              </button>
+              </motion.button>
             ))}
           </div>
         </div>
@@ -296,10 +297,12 @@ export default function IndianMarketMatrix() {
             className="w-full bg-[#060608] text-white pl-10 pr-3.5 py-3 rounded-xl border border-white/[0.08] focus:outline-none focus:border-orange-500/50 focus:ring-1 focus:ring-orange-500/50 transition-all font-mono uppercase text-xs sm:text-sm placeholder:normal-case placeholder:text-zinc-600"
           />
         </div>
-        <button
+        <motion.button
+          whileHover={{ scale: 1.02 }}
+          whileTap={{ scale: 0.97 }}
           type="submit"
           disabled={!searchQuery.trim() || isScanning}
-          className="flex h-[44px] sm:h-[48px] w-full sm:w-auto items-center justify-center gap-2 bg-gradient-to-r from-orange-600 to-amber-600 hover:from-orange-500 hover:to-amber-500 disabled:opacity-40 text-white px-6 rounded-xl font-medium text-xs sm:text-sm transition-all border border-orange-500/40 min-w-[120px] active:scale-95"
+          className="flex h-[44px] sm:h-[48px] w-full sm:w-auto items-center justify-center gap-2 bg-gradient-to-r from-orange-600 to-amber-600 hover:from-orange-500 hover:to-amber-500 disabled:opacity-40 text-white px-6 rounded-xl font-medium text-xs sm:text-sm transition-all border border-orange-500/40 min-w-[120px]"
         >
           {isScanning ? (
             <motion.div animate={{ rotate: 360 }} transition={{ repeat: Infinity, duration: 1, ease: "linear" }}>
@@ -310,7 +313,7 @@ export default function IndianMarketMatrix() {
               Scan Depth <ScanLine className="h-4 w-4 opacity-80" />
             </>
           )}
-        </button>
+        </motion.button>
       </form>
 
       {/* ── ACTIVE STOCK INSIGHTS CARD ── */}
@@ -364,7 +367,7 @@ export default function IndianMarketMatrix() {
               <motion.div
                 initial={{ width: 0 }}
                 animate={{ width: `${stockData.overallBuyRatio}%` }}
-                transition={{ duration: 0.6 }}
+                transition={{ type: "spring", stiffness: 200, damping: 25 }}
                 className="h-full bg-gradient-to-r from-emerald-500 to-emerald-400 rounded-full shadow-[0_0_10px_rgba(16,185,129,0.5)]"
               />
             </div>
@@ -410,8 +413,9 @@ export default function IndianMarketMatrix() {
               key={platform.platform}
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: idx * 0.06 }}
-              className="bg-[#111116] border border-white/[0.06] hover:border-white/[0.12] rounded-xl p-3.5 transition-all hover:bg-white/[0.02]"
+              transition={{ delay: idx * 0.05 }}
+              whileHover={{ y: -3 }}
+              className="bg-[#111116] border border-white/[0.06] hover:border-indigo-500/30 hover:shadow-[0_0_20px_rgba(99,102,241,0.1)] rounded-xl p-3.5 transition-all hover:bg-white/[0.02]"
             >
               {/* Card Header */}
               <div className="flex items-center justify-between mb-2.5">
@@ -441,9 +445,10 @@ export default function IndianMarketMatrix() {
                 </div>
 
                 <div className="h-2 w-full bg-rose-500/20 rounded-full overflow-hidden flex border border-white/[0.05]">
-                  <div
-                    style={{ width: `${platform.buyRatio}%` }}
-                    className="h-full bg-emerald-500 transition-all duration-500"
+                  <motion.div
+                    animate={{ width: `${platform.buyRatio}%` }}
+                    transition={{ type: "spring", stiffness: 200, damping: 25 }}
+                    className="h-full bg-emerald-500"
                   />
                 </div>
               </div>
