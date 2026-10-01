@@ -6,157 +6,178 @@ import Link from "next/link";
 
 const featureCards = [
   {
-    title: "Real-Time Insights",
+    title: "Real-Time L2 Insights",
     description:
-      "Stream live Binance L2 order book data through a lock-free LMAX Disruptor pipeline. Every tick, every shift — captured in sub-millisecond latency.",
+      "Stream live Binance and Indian exchange L2 order book data through a lock-free LMAX Disruptor pipeline. Every tick captured in sub-millisecond latency.",
   },
   {
-    title: "Secure Trading",
+    title: "Zero GC Pause Latency",
     description:
-      "Zero-allocation memory architecture eliminates garbage collection pauses. Your execution path stays deterministic, even under extreme market volatility.",
+      "Zero-allocation memory architecture eliminates Java garbage collection pauses. Your execution path stays deterministic under extreme market volatility.",
   },
   {
-    title: "Tech Driven Precision",
+    title: "Indian Market Liquidity",
     description:
-      "O(1) order placement, matching, and cancellation backed by custom primitive hash maps and doubly-linked price levels. No compromises.",
+      "Real-time Order Book Imbalance (OBI) and buying/selling pressure matrix aggregated across DhanHQ, Zerodha, Groww, Angel One, and Upstox.",
   },
   {
-    title: "Trading Community",
+    title: "Institutional Precision",
     description:
-      "Built by quantitative engineers, for quantitative engineers. Open-source infrastructure designed to be extended, forked, and battle-tested.",
+      "O(1) order placement, matching, and cancellation backed by primitive lock-free ring buffers and doubly-linked price levels.",
   },
 ];
 
 export default function LandingPage() {
   return (
-    <div className="font-sans">
+    <div className="font-sans bg-[#08080a] text-zinc-100 min-h-screen selection:bg-indigo-500 selection:text-white">
 
       {/* ════════════════════════════════════════════════
-          SECTION 1 — LIGHT HERO + MACBOOK MOCKUP
+          NAVBAR — Sticky, Glassmorphic Mobile Header
           ════════════════════════════════════════════════ */}
-      <section className="bg-[#f4f4f5] text-black min-h-screen flex flex-col items-center justify-center px-6 relative overflow-hidden">
+      <nav className="sticky top-0 left-0 right-0 flex items-center justify-between px-4 sm:px-8 md:px-12 py-4 bg-[#08080a]/80 backdrop-blur-xl border-b border-white/[0.08] z-50">
+        <div className="flex items-center space-x-2.5">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/logo.png" alt="LALAN Logo" className="h-9 sm:h-12 w-auto object-contain" />
+          <span className="font-black text-lg sm:text-xl tracking-[0.2em] uppercase text-white">LALAN</span>
+        </div>
+        <Link
+          href="/dashboard"
+          className="bg-gradient-to-r from-indigo-600 to-indigo-500 hover:from-indigo-500 hover:to-indigo-400 text-white text-[11px] sm:text-xs font-bold tracking-widest uppercase px-4 sm:px-6 py-2.5 rounded-full transition-all shadow-lg shadow-indigo-600/30 active:scale-95"
+        >
+          Open Terminal →
+        </Link>
+      </nav>
 
-        {/* Nav */}
-        <nav className="absolute top-0 left-0 right-0 flex items-center justify-between px-6 md:px-12 py-6 z-20">
-          <div className="flex items-center space-x-3">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/logo.png" alt="LALAN Logo" className="h-14 w-auto object-contain" />
-            <span className="font-black text-xl tracking-[0.2em] uppercase text-black">LALAN</span>
-          </div>
-          <Link
-            href="/dashboard"
-            className="bg-black text-white text-xs font-bold tracking-widest uppercase px-5 py-2.5 rounded-full hover:bg-zinc-800 transition-colors"
-          >
-            Open Terminal →
-          </Link>
-        </nav>
+      {/* ════════════════════════════════════════════════
+          SECTION 1 — HERO + RESPONSIVE MOCKUP
+          ════════════════════════════════════════════════ */}
+      <section className="bg-gradient-to-b from-[#0f0f14] via-[#08080a] to-[#08080a] text-white min-h-[85vh] flex flex-col items-center justify-center px-4 sm:px-6 py-12 sm:py-20 relative overflow-hidden">
+        
+        {/* Glow backdrop effect */}
+        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[300px] sm:w-[600px] h-[300px] sm:h-[600px] bg-indigo-600/15 rounded-full blur-[120px] pointer-events-none" />
 
         {/* Headline */}
         <motion.div
-          className="text-center max-w-5xl"
-          initial={{ opacity: 0, y: 30 }}
+          className="text-center max-w-4xl mx-auto z-10"
+          initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
+          transition={{ duration: 0.7, ease: "easeOut" }}
         >
-          <h1 className="flex flex-col gap-4">
-            <span className="text-2xl md:text-4xl font-semibold tracking-tight text-zinc-500">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 text-[11px] sm:text-xs font-mono uppercase tracking-wider mb-6">
+            <span className="w-2 h-2 rounded-full bg-indigo-400 animate-ping" />
+            HFT Order Book Predictor Engine
+          </div>
+
+          <h1 className="flex flex-col gap-2 sm:gap-4">
+            <span className="text-xl sm:text-3xl md:text-4xl font-medium tracking-tight text-zinc-400">
               We don&apos;t chase alpha.
             </span>
-            <span className="text-5xl md:text-7xl font-black tracking-tighter leading-[0.95] bg-gradient-to-r from-black to-zinc-600 bg-clip-text text-transparent">
-              We eliminate risk,<br />and the alpha chases us.
+            <span className="text-3xl sm:text-6xl md:text-7xl font-black tracking-tighter leading-[1.05] sm:leading-[0.98] bg-gradient-to-b from-white via-zinc-100 to-zinc-400 bg-clip-text text-transparent">
+              We eliminate risk,<br className="hidden sm:inline" /> and alpha chases us.
             </span>
           </h1>
-          <p className="text-zinc-500 text-lg md:text-xl mt-6 max-w-2xl mx-auto leading-relaxed">
-            Institutional-grade market microstructure intelligence. Sub-millisecond latency. Zero garbage collection.
+
+          <p className="text-zinc-400 text-sm sm:text-lg md:text-xl mt-5 sm:mt-8 max-w-2xl mx-auto leading-relaxed px-2">
+            Institutional market microstructure analysis for retail &amp; options traders. Sub-millisecond latency. Live Order Book Imbalance (OBI).
           </p>
+
+          {/* Mobile CTA */}
+          <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4">
+            <Link
+              href="/dashboard"
+              className="w-full sm:w-auto bg-white text-black text-xs font-bold tracking-wider uppercase px-8 py-3.5 rounded-xl hover:bg-zinc-200 transition-all text-center shadow-xl shadow-white/10 active:scale-95"
+            >
+              Launch Live Terminal
+            </Link>
+          </div>
         </motion.div>
 
-        {/* MacBook Mockup with Live Dashboard iframe */}
+        {/* Responsive Terminal Mockup */}
         <motion.div
-          className="w-full max-w-4xl mx-auto mt-12"
-          initial={{ opacity: 0, y: 40 }}
+          className="w-full max-w-5xl mx-auto mt-10 sm:mt-16 z-10 px-0 sm:px-4"
+          initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
+          transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
         >
-          {/* Screen bezel */}
-          <div className="bg-zinc-800 rounded-t-2xl pt-3 pb-0 px-3 shadow-2xl shadow-black/30">
-            {/* Browser chrome */}
-            <div className="flex items-center space-x-2 px-3 py-2 bg-zinc-900 rounded-t-lg">
-              <div className="w-3 h-3 rounded-full bg-[#ff5f57]" />
-              <div className="w-3 h-3 rounded-full bg-[#febc2e]" />
-              <div className="w-3 h-3 rounded-full bg-[#28c840]" />
-              <div className="flex-1 mx-4">
-                <div className="bg-zinc-800 rounded-md px-3 py-1 text-zinc-500 text-[10px] font-mono text-center">
-                  localhost:3000/dashboard
-                </div>
+          <div className="bg-[#121218] border border-white/[0.12] rounded-xl sm:rounded-2xl shadow-2xl shadow-black/80 overflow-hidden">
+            {/* Browser Header Bar */}
+            <div className="flex items-center justify-between px-3 sm:px-4 py-2.5 bg-[#0a0a0d] border-b border-white/[0.08]">
+              <div className="flex items-center space-x-1.5 sm:space-x-2">
+                <div className="w-2.5 sm:w-3 h-2.5 sm:h-3 rounded-full bg-[#ff5f57]" />
+                <div className="w-2.5 sm:w-3 h-2.5 sm:h-3 rounded-full bg-[#febc2e]" />
+                <div className="w-2.5 sm:w-3 h-2.5 sm:h-3 rounded-full bg-[#28c840]" />
+              </div>
+              <div className="bg-[#16161e] border border-white/[0.06] rounded-md px-3 py-1 text-zinc-400 text-[10px] sm:text-xs font-mono text-center max-w-[200px] sm:max-w-xs truncate">
+                lalan-hft.internal/dashboard
+              </div>
+              <div className="text-[10px] font-mono text-emerald-400 font-bold hidden sm:block">
+                LIVE STREAM
               </div>
             </div>
-            {/* Live iframe */}
-            <div className="w-full h-[380px] overflow-hidden">
+
+            {/* iFrame Container */}
+            <div className="w-full h-[280px] xs:h-[340px] sm:h-[440px] md:h-[500px] overflow-hidden relative bg-[#08080a]">
               <iframe
                 src="/dashboard"
                 className="w-full h-full border-0"
-                title="AlphaLedger Live Terminal"
+                title="LALAN Live HFT Terminal"
               />
             </div>
           </div>
-          {/* MacBook base / hinge */}
-          <div className="w-full h-4 bg-gradient-to-b from-zinc-700 to-zinc-600 rounded-b-lg" />
-          <div className="w-[40%] h-2 bg-zinc-500/40 rounded-b-xl mx-auto" />
         </motion.div>
       </section>
 
       {/* ════════════════════════════════════════════════
-          SECTION 2 — DARK TRANSITION & TICKER
+          SECTION 2 — TICKER & COUNTER
           ════════════════════════════════════════════════ */}
-      <section className="bg-[#0a0a0c] text-white py-32 px-6">
-        <div className="max-w-5xl mx-auto text-center">
-
-          {/* Blue pill */}
+      <section className="bg-[#0c0c10] text-white py-16 sm:py-28 px-4 sm:px-6 border-t border-b border-white/[0.06]">
+        <div className="max-w-4xl mx-auto text-center">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.5 }}
             transition={{ duration: 0.5, ease: "easeOut" }}
           >
-            <span className="inline-block bg-indigo-500/10 text-indigo-400 text-xs font-bold tracking-widest uppercase px-5 py-2 rounded-full border border-indigo-500/20 mb-10">
-              Transparent Selection
+            <span className="inline-block bg-indigo-500/10 text-indigo-400 text-[11px] sm:text-xs font-bold tracking-widest uppercase px-4 py-1.5 rounded-full border border-indigo-500/20 mb-6 sm:mb-8">
+              Lock-Free Performance
             </span>
           </motion.div>
 
-          {/* Animated Counter */}
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 25 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.3 }}
             transition={{ duration: 0.6, ease: "easeOut" }}
           >
-            <div className="text-7xl md:text-9xl font-black text-transparent bg-clip-text bg-gradient-to-b from-white to-zinc-600 leading-none">
+            <div className="text-5xl sm:text-7xl md:text-8xl font-black text-transparent bg-clip-text bg-gradient-to-b from-white to-zinc-500 leading-none tracking-tight font-mono">
               <CountUp start={985536} end={1000000} duration={3} separator="," />
             </div>
-            <p className="text-zinc-500 text-lg mt-6 max-w-lg mx-auto">
-              Orders processed per second through our lock-free Ring Buffer architecture. Zero allocation. Zero compromise.
+            <p className="text-zinc-400 text-sm sm:text-lg mt-4 sm:mt-6 max-w-md mx-auto leading-relaxed px-2">
+              Order events processed per second through our LMAX Disruptor ring buffer. Zero Garbage Collection pauses.
             </p>
           </motion.div>
         </div>
       </section>
 
       {/* ════════════════════════════════════════════════
-          SECTION 3 — DARK FEATURE GRID
+          SECTION 3 — FEATURE GRID
           ════════════════════════════════════════════════ */}
-      <section className="bg-[#0a0a0c] text-white pb-32 px-6">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-6xl mx-auto">
+      <section className="bg-[#08080a] text-white py-16 sm:py-24 px-4 sm:px-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 max-w-5xl mx-auto">
           {featureCards.map((card, i) => (
             <motion.div
               key={card.title}
-              className="bg-[#111115] border border-zinc-800 rounded-3xl p-10 group hover:border-zinc-700 transition-colors"
-              initial={{ opacity: 0, y: 30 }}
+              className="bg-[#111116] border border-white/[0.08] hover:border-indigo-500/40 rounded-2xl p-6 sm:p-8 group transition-all"
+              initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 0.5, delay: i * 0.1, ease: "easeOut" }}
+              viewport={{ once: true, amount: 0.2 }}
+              transition={{ duration: 0.5, delay: i * 0.08, ease: "easeOut" }}
             >
-              <h3 className="text-xl font-bold text-white mb-3">{card.title}</h3>
-              <p className="text-zinc-500 text-sm leading-relaxed">{card.description}</p>
+              <h3 className="text-lg sm:text-xl font-bold text-white mb-2.5 flex items-center gap-2">
+                <span className="w-2 h-2 rounded-full bg-indigo-500" />
+                {card.title}
+              </h3>
+              <p className="text-zinc-400 text-xs sm:text-sm leading-relaxed">{card.description}</p>
             </motion.div>
           ))}
         </div>
@@ -165,10 +186,12 @@ export default function LandingPage() {
       {/* ════════════════════════════════════════════════
           FOOTER
           ════════════════════════════════════════════════ */}
-      <footer className="bg-[#0a0a0c] border-t border-zinc-900 py-10 px-6">
-        <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between text-zinc-600 text-xs tracking-wide">
-          <span className="font-black tracking-[0.2em] uppercase text-zinc-400">LALAN</span>
-          <span className="mt-2 md:mt-0">Predictive Market Microstructure Engine — O(1) Limit Order Book &amp; HFT Price Forecasting</span>
+      <footer className="bg-[#060608] border-t border-white/[0.08] py-8 sm:py-10 px-4 sm:px-8">
+        <div className="max-w-5xl mx-auto flex flex-col sm:flex-row items-center justify-between text-zinc-500 text-xs gap-3 text-center sm:text-left">
+          <span className="font-black tracking-[0.2em] uppercase text-zinc-300 text-sm">LALAN</span>
+          <span className="text-[11px] text-zinc-400">
+            Market Microstructure &amp; Order Flow Engine — O(1) L2 Depth &amp; HFT Price Forecasting
+          </span>
         </div>
       </footer>
 

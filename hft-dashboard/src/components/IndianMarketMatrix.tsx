@@ -8,7 +8,6 @@ import {
   ScanLine,
   ArrowUpRight,
   ArrowDownRight,
-  Minus,
   TrendingUp,
   TrendingDown,
   Building2,
@@ -35,10 +34,10 @@ export interface IndianStockData {
   exchange: "NSE" | "BSE";
   currentPrice: number;
   changePct: number;
-  overallObi: number; // Order book imbalance
+  overallObi: number;
   overallBuyRatio: number;
   overallSellRatio: number;
-  microPriceDrift: number; // in ₹
+  microPriceDrift: number;
   consensus: "STRONG BULLISH" | "BULLISH" | "NEUTRAL" | "BEARISH" | "STRONG BEARISH";
   platforms: BrokerPlatformFlow[];
 }
@@ -66,7 +65,7 @@ const DEFAULT_INDIAN_STOCKS: Record<string, IndianStockData> = {
   },
   NIFTY50: {
     ticker: "NIFTY 50",
-    companyName: "NSE India Benchmark Index",
+    companyName: "NSE Benchmark Index",
     exchange: "NSE",
     currentPrice: 24850.75,
     changePct: +0.62,
@@ -144,7 +143,7 @@ export default function IndianMarketMatrix() {
   const [isScanning, setIsScanning] = useState<boolean>(false);
   const [stockData, setStockData] = useState<IndianStockData>(DEFAULT_INDIAN_STOCKS.RELIANCE);
 
-  // Live tick jitter simulation to emulate dynamic Indian Market WebSocket updates
+  // Live order flow tick simulator
   useEffect(() => {
     const interval = setInterval(() => {
       setStockData((prev) => {
@@ -198,7 +197,6 @@ export default function IndianMarketMatrix() {
         setSelectedTicker(queryUpper);
         setStockData(DEFAULT_INDIAN_STOCKS[queryUpper]);
       } else {
-        // Dynamic search generator for any Indian stock symbol (e.g., ZOMATO, ADANIENT, HAL, SBIN)
         const customStock: IndianStockData = {
           ticker: queryUpper,
           companyName: `${queryUpper} Ltd. (NSE / BSE)`,
@@ -239,67 +237,69 @@ export default function IndianMarketMatrix() {
   };
 
   return (
-    <div className="w-full rounded-2xl border border-white/[0.08] bg-[#0c0c10]/90 p-6 md:p-8 shadow-2xl backdrop-blur-2xl">
+    <div className="w-full rounded-2xl border border-white/[0.08] bg-[#0c0c10]/95 p-4 sm:p-6 md:p-8 shadow-2xl backdrop-blur-2xl">
       
       {/* ── HEADER ── */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6 border-b border-white/[0.08] pb-6">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6 border-b border-white/[0.08] pb-5">
         <div>
-          <div className="flex items-center gap-2.5 mb-1.5">
-            <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-orange-500/20 text-orange-400 border border-orange-500/30">
-              <Building2 className="h-4 w-4" />
+          <div className="flex items-center gap-2 mb-1.5">
+            <div className="flex h-6 sm:h-7 w-6 sm:w-7 items-center justify-center rounded-lg bg-orange-500/20 text-orange-400 border border-orange-500/30">
+              <Building2 className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
             </div>
-            <span className="text-xs font-bold tracking-widest text-orange-400 uppercase">
+            <span className="text-[10px] sm:text-xs font-bold tracking-widest text-orange-400 uppercase">
               NSE &amp; BSE Institutional Intelligence
             </span>
           </div>
-          <h2 className="text-2xl font-bold tracking-tight text-white flex items-center gap-3">
-            Indian Market Multi-Broker Liquidity Depth
-            <span className="inline-flex items-center gap-1 text-[10px] uppercase font-mono px-2.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+          <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-white flex flex-wrap items-center gap-2.5">
+            Indian Market Multi-Broker Liquidity
+            <span className="inline-flex items-center gap-1 text-[9px] sm:text-[10px] uppercase font-mono px-2.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
               Live Order Flow
             </span>
           </h2>
           <p className="text-xs text-zinc-400 mt-1 max-w-2xl">
-            Cross-platform buying vs. selling ratios, L2 order book imbalance (OBI), and micro-price drift aggregated across major Indian trading platforms (DhanHQ, Zerodha Kite, Groww, Angel One, Upstox).
+            Buying vs. selling volume ratio, order book imbalance (OBI), and micro-price drift aggregated across DhanHQ, Zerodha Kite, Groww, Angel One, and Upstox.
           </p>
         </div>
 
-        {/* Quick Ticker Chips */}
-        <div className="flex flex-wrap items-center gap-2">
-          {Object.keys(DEFAULT_INDIAN_STOCKS).map((tkr) => (
-            <button
-              key={tkr}
-              onClick={() => handleSelectStock(tkr)}
-              className={`px-3 py-1.5 rounded-xl text-xs font-mono font-bold transition-all border ${
-                selectedTicker === tkr
-                  ? "bg-indigo-600 text-white border-indigo-400 shadow-lg shadow-indigo-600/30"
-                  : "bg-white/[0.03] text-zinc-400 border-white/[0.06] hover:bg-white/[0.08] hover:text-white"
-              }`}
-            >
-              {tkr}
-            </button>
-          ))}
+        {/* Scrollable Mobile Pill Chips */}
+        <div className="w-full md:w-auto overflow-x-auto no-scrollbar py-1">
+          <div className="flex items-center gap-2 min-w-max">
+            {Object.keys(DEFAULT_INDIAN_STOCKS).map((tkr) => (
+              <button
+                key={tkr}
+                onClick={() => handleSelectStock(tkr)}
+                className={`px-3 py-1.5 rounded-xl text-xs font-mono font-bold transition-all border whitespace-nowrap active:scale-95 ${
+                  selectedTicker === tkr
+                    ? "bg-indigo-600 text-white border-indigo-400 shadow-md shadow-indigo-600/30"
+                    : "bg-white/[0.03] text-zinc-400 border-white/[0.06] hover:bg-white/[0.08] hover:text-white"
+                }`}
+              >
+                {tkr}
+              </button>
+            ))}
+          </div>
         </div>
       </div>
 
       {/* ── SEARCH BAR ── */}
-      <form onSubmit={handleSearchSubmit} className="relative flex flex-col sm:flex-row items-center gap-3 mb-8">
+      <form onSubmit={handleSearchSubmit} className="relative flex flex-col sm:flex-row items-center gap-2.5 mb-6">
         <div className="relative flex-1 group w-full">
-          <div className="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none">
+          <div className="absolute inset-y-0 left-0 flex items-center pl-3.5 pointer-events-none">
             <Search className="h-4 w-4 text-zinc-500 group-focus-within:text-orange-400 transition-colors" />
           </div>
           <input
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="Search any NSE/BSE Symbol (e.g. TATAMOTORS, ZOMATO, SBIN, ADANIENT)"
-            className="w-full bg-[#060608] text-white pl-11 pr-4 py-3.5 rounded-xl border border-white/[0.08] focus:outline-none focus:border-orange-500/50 focus:ring-1 focus:ring-orange-500/50 transition-all font-mono uppercase text-sm placeholder:normal-case placeholder:text-zinc-600"
+            placeholder="Search NSE/BSE Symbol (e.g. TATAMOTORS, ZOMATO, SBIN)"
+            className="w-full bg-[#060608] text-white pl-10 pr-3.5 py-3 rounded-xl border border-white/[0.08] focus:outline-none focus:border-orange-500/50 focus:ring-1 focus:ring-orange-500/50 transition-all font-mono uppercase text-xs sm:text-sm placeholder:normal-case placeholder:text-zinc-600"
           />
         </div>
         <button
           type="submit"
           disabled={!searchQuery.trim() || isScanning}
-          className="flex h-[48px] w-full sm:w-auto items-center justify-center gap-2 bg-gradient-to-r from-orange-600 to-amber-600 hover:from-orange-500 hover:to-amber-500 disabled:opacity-40 text-white px-7 rounded-xl font-medium text-sm transition-all border border-orange-500/40 min-w-[130px]"
+          className="flex h-[44px] sm:h-[48px] w-full sm:w-auto items-center justify-center gap-2 bg-gradient-to-r from-orange-600 to-amber-600 hover:from-orange-500 hover:to-amber-500 disabled:opacity-40 text-white px-6 rounded-xl font-medium text-xs sm:text-sm transition-all border border-orange-500/40 min-w-[120px] active:scale-95"
         >
           {isScanning ? (
             <motion.div animate={{ rotate: 360 }} transition={{ repeat: Infinity, duration: 1, ease: "linear" }}>
@@ -313,9 +313,9 @@ export default function IndianMarketMatrix() {
         </button>
       </form>
 
-      {/* ── ACTIVE STOCK INSIGHTS SUMMARY CARD ── */}
-      <div className="bg-[#121218] border border-white/[0.08] rounded-2xl p-6 mb-8">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 items-center">
+      {/* ── ACTIVE STOCK INSIGHTS CARD ── */}
+      <div className="bg-[#121218] border border-white/[0.08] rounded-2xl p-4 sm:p-6 mb-6">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-5 items-center">
           
           {/* Stock Info */}
           <div className="md:col-span-1 border-b md:border-b-0 md:border-r border-white/[0.08] pb-4 md:pb-0 pr-0 md:pr-4">
@@ -323,11 +323,11 @@ export default function IndianMarketMatrix() {
               <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-orange-400 px-2 py-0.5 rounded bg-orange-500/10 border border-orange-500/20">
                 {stockData.exchange}
               </span>
-              <span className="text-xs text-zinc-500">{stockData.companyName}</span>
+              <span className="text-xs text-zinc-400 truncate">{stockData.companyName}</span>
             </div>
-            <h3 className="text-3xl font-black text-white font-mono tracking-tight">{stockData.ticker}</h3>
-            <div className="flex items-baseline gap-2 mt-2">
-              <span className="text-2xl font-bold font-mono text-zinc-100">
+            <h3 className="text-2xl sm:text-3xl font-black text-white font-mono tracking-tight">{stockData.ticker}</h3>
+            <div className="flex items-baseline gap-2 mt-1.5">
+              <span className="text-xl sm:text-2xl font-bold font-mono text-zinc-100">
                 ₹{stockData.currentPrice.toLocaleString("en-IN", { minimumFractionDigits: 2 })}
               </span>
               <span
@@ -352,15 +352,15 @@ export default function IndianMarketMatrix() {
                 <Layers className="h-3.5 w-3.5 text-indigo-400" />
                 Aggregate Buy / Sell Ratio
               </span>
-              <div className="flex items-center gap-3 font-mono text-xs font-bold">
-                <span className="text-emerald-400">{stockData.overallBuyRatio}% Buying</span>
+              <div className="flex items-center gap-2 font-mono text-xs font-bold">
+                <span className="text-emerald-400">{stockData.overallBuyRatio}% Buy</span>
                 <span className="text-zinc-600">|</span>
-                <span className="text-rose-400">{stockData.overallSellRatio}% Selling</span>
+                <span className="text-rose-400">{stockData.overallSellRatio}% Sell</span>
               </div>
             </div>
 
-            {/* Split Bar */}
-            <div className="h-4 w-full bg-rose-500/20 rounded-full overflow-hidden flex p-0.5 border border-white/[0.08]">
+            {/* Gauge Split Bar */}
+            <div className="h-3.5 sm:h-4 w-full bg-rose-500/20 rounded-full overflow-hidden flex p-0.5 border border-white/[0.08]">
               <motion.div
                 initial={{ width: 0 }}
                 animate={{ width: `${stockData.overallBuyRatio}%` }}
@@ -369,22 +369,22 @@ export default function IndianMarketMatrix() {
               />
             </div>
 
-            <div className="flex justify-between items-center mt-3 text-[11px] text-zinc-400 font-mono">
+            <div className="flex justify-between items-center mt-2.5 text-[10px] sm:text-[11px] text-zinc-400 font-mono">
               <span>OBI: <strong className={stockData.overallObi >= 0 ? "text-emerald-400" : "text-rose-400"}>
                 {stockData.overallObi > 0 ? `+${stockData.overallObi}` : stockData.overallObi}
               </strong></span>
-              <span>Micro-Price Drift: <strong className={stockData.microPriceDrift >= 0 ? "text-emerald-400" : "text-rose-400"}>
+              <span>Micro-Price: <strong className={stockData.microPriceDrift >= 0 ? "text-emerald-400" : "text-rose-400"}>
                 {stockData.microPriceDrift > 0 ? `+₹${stockData.microPriceDrift}` : `-₹${Math.abs(stockData.microPriceDrift)}`}
               </strong></span>
             </div>
           </div>
 
-          {/* Consensus Badge */}
-          <div className="md:col-span-1 flex flex-col items-start md:items-end justify-center">
-            <span className="text-[10px] font-bold uppercase tracking-widest text-zinc-500 mb-1.5">
+          {/* HFT Predictor Signal Badge */}
+          <div className="md:col-span-1 flex flex-row md:flex-col items-center md:items-end justify-between md:justify-center">
+            <span className="text-[10px] font-bold uppercase tracking-widest text-zinc-500 mb-1">
               HFT Predictor Signal
             </span>
-            <span className={`px-4 py-2 rounded-xl text-xs font-mono font-bold border ${getConsensusBadge(stockData.consensus)}`}>
+            <span className={`px-3.5 py-1.5 rounded-xl text-xs font-mono font-bold border ${getConsensusBadge(stockData.consensus)}`}>
               {stockData.consensus}
             </span>
           </div>
@@ -392,55 +392,55 @@ export default function IndianMarketMatrix() {
         </div>
       </div>
 
-      {/* ── PLATFORM-WISE BUY/SELL RATIO & LIQUIDITY MATRIX ── */}
-      <div className="space-y-4">
-        <div className="flex items-center justify-between px-1 mb-2">
-          <h4 className="text-xs font-bold uppercase tracking-widest text-zinc-400 flex items-center gap-2">
+      {/* ── PLATFORM BREAKDOWN CARDS GRID ── */}
+      <div className="space-y-3">
+        <div className="flex items-center justify-between px-1 mb-1">
+          <h4 className="text-xs font-bold uppercase tracking-widest text-zinc-400 flex items-center gap-1.5">
             <ShieldCheck className="h-4 w-4 text-emerald-400" />
-            Platform Order Flow &amp; Buy/Sell Pressure Breakdown
+            Broker Platform Breakdown
           </h4>
-          <span className="text-[11px] text-zinc-500 font-mono">
-            {stockData.platforms.length} Brokers Connected
+          <span className="text-[10px] text-zinc-500 font-mono">
+            {stockData.platforms.length} Feed Connections
           </span>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
           {stockData.platforms.map((platform, idx) => (
             <motion.div
               key={platform.platform}
-              initial={{ opacity: 0, y: 15 }}
+              initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: idx * 0.08 }}
-              className="bg-[#111116] border border-white/[0.06] hover:border-white/[0.12] rounded-xl p-4 transition-all hover:bg-white/[0.02]"
+              transition={{ delay: idx * 0.06 }}
+              className="bg-[#111116] border border-white/[0.06] hover:border-white/[0.12] rounded-xl p-3.5 transition-all hover:bg-white/[0.02]"
             >
-              {/* Header */}
-              <div className="flex items-center justify-between mb-3">
-                <div className="flex items-center gap-2.5">
-                  <span className={`px-2 py-0.5 rounded text-[10px] font-mono font-bold border ${platform.logoColor}`}>
+              {/* Card Header */}
+              <div className="flex items-center justify-between mb-2.5">
+                <div className="flex items-center gap-2 truncate pr-2">
+                  <span className={`px-2 py-0.5 rounded text-[9px] font-mono font-bold border ${platform.logoColor}`}>
                     {platform.brokerCode}
                   </span>
-                  <span className="text-xs font-bold text-zinc-200">{platform.platform}</span>
+                  <span className="text-xs font-bold text-zinc-200 truncate">{platform.platform}</span>
                 </div>
-                <div className="flex items-center gap-1 text-[10px] font-mono text-zinc-500">
+                <div className="flex items-center gap-1 text-[10px] font-mono text-zinc-400 shrink-0">
                   <Zap className="h-3 w-3 text-amber-400" />
                   {platform.latencyMs}ms
                 </div>
               </div>
 
-              {/* Buy vs Sell Bar */}
+              {/* Buying / Selling Split Bar */}
               <div className="mb-2">
-                <div className="flex justify-between items-center text-[11px] font-mono font-bold mb-1">
-                  <span className="text-emerald-400 flex items-center gap-1">
+                <div className="flex justify-between items-center text-[10px] sm:text-[11px] font-mono font-bold mb-1">
+                  <span className="text-emerald-400 flex items-center gap-0.5">
                     <ArrowUpRight className="h-3 w-3" />
                     Buy {platform.buyRatio}%
                   </span>
-                  <span className="text-rose-400 flex items-center gap-1">
+                  <span className="text-rose-400 flex items-center gap-0.5">
                     Sell {platform.sellRatio}%
                     <ArrowDownRight className="h-3 w-3" />
                   </span>
                 </div>
 
-                <div className="h-2.5 w-full bg-rose-500/20 rounded-full overflow-hidden flex border border-white/[0.05]">
+                <div className="h-2 w-full bg-rose-500/20 rounded-full overflow-hidden flex border border-white/[0.05]">
                   <div
                     style={{ width: `${platform.buyRatio}%` }}
                     className="h-full bg-emerald-500 transition-all duration-500"
@@ -448,8 +448,8 @@ export default function IndianMarketMatrix() {
                 </div>
               </div>
 
-              {/* Metrics Footer */}
-              <div className="flex justify-between items-center text-[10px] font-mono text-zinc-400 mt-3 pt-2 border-t border-white/[0.04]">
+              {/* Footer */}
+              <div className="flex justify-between items-center text-[10px] font-mono text-zinc-400 mt-2.5 pt-2 border-t border-white/[0.04]">
                 <span>OBI: <strong className={platform.obi >= 0 ? "text-emerald-400" : "text-rose-400"}>
                   {platform.obi > 0 ? `+${platform.obi}` : platform.obi}
                 </strong></span>

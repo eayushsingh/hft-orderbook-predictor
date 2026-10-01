@@ -405,23 +405,23 @@ function HeaderNav({
   const status = statusConfig[connectionState];
 
   return (
-    <header className="sticky top-0 z-50 border-b border-white/[0.08] bg-[#08080a]/80 backdrop-blur-xl">
-      <div className="mx-auto flex h-16 max-w-[1600px] items-center justify-between px-6">
+    <header className="sticky top-0 z-50 border-b border-white/[0.08] bg-[#08080a]/90 backdrop-blur-xl">
+      <div className="mx-auto flex h-14 sm:h-16 max-w-[1600px] items-center justify-between px-4 sm:px-6">
         {/* Brand */}
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2.5">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/logo.png" alt="LALAN Logo" className="h-16 w-auto object-contain" />
+          <img src="/logo.png" alt="LALAN Logo" className="h-10 sm:h-14 w-auto object-contain" />
           <div className="flex flex-col leading-none">
-            <span className="text-xl font-black uppercase tracking-[0.2em] text-zinc-100">
+            <span className="text-base sm:text-xl font-black uppercase tracking-[0.2em] text-zinc-100">
               LALAN
             </span>
-            <span className="text-[10px] font-medium uppercase tracking-[0.15em] text-zinc-600">
+            <span className="text-[9px] sm:text-[10px] font-medium uppercase tracking-[0.15em] text-zinc-500 hidden sm:block">
               Quantitative Engine
             </span>
           </div>
         </div>
 
-        {/* System status bar */}
+        {/* System status bar - Desktop */}
         <div className="hidden items-center gap-4 rounded-full border border-white/[0.08] bg-white/[0.02] px-4 py-1.5 md:flex">
           <div className="flex items-center gap-2">
             <span className="relative flex h-2 w-2">
@@ -453,15 +453,26 @@ function HeaderNav({
           </div>
         </div>
 
+        {/* Mobile Status Chip */}
+        <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full border border-white/[0.08] bg-white/[0.03] md:hidden">
+          <span className="relative flex h-2 w-2">
+            <span className={`absolute inline-flex h-full w-full animate-ping rounded-full ${status.dot} opacity-60`} />
+            <span className={`relative inline-flex h-2 w-2 rounded-full ${status.dot}`} />
+          </span>
+          <span className="font-mono text-[10px] text-zinc-300 font-bold">
+            {latencyMs > 0 ? `${latencyMs.toFixed(1)}ms` : status.label}
+          </span>
+        </div>
+
         {/* Quick actions */}
         <div className="flex items-center gap-2">
-          <div className="relative">
+          <div className="relative hidden sm:block">
             <button
               onClick={() => setDocsOpen((v) => !v)}
               className="flex items-center gap-1.5 rounded-lg px-3 py-2 text-xs font-medium text-zinc-400 transition-colors hover:bg-white/[0.06] hover:text-zinc-100"
             >
               <BookOpen className="h-3.5 w-3.5" />
-              Documentation
+              Docs
               <ChevronDown
                 className={`h-3 w-3 transition-transform ${
                   docsOpen ? "rotate-180" : ""
@@ -489,11 +500,11 @@ function HeaderNav({
             </AnimatePresence>
           </div>
           <a
-            href="/dashboard"
-            className="flex items-center gap-1.5 rounded-lg bg-white text-zinc-950 px-3.5 py-2 text-xs font-semibold transition-transform hover:scale-[1.03] active:scale-[0.98]"
+            href="/"
+            className="flex items-center gap-1.5 rounded-lg bg-white text-zinc-950 px-3 sm:px-3.5 py-1.5 sm:py-2 text-[11px] sm:text-xs font-semibold transition-transform hover:scale-[1.03] active:scale-[0.98]"
           >
             <TerminalSquare className="h-3.5 w-3.5" />
-            Terminal View
+            Home
           </a>
         </div>
       </div>
@@ -518,12 +529,10 @@ function HeroSection({ metrics }: { metrics: EngineMetrics }) {
   ];
 
   return (
-    <section className="relative overflow-hidden px-6 pt-20 pb-14">
+    <section className="relative overflow-hidden px-4 sm:px-6 pt-10 sm:pt-16 pb-8 sm:pb-14">
       {/* Ambient background noise / radial gradients */}
       <div className="pointer-events-none absolute inset-0 -z-10">
-        <div className="absolute left-1/2 top-0 h-[600px] w-[900px] -translate-x-1/2 rounded-full bg-indigo-600/[0.08] blur-[120px]" />
-        <div className="absolute right-0 top-40 h-[400px] w-[400px] rounded-full bg-emerald-500/[0.05] blur-[100px]" />
-        <div className="absolute left-0 top-60 h-[400px] w-[400px] rounded-full bg-rose-500/[0.05] blur-[100px]" />
+        <div className="absolute left-1/2 top-0 h-[400px] sm:h-[600px] w-[600px] sm:w-[900px] -translate-x-1/2 rounded-full bg-indigo-600/[0.08] blur-[120px]" />
       </div>
 
       <div className="mx-auto max-w-[1600px]">
@@ -533,22 +542,20 @@ function HeroSection({ metrics }: { metrics: EngineMetrics }) {
           transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
           className="mx-auto max-w-3xl text-center"
         >
-          <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-white/[0.08] bg-white/[0.02] px-3 py-1 text-[11px] font-medium uppercase tracking-[0.12em] text-zinc-500">
+          <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-white/[0.08] bg-white/[0.02] px-3 py-1 text-[10px] sm:text-[11px] font-medium uppercase tracking-[0.12em] text-zinc-400">
             <Activity className="h-3 w-3 text-emerald-400" />
-            Sub-Millisecond Market Microstructure
+            Sub-Millisecond Market Microstructure Engine
           </div>
-          <h1 className="flex flex-col gap-3">
-            <span className="text-2xl sm:text-3xl md:text-4xl font-medium tracking-tight text-zinc-400">
+          <h1 className="flex flex-col gap-2 sm:gap-3">
+            <span className="text-xl sm:text-3xl md:text-4xl font-medium tracking-tight text-zinc-400">
               We don&apos;t chase alpha.
             </span>
-            <span className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-black tracking-tighter bg-gradient-to-r from-white via-zinc-200 to-zinc-500 bg-clip-text text-transparent leading-[1.1]">
+            <span className="text-3xl sm:text-6xl md:text-7xl font-black tracking-tighter bg-gradient-to-r from-white via-zinc-200 to-zinc-500 bg-clip-text text-transparent leading-[1.05]">
               We eliminate risk,<br />and the alpha chases us.
             </span>
           </h1>
-          <p className="mx-auto mt-5 max-w-xl text-sm leading-relaxed text-zinc-400 md:text-base">
-            A zero-allocation limit order book engine streaming live BTC/USDT
-            L2 depth from Binance — decomposing order flow into imbalance,
-            drift, and directional signal in real time.
+          <p className="mx-auto mt-4 max-w-xl text-xs sm:text-base leading-relaxed text-zinc-400 px-2">
+            Zero-allocation limit order book engine streaming live L2 depth — decomposing order flow into imbalance, drift, and directional signals.
           </p>
         </motion.div>
 
@@ -557,17 +564,17 @@ function HeroSection({ metrics }: { metrics: EngineMetrics }) {
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
-          className="relative mx-auto mt-10 max-w-4xl overflow-hidden rounded-full border border-white/[0.08] bg-[#0f0f13]/80 py-2.5 backdrop-blur-xl"
+          className="relative mx-auto mt-6 sm:mt-10 max-w-4xl overflow-hidden rounded-full border border-white/[0.08] bg-[#0f0f13]/80 py-2 sm:py-2.5 backdrop-blur-xl"
         >
-          <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-16 bg-gradient-to-r from-[#0f0f13] to-transparent" />
-          <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-16 bg-gradient-to-l from-[#0f0f13] to-transparent" />
-          <div className="flex w-max animate-[ticker_22s_linear_infinite] gap-10 px-6">
+          <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-8 sm:w-16 bg-gradient-to-r from-[#0f0f13] to-transparent" />
+          <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-8 sm:w-16 bg-gradient-to-l from-[#0f0f13] to-transparent" />
+          <div className="flex w-max animate-[ticker_22s_linear_infinite] gap-6 sm:gap-10 px-4 sm:px-6">
             {[...tickerItems, ...tickerItems].map((item, i) => (
               <div key={i} className="flex shrink-0 items-center gap-2">
-                <span className="text-[11px] uppercase tracking-wide text-zinc-600">
+                <span className="text-[10px] sm:text-[11px] uppercase tracking-wide text-zinc-500">
                   {item.label}
                 </span>
-                <span className="font-mono text-xs font-medium text-zinc-200">
+                <span className="font-mono text-[11px] sm:text-xs font-medium text-zinc-200">
                   {item.value}
                 </span>
                 <span className="text-zinc-700">•</span>
