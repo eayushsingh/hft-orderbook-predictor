@@ -25,7 +25,7 @@ export function useMarketData() {
 
   useEffect(() => {
     // Connect to the Java HFT WebSocket Server
-    const ws = new WebSocket('wss://localhost:8887');
+    const ws = new WebSocket('ws://localhost:8887');
 
     ws.onopen = () => {
       setIsConnected(true);
