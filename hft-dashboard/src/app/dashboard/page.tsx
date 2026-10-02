@@ -14,17 +14,28 @@ import {
   Wifi,
   WifiOff,
   Zap,
+  Briefcase,
+  Layers,
+  BarChart3,
+  ShieldCheck,
+  TrendingUp,
+  TrendingDown,
 } from "lucide-react";
+
+import ZerodhaNavbar from "@/components/ZerodhaNavbar";
+import ZerodhaWatchlist, { WatchlistStock, INITIAL_WATCHLIST } from "@/components/ZerodhaWatchlist";
+import ZerodhaOrderTicketModal, { ExecutedOrder } from "@/components/ZerodhaOrderTicketModal";
+import ZerodhaPositionsAndOrders, { ActivePosition } from "@/components/ZerodhaPositionsAndOrders";
 import ConsensusMatrix from "@/components/ConsensusMatrix";
 import IndianMarketMatrix from "@/components/IndianMarketMatrix";
 
 /* ============================================================
-   TYPES — strict WebSocket payload contracts
+   TYPES — strict WebSocket & Engine payload contracts
    ============================================================ */
 
 interface RawDepthLevel {
-  price: number; // scaled long, /10000.0 to get real price
-  qty: number; // BTC volume
+  price: number;
+  qty: number;
 }
 
 interface RawDepthPayload {
@@ -86,7 +97,7 @@ const DEFAULT_METRICS: EngineMetrics = {
 };
 
 /* ============================================================
-   UTILITIES — safe numeric guards
+   UTILITIES
    ============================================================ */
 
 function safeDivScale(raw: number | undefined | null): number {
@@ -111,10 +122,6 @@ function formatBtc(value: number | undefined | null): string {
 function clamp(value: number, min: number, max: number): number {
   return Math.min(Math.max(value, min), max);
 }
-
-/* ============================================================
-   HOOK — lightweight count-up animation (no external deps)
-   ============================================================ */
 
 function useCountUp(target: number, durationMs = 100): number {
   const [display, setDisplay] = useState(target);
@@ -152,15 +159,6 @@ function useCountUp(target: number, durationMs = 100): number {
   return display;
 }
 
-interface CountUpDisplayProps {
-  end: number;
-  decimals?: number;
-  duration?: number;
-  prefix?: string;
-  separator?: string;
-  suffix?: string;
-}
-
 function CountUpDisplay({
   end,
   decimals = 0,
@@ -168,7 +166,14 @@ function CountUpDisplay({
   prefix = "",
   separator = "",
   suffix = "",
-}: CountUpDisplayProps) {
+}: {
+  end: number;
+  decimals?: number;
+  duration?: number;
+  prefix?: string;
+  separator?: string;
+  suffix?: string;
+}) {
   const value = useCountUp(end, duration);
   const formatted = separator
     ? value.toLocaleString("en-US", {
@@ -185,10 +190,6 @@ function CountUpDisplay({
     </>
   );
 }
-
-/* ============================================================
-   ENGINE COMPUTATION — derives all core metrics from raw depth
-   ============================================================ */
 
 function computeMetrics(
   raw: RawDepthPayload,
@@ -244,14 +245,9 @@ function computeMetrics(
   };
 }
 
-/* ============================================================
-   HOOK — live Binance L2 depth stream with reconnect + fallback
-   ============================================================ */
-
 function useMarketEngine() {
   const [metrics, setMetrics] = useState<EngineMetrics>(DEFAULT_METRICS);
-  const [connectionState, setConnectionState] =
-    useState<ConnectionState>("connecting");
+  const [connectionState, setConnectionState] = useState<ConnectionState>("connecting");
   const [sparkline, setSparkline] = useState<number[]>([]);
   const wsRef = useRef<WebSocket | null>(null);
   const totalOrdersRef = useRef<number>(0);
@@ -273,9 +269,7 @@ function useMarketEngine() {
     if (!mountedRef.current) return;
 
     try {
-      setConnectionState((prev) =>
-        prev === "live" ? "reconnecting" : "connecting"
-      );
+      setConnectionState((prev) => (prev === "live" ? "reconnecting" : "connecting"));
 
       const ws = new WebSocket(BINANCE_WS_URL);
       wsRef.current = ws;
@@ -317,12 +311,8 @@ function useMarketEngine() {
           setMetrics(next);
           pushSparkline(next.microPrice);
         } catch {
-          // Malformed frame — skip
+          // Handled frame parse fallback
         }
-      };
-
-      ws.onerror = () => {
-        // Handled by onclose
       };
 
       ws.onclose = () => {
@@ -336,10 +326,7 @@ function useMarketEngine() {
         }
 
         setConnectionState("reconnecting");
-        const backoffMs = Math.min(
-          1000 * 2 ** reconnectAttemptsRef.current,
-          15000
-        );
+        const backoffMs = Math.min(1000 * 2 ** reconnectAttemptsRef.current, 15000);
         reconnectTimerRef.current = setTimeout(doConnect, backoffMs);
       };
     } catch {
@@ -362,241 +349,7 @@ function useMarketEngine() {
 }
 
 /* ============================================================
-   SUB-COMPONENT: Header Navigation (Optimized for Mobile & Desktop)
-   ============================================================ */
-
-function HeaderNav({
-  connectionState,
-  latencyMs,
-}: {
-  connectionState: ConnectionState;
-  latencyMs: number;
-}) {
-  const [docsOpen, setDocsOpen] = useState(false);
-
-  const statusConfig: Record<
-    ConnectionState,
-    { label: string; dot: string; icon: React.ReactNode }
-  > = {
-    live: {
-      label: "Live",
-      dot: "bg-[#39FF14]",
-      icon: <Wifi className="h-3.5 w-3.5 text-[#39FF14]" />,
-    },
-    connecting: {
-      label: "Connecting",
-      dot: "bg-amber-400",
-      icon: <Wifi className="h-3.5 w-3.5 text-amber-400" />,
-    },
-    reconnecting: {
-      label: "Reconnecting",
-      dot: "bg-amber-400",
-      icon: <Wifi className="h-3.5 w-3.5 text-amber-400" />,
-    },
-    offline: {
-      label: "Offline",
-      dot: "bg-[#FF073A]",
-      icon: <WifiOff className="h-3.5 w-3.5 text-[#FF073A]" />,
-    },
-  };
-
-  const status = statusConfig[connectionState];
-
-  return (
-    <header className="sticky top-0 z-50 border-b border-white/[0.08] bg-[#08080a]/90 backdrop-blur-xl">
-      <div className="mx-auto flex h-14 sm:h-16 max-w-[1600px] items-center justify-between px-3.5 sm:px-6">
-        {/* Brand Logo & Name */}
-        <div className="flex items-center gap-2 sm:gap-2.5">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/logo.png" alt="LALAN Logo" className="h-8 sm:h-12 w-auto object-contain" />
-          <div className="flex flex-col leading-none">
-            <span className="text-sm sm:text-xl font-black uppercase tracking-[0.18em] text-zinc-100">
-              LALAN
-            </span>
-            <span className="text-[8px] sm:text-[10px] font-medium uppercase tracking-[0.15em] text-zinc-500 hidden xs:block">
-              Quantitative Engine
-            </span>
-          </div>
-        </div>
-
-        {/* System status bar - Desktop */}
-        <div className="hidden items-center gap-4 rounded-full border border-white/[0.08] bg-white/[0.02] px-4 py-1.5 md:flex">
-          <div className="flex items-center gap-2">
-            <span className="relative flex h-2 w-2">
-              <span
-                className={`absolute inline-flex h-full w-full animate-ping rounded-full ${status.dot} opacity-60`}
-              />
-              <span
-                className={`relative inline-flex h-2 w-2 rounded-full ${status.dot}`}
-              />
-            </span>
-            <span className="text-xs font-medium text-zinc-300">
-              {status.label}
-            </span>
-          </div>
-          <div className="h-3.5 w-px bg-white/10" />
-          <div className="flex items-center gap-1.5">
-            {status.icon}
-            <span className="font-mono text-xs text-zinc-400">
-              {latencyMs.toFixed(2)} ms
-            </span>
-          </div>
-          <div className="h-3.5 w-px bg-white/10" />
-          <div className="flex items-center gap-1.5">
-            <Radio className="h-3.5 w-3.5 text-indigo-400" />
-            <span className="text-xs font-medium text-zinc-300">
-              BTC/USDT
-            </span>
-            <span className="text-xs text-zinc-600">· Live Binance Feed</span>
-          </div>
-        </div>
-
-        {/* Mobile Status Chip */}
-        <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full border border-white/[0.08] bg-white/[0.03] md:hidden">
-          <span className="relative flex h-2 w-2">
-            <span className={`absolute inline-flex h-full w-full animate-ping rounded-full ${status.dot} opacity-60`} />
-            <span className={`relative inline-flex h-2 w-2 rounded-full ${status.dot}`} />
-          </span>
-          <span className="font-mono text-[10px] text-zinc-300 font-bold">
-            {latencyMs > 0 ? `${latencyMs.toFixed(1)}ms` : status.label}
-          </span>
-        </div>
-
-        {/* Quick Actions */}
-        <div className="flex items-center gap-1.5 sm:gap-2">
-          <div className="relative hidden sm:block">
-            <button
-              onClick={() => setDocsOpen((v) => !v)}
-              className="flex items-center gap-1.5 rounded-lg px-3 py-2 text-xs font-medium text-zinc-400 transition-colors hover:bg-white/[0.06] hover:text-zinc-100"
-            >
-              <BookOpen className="h-3.5 w-3.5" />
-              Docs
-              <ChevronDown
-                className={`h-3 w-3 transition-transform ${
-                  docsOpen ? "rotate-180" : ""
-                }`}
-              />
-            </button>
-            <AnimatePresence>
-              {docsOpen && (
-                <motion.div
-                  initial={{ opacity: 0, y: -6, scale: 0.97 }}
-                  animate={{ opacity: 1, y: 0, scale: 1 }}
-                  exit={{ opacity: 0, y: -6, scale: 0.97 }}
-                  transition={{ duration: 0.15 }}
-                  className="absolute right-0 mt-2 w-64 rounded-xl border border-white/[0.08] bg-[#0f0f13]/95 p-3 text-xs text-zinc-400 shadow-2xl backdrop-blur-xl"
-                >
-                  <p className="mb-1 font-medium text-zinc-200">
-                    Engine Reference
-                  </p>
-                  <p>
-                    Ring-buffer LOB engine · LMAX Disruptor · O(1) matching ·
-                    zero-GC price primitives (÷10,000).
-                  </p>
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </div>
-          <a
-            href="/"
-            className="flex items-center gap-1.5 rounded-lg bg-white text-zinc-950 px-2.5 sm:px-3.5 py-1.5 sm:py-2 text-[10px] sm:text-xs font-bold transition-transform hover:scale-[1.03] active:scale-[0.98]"
-          >
-            <TerminalSquare className="h-3.5 w-3.5" />
-            Home
-          </a>
-        </div>
-      </div>
-    </header>
-  );
-}
-
-/* ============================================================
-   SUB-COMPONENT: Hero + Animated Ticker Ribbon
-   ============================================================ */
-
-function HeroSection({ metrics }: { metrics: EngineMetrics }) {
-  const tickerItems = [
-    {
-      label: "Total Orders Processed",
-      value: metrics.totalOrdersProcessed.toLocaleString("en-US"),
-    },
-    { label: "Ring Buffer Overhead", value: "0 MB GC Pause" },
-    { label: "Active Latency", value: `${metrics.latencyMs.toFixed(2)} ms` },
-    { label: "Matching Complexity", value: "O(1) LOB" },
-    { label: "Concurrency Model", value: "Lock-Free Disruptor" },
-  ];
-
-  return (
-    <section className="relative overflow-hidden px-3.5 sm:px-6 pt-6 sm:pt-14 pb-6 sm:pb-12">
-      <div className="pointer-events-none absolute inset-0 -z-10">
-        <div className="absolute left-1/2 top-0 h-[300px] sm:h-[600px] w-[500px] sm:w-[900px] -translate-x-1/2 rounded-full bg-indigo-600/[0.08] blur-[120px]" />
-      </div>
-
-      <div className="mx-auto max-w-[1600px]">
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-          className="mx-auto max-w-3xl text-center"
-        >
-          <div className="mb-3 sm:mb-4 inline-flex items-center gap-2 rounded-full border border-white/[0.08] bg-white/[0.02] px-3 py-1 text-[9px] sm:text-[11px] font-medium uppercase tracking-[0.12em] text-zinc-400">
-            <Activity className="h-3 w-3 text-emerald-400" />
-            Sub-Millisecond Market Microstructure Engine
-          </div>
-          <h1 className="flex flex-col gap-1.5 sm:gap-3">
-            <span className="text-lg sm:text-3xl md:text-4xl font-medium tracking-tight text-zinc-400">
-              We don&apos;t chase alpha.
-            </span>
-            <span className="text-2xl sm:text-6xl md:text-7xl font-black tracking-tighter bg-gradient-to-r from-white via-zinc-200 to-zinc-500 bg-clip-text text-transparent leading-[1.08] sm:leading-[1.05]">
-              We eliminate risk,<br />and the alpha chases us.
-            </span>
-          </h1>
-          <p className="mx-auto mt-3 sm:mt-4 max-w-xl text-xs sm:text-base leading-relaxed text-zinc-400 px-1">
-            Zero-allocation limit order book engine streaming live L2 depth — decomposing order flow into imbalance, drift, and directional signals.
-          </p>
-        </motion.div>
-
-        {/* Animated Ticker Ribbon */}
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
-          className="relative mx-auto mt-5 sm:mt-10 max-w-4xl overflow-hidden rounded-full border border-white/[0.08] bg-[#0f0f13]/80 py-2 sm:py-2.5 backdrop-blur-xl"
-        >
-          <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-8 sm:w-16 bg-gradient-to-r from-[#0f0f13] to-transparent" />
-          <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-8 sm:w-16 bg-gradient-to-l from-[#0f0f13] to-transparent" />
-          <div className="flex w-max animate-[ticker_22s_linear_infinite] gap-4 sm:gap-10 px-4 sm:px-6">
-            {[...tickerItems, ...tickerItems].map((item, i) => (
-              <div key={i} className="flex shrink-0 items-center gap-2">
-                <span className="text-[10px] sm:text-[11px] uppercase tracking-wide text-zinc-500">
-                  {item.label}
-                </span>
-                <span className="font-mono text-[10px] sm:text-xs font-medium text-zinc-200">
-                  {item.value}
-                </span>
-                <span className="text-zinc-700">•</span>
-              </div>
-            ))}
-          </div>
-        </motion.div>
-      </div>
-
-      <style jsx global>{`
-        @keyframes ticker {
-          0% {
-            transform: translateX(0);
-          }
-          100% {
-            transform: translateX(-50%);
-          }
-        }
-      `}</style>
-    </section>
-  );
-}
-
-/* ============================================================
-   SUB-COMPONENT: Card A — AI Predictor Matrix
+   SUB-COMPONENTS: AI Predictor Card & Depth Cards
    ============================================================ */
 
 function PredictorCard({ metrics }: { metrics: EngineMetrics }) {
@@ -605,18 +358,18 @@ function PredictorCard({ metrics }: { metrics: EngineMetrics }) {
     { text: string; glow: string; ring: string }
   > = {
     "STRONG BUY": {
-      text: "text-[#39FF14]",
-      glow: "drop-shadow-[0_0_35px_rgba(57,255,20,0.45)]",
+      text: "text-[#10b981]",
+      glow: "drop-shadow-[0_0_25px_rgba(16,185,129,0.35)]",
       ring: "ring-emerald-500/30",
     },
     "STRONG SELL": {
-      text: "text-[#FF073A]",
-      glow: "drop-shadow-[0_0_35px_rgba(255,7,58,0.45)]",
+      text: "text-[#f43f5e]",
+      glow: "drop-shadow-[0_0_25px_rgba(244,63,94,0.35)]",
       ring: "ring-rose-500/30",
     },
     NEUTRAL: {
       text: "text-zinc-300",
-      glow: "drop-shadow-[0_0_25px_rgba(161,161,170,0.25)]",
+      glow: "drop-shadow-[0_0_15px_rgba(161,161,170,0.2)]",
       ring: "ring-white/10",
     },
   };
@@ -625,76 +378,61 @@ function PredictorCard({ metrics }: { metrics: EngineMetrics }) {
 
   return (
     <motion.div
-      initial={{ opacity: 0, scale: 0.96 }}
+      initial={{ opacity: 0, scale: 0.97 }}
       animate={{ opacity: 1, scale: 1 }}
-      transition={{ type: "spring", stiffness: 300, damping: 30 }}
-      className={`relative col-span-1 sm:col-span-2 overflow-hidden rounded-2xl border border-white/[0.08] bg-[#0f0f13]/80 p-5 sm:p-6 backdrop-blur-xl ring-1 ${style.ring} md:col-span-1 lg:col-span-2`}
+      className={`relative col-span-1 sm:col-span-2 overflow-hidden rounded-2xl border border-[#262634] bg-[#14141a] p-5 backdrop-blur-xl ring-1 ${style.ring} lg:col-span-2 font-sans`}
     >
-      <div className="pointer-events-none absolute inset-0 -z-10">
-        <div
-          className={`absolute left-1/2 top-1/2 h-64 w-64 -translate-x-1/2 -translate-y-1/2 rounded-full blur-[80px] ${
-            metrics.signal === "STRONG BUY"
-              ? "bg-emerald-500/20"
-              : metrics.signal === "STRONG SELL"
-              ? "bg-rose-500/20"
-              : "bg-zinc-500/10"
-          }`}
-        />
-      </div>
-
       <div className="flex items-center justify-between">
-        <span className="text-[10px] sm:text-[11px] font-medium uppercase tracking-[0.15em] text-zinc-500">
-          AI Predictor Matrix
+        <span className="text-[10px] sm:text-[11px] font-bold uppercase tracking-[0.15em] text-[#747888] font-mono">
+          AI Predictor Matrix (Kite HFT)
         </span>
-        <Gauge className="h-4 w-4 text-zinc-600" />
+        <Gauge className="h-4 w-4 text-[#747888]" />
       </div>
 
-      <div className="mt-4 sm:mt-8 flex flex-col items-center justify-center py-4 sm:py-6 text-center">
+      <div className="mt-4 flex flex-col items-center justify-center py-4 text-center">
         <AnimatePresence mode="wait">
           <motion.span
             key={metrics.signal}
-            initial={{ opacity: 0, y: 8, scale: 0.95 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: -8, scale: 0.95 }}
-            transition={{ duration: 0.3 }}
-            className={`text-3xl sm:text-5xl font-bold tracking-tight ${style.text} ${style.glow}`}
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -8 }}
+            className={`text-3xl sm:text-5xl font-black font-mono tracking-tight ${style.text} ${style.glow}`}
           >
             {metrics.signal}
           </motion.span>
         </AnimatePresence>
 
-        <div className="mt-4 sm:mt-6 w-full max-w-xs">
-          <div className="mb-1.5 flex items-center justify-between text-[11px] text-zinc-500">
+        <div className="mt-4 w-full max-w-xs">
+          <div className="mb-1.5 flex items-center justify-between text-[11px] text-[#747888] font-mono">
             <span>Confidence</span>
-            <span className="font-mono text-zinc-300">
+            <span className="text-white font-bold">
               <CountUpDisplay end={metrics.confidence} decimals={1} duration={100} />%
             </span>
           </div>
-          <div className="h-1.5 w-full overflow-hidden rounded-full bg-white/[0.06]">
+          <div className="h-1.5 w-full overflow-hidden rounded-full bg-[#242432]">
             <motion.div
               animate={{ width: `${metrics.confidence}%` }}
-              transition={{ type: "spring", stiffness: 300, damping: 30 }}
               className={`h-full rounded-full ${
                 metrics.signal === "STRONG BUY"
-                  ? "bg-[#39FF14]"
+                  ? "bg-[#10b981]"
                   : metrics.signal === "STRONG SELL"
-                  ? "bg-[#FF073A]"
-                  : "bg-zinc-500"
+                  ? "bg-[#f43f5e]"
+                  : "bg-[#747888]"
               }`}
             />
           </div>
         </div>
 
-        <div className="mt-4 sm:mt-5 flex items-center gap-1.5 text-xs text-zinc-500">
+        <div className="mt-3 flex items-center space-x-1.5 text-xs text-[#747888] font-mono">
           <span>OBI Drift</span>
-          <span className="font-mono font-medium text-zinc-300">
+          <span className="font-bold text-white">
             {metrics.obi >= 0 ? "+" : ""}
             {metrics.obi.toFixed(3)}
           </span>
           {metrics.obi >= 0 ? (
-            <ArrowUpRight className="h-3.5 w-3.5 text-emerald-400" />
+            <ArrowUpRight className="h-3.5 w-3.5 text-[#10b981]" />
           ) : (
-            <ArrowDownRight className="h-3.5 w-3.5 text-rose-400" />
+            <ArrowDownRight className="h-3.5 w-3.5 text-[#f43f5e]" />
           )}
         </div>
       </div>
@@ -702,32 +440,15 @@ function PredictorCard({ metrics }: { metrics: EngineMetrics }) {
   );
 }
 
-/* ============================================================
-   SUB-COMPONENT: Cards B & C — Best Ask / Best Bid Depth
-   ============================================================ */
-
-function DepthCard({
-  side,
-  level,
-  maxQty,
-}: {
-  side: "ask" | "bid";
-  level: DepthLevel;
-  maxQty: number;
-}) {
+function DepthCard({ side, level, maxQty }: { side: "ask" | "bid"; level: DepthLevel; maxQty: number }) {
   const isAsk = side === "ask";
   const pct = maxQty > 0 ? clamp((level.qty / maxQty) * 100, 0, 100) : 0;
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 12 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ type: "spring", stiffness: 300, damping: 30 }}
-      className="relative overflow-hidden rounded-2xl border border-white/[0.08] bg-[#0f0f13]/80 p-4 sm:p-5 backdrop-blur-xl"
-    >
+    <div className="relative overflow-hidden rounded-2xl border border-[#262634] bg-[#14141a] p-4 font-sans">
       <div className="flex items-center justify-between">
-        <span className="text-[10px] sm:text-[11px] font-medium uppercase tracking-[0.15em] text-zinc-500">
-          Best {isAsk ? "Ask" : "Bid"}
+        <span className="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-[#747888] font-mono">
+          Best {isAsk ? "Ask (Sell)" : "Bid (Buy)"}
         </span>
         {isAsk ? (
           <ArrowUpRight className="h-3.5 w-3.5 text-[#f43f5e]" />
@@ -737,109 +458,72 @@ function DepthCard({
       </div>
 
       <div
-        className={`mt-2.5 sm:mt-3 font-mono text-xl sm:text-2xl font-semibold tabular-nums ${
+        className={`mt-2 font-mono text-xl sm:text-2xl font-black tabular-nums ${
           isAsk ? "text-[#f43f5e]" : "text-[#10b981]"
         }`}
       >
-        <CountUpDisplay
-          end={level.price || 0}
-          decimals={2}
-          duration={100}
-          prefix="$"
-          separator=","
-        />
+        <CountUpDisplay end={level.price || 0} decimals={2} duration={100} prefix="$" separator="," />
       </div>
 
-      <div className="mt-1 text-[11px] sm:text-xs text-zinc-500">
-        Liquidity Weight ·{" "}
-        <span className="font-mono text-zinc-300">
-          {formatBtc(level.qty)} BTC
-        </span>
+      <div className="mt-1 text-[11px] text-[#747888] font-mono">
+        Depth Volume: <span className="text-white font-bold">{formatBtc(level.qty)} BTC</span>
       </div>
 
-      <div className="mt-3 sm:mt-4 h-2 w-full overflow-hidden rounded-full bg-white/[0.06]">
+      <div className="mt-3 h-1.5 w-full overflow-hidden rounded-full bg-[#242432]">
         <motion.div
           animate={{ width: `${pct}%` }}
-          transition={{ type: "spring", stiffness: 300, damping: 30 }}
-          className={`h-full rounded-full ${
-            isAsk
-              ? "bg-gradient-to-r from-[#f43f5e]/60 to-[#FF073A]"
-              : "bg-gradient-to-r from-[#10b981]/60 to-[#39FF14]"
-          }`}
+          className={`h-full rounded-full ${isAsk ? "bg-[#f43f5e]" : "bg-[#10b981]"}`}
         />
       </div>
-    </motion.div>
+    </div>
   );
 }
 
-/* ============================================================
-   SUB-COMPONENT: Card D — Microstructure Depth Ladder
-   ============================================================ */
-
-function DepthLadder({
-  bids,
-  asks,
-}: {
-  bids: DepthLevel[];
-  asks: DepthLevel[];
-}) {
+function DepthLadder({ bids, asks }: { bids: DepthLevel[]; asks: DepthLevel[] }) {
   const rows = Array.from({ length: 5 });
-  const maxQty = Math.max(
-    1,
-    ...bids.map((b) => b.qty || 0),
-    ...asks.map((a) => a.qty || 0)
-  );
+  const maxQty = Math.max(1, ...bids.map((b) => b.qty || 0), ...asks.map((a) => a.qty || 0));
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 12 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ type: "spring", stiffness: 300, damping: 30 }}
-      className="col-span-1 sm:col-span-2 overflow-hidden rounded-2xl border border-white/[0.08] bg-[#0f0f13]/80 p-4 sm:p-5 backdrop-blur-xl md:col-span-1 lg:col-span-1"
-    >
-      <div className="mb-2.5 flex items-center justify-between">
-        <span className="text-[10px] sm:text-[11px] font-medium uppercase tracking-[0.15em] text-zinc-500">
-          Microstructure Depth Ladder
+    <div className="col-span-1 sm:col-span-2 overflow-hidden rounded-2xl border border-[#262634] bg-[#14141a] p-4 font-sans lg:col-span-1">
+      <div className="mb-2 flex items-center justify-between font-mono">
+        <span className="text-[10px] font-bold uppercase tracking-wider text-[#747888]">
+          Microstructure L2 Ladder
         </span>
-        <span className="text-[9px] sm:text-[10px] text-zinc-600 font-mono">L2 · 5 Levels</span>
+        <span className="text-[9px] text-[#747888]">5 Depth Levels</span>
       </div>
 
-      <div className="grid grid-cols-2 gap-3 text-[10px] sm:text-[11px] uppercase tracking-wide text-zinc-600 font-mono">
-        <span>Bids</span>
-        <span className="text-right">Asks</span>
+      <div className="grid grid-cols-2 gap-2 text-[10px] uppercase font-mono text-[#747888] border-b border-[#242432] pb-1">
+        <span>Bids (Buy)</span>
+        <span className="text-right">Asks (Sell)</span>
       </div>
 
-      <div className="mt-1 flex flex-col gap-1">
+      <div className="mt-1 space-y-1">
         {rows.map((_, i) => {
           const bid = bids[i];
           const ask = asks[i];
-          const bidPct = bid
-            ? clamp(((bid.qty || 0) / maxQty) * 100, 0, 100)
-            : 0;
-          const askPct = ask
-            ? clamp(((ask.qty || 0) / maxQty) * 100, 0, 100)
-            : 0;
+          const bidPct = bid ? clamp(((bid.qty || 0) / maxQty) * 100, 0, 100) : 0;
+          const askPct = ask ? clamp(((ask.qty || 0) / maxQty) * 100, 0, 100) : 0;
 
           return (
-            <div
-              key={i}
-              className="relative grid grid-cols-2 gap-3 py-0.5 text-xs font-mono"
-            >
-              <div className="relative flex items-center overflow-hidden rounded-md px-1 py-0.5">
+            <div key={i} className="grid grid-cols-2 gap-2 text-xs font-mono">
+              <div className="relative flex items-center justify-between overflow-hidden rounded px-1.5 py-0.5 bg-[#10b981]/5">
                 <div
-                  className="absolute inset-y-0 right-0 rounded-md bg-emerald-500/10"
+                  className="absolute inset-y-0 right-0 rounded bg-[#10b981]/15"
                   style={{ width: `${bidPct}%` }}
                 />
-                <span className="relative z-10 text-emerald-400 text-[11px] sm:text-xs">
+                <span className="relative z-10 text-[#10b981] font-bold text-[11px]">
                   {bid ? formatUsd(bid.price) : "—"}
                 </span>
+                <span className="relative z-10 text-white text-[10px]">{bid ? formatBtc(bid.qty) : ""}</span>
               </div>
-              <div className="relative flex items-center justify-end overflow-hidden rounded-md px-1 py-0.5 text-right">
+
+              <div className="relative flex items-center justify-between overflow-hidden rounded px-1.5 py-0.5 bg-[#f43f5e]/5">
                 <div
-                  className="absolute inset-y-0 left-0 rounded-md bg-rose-500/10"
+                  className="absolute inset-y-0 left-0 rounded bg-[#f43f5e]/15"
                   style={{ width: `${askPct}%` }}
                 />
-                <span className="relative z-10 text-rose-400 text-[11px] sm:text-xs">
+                <span className="relative z-10 text-white text-[10px]">{ask ? formatBtc(ask.qty) : ""}</span>
+                <span className="relative z-10 text-[#f43f5e] font-bold text-[11px]">
                   {ask ? formatUsd(ask.price) : "—"}
                 </span>
               </div>
@@ -847,92 +531,55 @@ function DepthLadder({
           );
         })}
       </div>
-    </motion.div>
+    </div>
   );
 }
-
-/* ============================================================
-   SUB-COMPONENT: Quantitative Analytics Panel
-   ============================================================ */
 
 function AnalyticsPanel({ metrics }: { metrics: EngineMetrics }) {
   const obiPct = ((clamp(metrics.obi, -1, 1) + 1) / 2) * 100;
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 12 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ type: "spring", stiffness: 300, damping: 30 }}
-      className="grid grid-cols-2 gap-3 sm:gap-4 rounded-2xl border border-white/[0.08] bg-[#0f0f13]/80 p-4 sm:p-5 backdrop-blur-xl md:grid-cols-4"
-    >
+    <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 rounded-2xl border border-[#262634] bg-[#14141a] p-4 font-sans">
       <div>
-        <p className="text-[10px] sm:text-[11px] uppercase tracking-[0.12em] text-zinc-500">
-          Spread
-        </p>
-        <p className="mt-1 font-mono text-base sm:text-lg font-semibold text-zinc-100">
-          {formatUsd(metrics.spread)}
-        </p>
-        <p className="mt-0.5 text-[10px] sm:text-[11px] text-zinc-600">
-          {metrics.spreadBps.toFixed(2)} bps
-        </p>
+        <p className="text-[10px] uppercase font-mono text-[#747888]">Spread</p>
+        <p className="mt-1 font-mono text-base font-bold text-white">{formatUsd(metrics.spread)}</p>
+        <p className="text-[10px] font-mono text-[#747888]">{metrics.spreadBps.toFixed(2)} bps</p>
       </div>
 
       <div>
-        <p className="text-[10px] sm:text-[11px] uppercase tracking-[0.12em] text-zinc-500">
-          Mid-Price
-        </p>
-        <p className="mt-1 font-mono text-base sm:text-lg font-semibold text-zinc-100">
-          {formatUsd(metrics.midPrice)}
-        </p>
-        <p className="mt-0.5 text-[10px] sm:text-[11px] text-zinc-600">
-          Geometric midpoint
-        </p>
+        <p className="text-[10px] uppercase font-mono text-[#747888]">Mid-Price</p>
+        <p className="mt-1 font-mono text-base font-bold text-white">{formatUsd(metrics.midPrice)}</p>
+        <p className="text-[10px] font-mono text-[#747888]">Geometric Mid</p>
       </div>
 
       <div>
-        <p className="text-[10px] sm:text-[11px] uppercase tracking-[0.12em] text-zinc-500">
-          Micro-Price
-        </p>
-        <p className="mt-1 font-mono text-base sm:text-lg font-semibold text-indigo-400">
-          {formatUsd(metrics.microPrice)}
-        </p>
-        <p className="mt-0.5 text-[10px] sm:text-[11px] text-zinc-600">
-          VWAP-weighted drift
-        </p>
+        <p className="text-[10px] uppercase font-mono text-[#747888]">Micro-Price</p>
+        <p className="mt-1 font-mono text-base font-bold text-[#387ed1]">{formatUsd(metrics.microPrice)}</p>
+        <p className="text-[10px] font-mono text-[#747888]">VWAP Weighted</p>
       </div>
 
       <div>
-        <p className="text-[10px] sm:text-[11px] uppercase tracking-[0.12em] text-zinc-500">
-          Order Book Imbalance
-        </p>
-        <div className="relative mt-2.5 h-1.5 w-full rounded-full bg-gradient-to-r from-[#FF073A]/40 via-white/10 to-[#39FF14]/40">
+        <p className="text-[10px] uppercase font-mono text-[#747888]">Order Book Imbalance</p>
+        <div className="relative mt-2 h-1.5 w-full rounded-full bg-[#242432]">
           <motion.div
             animate={{ left: `${obiPct}%` }}
-            transition={{ type: "spring", stiffness: 300, damping: 30 }}
-            className="absolute top-1/2 h-3 w-3 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-[#08080a] bg-white shadow-[0_0_8px_rgba(255,255,255,0.6)]"
+            className="absolute top-1/2 h-3 w-3 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#387ed1] shadow-lg border border-white"
           />
         </div>
-        <div className="mt-1.5 flex justify-between text-[9px] sm:text-[10px] text-zinc-600 font-mono">
+        <div className="mt-1.5 flex justify-between text-[9px] font-mono text-[#747888]">
           <span>-1.0</span>
-          <span className="text-zinc-300 font-bold">
-            {metrics.obi >= 0 ? "+" : ""}
-            {metrics.obi.toFixed(2)}
-          </span>
+          <span className="text-white font-bold">{metrics.obi >= 0 ? `+${metrics.obi.toFixed(2)}` : metrics.obi.toFixed(2)}</span>
           <span>+1.0</span>
         </div>
       </div>
-    </motion.div>
+    </div>
   );
 }
-
-/* ============================================================
-   SUB-COMPONENT: Real-Time Micro-Price Sparkline
-   ============================================================ */
 
 function Sparkline({ data }: { data: number[] }) {
   const { path, lastPoint, width, height } = useMemo(() => {
     const w = 600;
-    const h = 120;
+    const h = 100;
     if (data.length < 2) {
       return { path: "", lastPoint: null as [number, number] | null, width: w, height: h };
     }
@@ -955,124 +602,381 @@ function Sparkline({ data }: { data: number[] }) {
   }, [data]);
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 12 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ type: "spring", stiffness: 300, damping: 30 }}
-      className="rounded-2xl border border-white/[0.08] bg-[#0f0f13]/80 p-4 sm:p-5 backdrop-blur-xl"
-    >
-      <div className="mb-2 flex items-center justify-between">
-        <span className="text-[10px] sm:text-[11px] font-medium uppercase tracking-[0.15em] text-zinc-500">
-          Real-Time Tick Micro-Price
+    <div className="rounded-2xl border border-[#262634] bg-[#14141a] p-4 font-sans">
+      <div className="mb-2 flex items-center justify-between font-mono">
+        <span className="text-[10px] font-bold uppercase tracking-wider text-[#747888]">
+          Micro-Price Tick Stream
         </span>
-        <span className="text-[9px] sm:text-[10px] text-zinc-600 font-mono">
-          Last {SPARKLINE_LENGTH} ticks
-        </span>
+        <span className="text-[9px] text-[#747888]">Last {SPARKLINE_LENGTH} Ticks</span>
       </div>
 
       {data.length < 2 ? (
-        <div className="flex h-[100px] sm:h-[120px] items-center justify-center text-xs text-zinc-600 font-mono">
+        <div className="flex h-[90px] items-center justify-center text-xs font-mono text-[#747888]">
           Awaiting live tick stream…
         </div>
       ) : (
-        <svg
-          viewBox={`0 0 ${width} ${height}`}
-          className="h-[100px] sm:h-[120px] w-full overflow-visible"
-          preserveAspectRatio="none"
-        >
+        <svg viewBox={`0 0 ${width} ${height}`} className="h-[90px] w-full" preserveAspectRatio="none">
           <defs>
-            <linearGradient id="sparklineFill" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="#6366f1" stopOpacity="0.35" />
-              <stop offset="100%" stopColor="#6366f1" stopOpacity="0" />
+            <linearGradient id="sparklineGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stopColor="#387ed1" stopOpacity="0.4" />
+              <stop offset="100%" stopColor="#387ed1" stopOpacity="0" />
             </linearGradient>
           </defs>
-          {path && (
-            <path
-              d={`${path} L ${width} ${height} L 0 ${height} Z`}
-              fill="url(#sparklineFill)"
-              stroke="none"
-            />
-          )}
-          {path && (
-            <path
-              d={path}
-              fill="none"
-              stroke="#3b82f6"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          )}
+          {path && <path d={`${path} L ${width} ${height} L 0 ${height} Z`} fill="url(#sparklineGrad)" />}
+          {path && <path d={path} fill="none" stroke="#387ed1" strokeWidth="2" />}
           {lastPoint && (
-            <circle
-              cx={lastPoint[0]}
-              cy={lastPoint[1]}
-              r="4"
-              fill="#3b82f6"
-              className="drop-shadow-[0_0_8px_rgba(59,130,246,0.8)]"
-            >
-              <animate
-                attributeName="r"
-                values="4;6;4"
-                dur="1.4s"
-                repeatCount="indefinite"
-              />
-            </circle>
+            <circle cx={lastPoint[0]} cy={lastPoint[1]} r="4" fill="#387ed1" className="animate-ping" />
           )}
         </svg>
       )}
-    </motion.div>
+    </div>
   );
 }
 
 /* ============================================================
-   PAGE — top-level composition
+   MAIN DASHBOARD PAGE COMPOSITION
    ============================================================ */
 
-export default function Home() {
+export default function DashboardPage() {
   const { metrics, connectionState, sparkline } = useMarketEngine();
 
-  const maxQty = Math.max(
-    metrics.bestAsk.qty || 0,
-    metrics.bestBid.qty || 0,
-    1
-  );
+  // Top level dashboard state
+  const [activeTab, setActiveTab] = useState<string>("terminal");
+  const [availableFunds, setAvailableFunds] = useState<number>(542800.0);
+  const [selectedStock, setSelectedStock] = useState<WatchlistStock>(INITIAL_WATCHLIST[0]);
+
+  // Order Ticket Modal state
+  const [orderModal, setOrderModal] = useState<{
+    isOpen: boolean;
+    symbol: string;
+    price: number;
+    type: "BUY" | "SELL";
+  }>({
+    isOpen: false,
+    symbol: "RELIANCE",
+    price: 2984.5,
+    type: "BUY",
+  });
+
+  // Orders and Positions state
+  const [orders, setOrders] = useState<ExecutedOrder[]>([
+    {
+      orderId: "84920412",
+      timestamp: "09:15:04",
+      symbol: "RELIANCE",
+      type: "BUY",
+      product: "MIS",
+      orderType: "MARKET",
+      qty: 25,
+      price: 2984.5,
+      status: "COMPLETE",
+    },
+    {
+      orderId: "84920108",
+      timestamp: "09:15:01",
+      symbol: "TATAMOTORS",
+      type: "BUY",
+      product: "CNC",
+      orderType: "MARKET",
+      qty: 50,
+      price: 985.1,
+      status: "COMPLETE",
+    },
+  ]);
+
+  const [positions, setPositions] = useState<ActivePosition[]>([
+    {
+      symbol: "RELIANCE",
+      product: "MIS",
+      qty: 25,
+      avgPrice: 2984.5,
+      ltp: 2984.5,
+      pnl: 0.0,
+      pnlPct: 0.0,
+    },
+    {
+      symbol: "TATAMOTORS",
+      product: "CNC",
+      qty: 50,
+      avgPrice: 985.1,
+      ltp: 985.1,
+      pnl: 0.0,
+      pnlPct: 0.0,
+    },
+  ]);
+
+  // Live P&L tick updates
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setPositions((prev) =>
+        prev.map((pos) => {
+          const ltpChange = (Math.random() - 0.48) * (pos.avgPrice * 0.002);
+          const newLtp = Math.max(1, Math.round((pos.ltp + ltpChange) * 100) / 100);
+          const pnl = (newLtp - pos.avgPrice) * pos.qty;
+          const pnlPct = ((newLtp - pos.avgPrice) / pos.avgPrice) * 100;
+          return {
+            ...pos,
+            ltp: newLtp,
+            pnl: Math.round(pnl * 100) / 100,
+            pnlPct: Math.round(pnlPct * 100) / 100,
+          };
+        })
+      );
+    }, 900);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  const handleOpenBuyModal = (symbol?: string, price?: number) => {
+    const s = symbol || selectedStock.symbol;
+    const p = price || selectedStock.price;
+    setOrderModal({ isOpen: true, symbol: s, price: p, type: "BUY" });
+  };
+
+  const handleOpenSellModal = (symbol?: string, price?: number) => {
+    const s = symbol || selectedStock.symbol;
+    const p = price || selectedStock.price;
+    setOrderModal({ isOpen: true, symbol: s, price: p, type: "SELL" });
+  };
+
+  const handleExecuteOrder = (newOrder: ExecutedOrder) => {
+    setOrders((prev) => [newOrder, ...prev]);
+
+    // Update funds
+    const marginRequired =
+      newOrder.product === "MIS"
+        ? newOrder.qty * newOrder.price * 0.2
+        : newOrder.qty * newOrder.price;
+    
+    if (newOrder.type === "BUY") {
+      setAvailableFunds((f) => Math.max(0, f - marginRequired));
+    }
+
+    // Update or add position
+    setPositions((prev) => {
+      const existing = prev.find((p) => p.symbol === newOrder.symbol);
+      if (existing) {
+        if (newOrder.type === "BUY") {
+          const newQty = existing.qty + newOrder.qty;
+          const newAvg = (existing.avgPrice * existing.qty + newOrder.price * newOrder.qty) / newQty;
+          return prev.map((p) =>
+            p.symbol === newOrder.symbol
+              ? { ...p, qty: newQty, avgPrice: newAvg }
+              : p
+          );
+        } else {
+          const newQty = existing.qty - newOrder.qty;
+          if (newQty <= 0) return prev.filter((p) => p.symbol !== newOrder.symbol);
+          return prev.map((p) => (p.symbol === newOrder.symbol ? { ...p, qty: newQty } : p));
+        }
+      } else {
+        if (newOrder.type === "BUY") {
+          return [
+            ...prev,
+            {
+              symbol: newOrder.symbol,
+              product: newOrder.product,
+              qty: newOrder.qty,
+              avgPrice: newOrder.price,
+              ltp: newOrder.price,
+              pnl: 0,
+              pnlPct: 0,
+            },
+          ];
+        }
+      }
+      return prev;
+    });
+  };
+
+  const handleExitPosition = (symbol: string) => {
+    const targetPos = positions.find((p) => p.symbol === symbol);
+    if (!targetPos) return;
+
+    // Refund margin
+    setAvailableFunds((f) => f + targetPos.qty * targetPos.ltp);
+    setPositions((prev) => prev.filter((p) => p.symbol !== symbol));
+    setOrders((prev) => [
+      {
+        orderId: Math.floor(10000000 + Math.random() * 90000000).toString(),
+        timestamp: new Date().toLocaleTimeString("en-IN", { hour12: false }),
+        symbol,
+        type: "SELL",
+        product: targetPos.product,
+        orderType: "MARKET",
+        qty: targetPos.qty,
+        price: targetPos.ltp,
+        status: "COMPLETE",
+      },
+      ...prev,
+    ]);
+  };
+
+  const handleSquareOffAll = () => {
+    positions.forEach((p) => handleExitPosition(p.symbol));
+  };
+
+  const maxQty = Math.max(metrics.bestAsk.qty || 0, metrics.bestBid.qty || 0, 1);
 
   return (
-    <main className="min-h-screen bg-[#08080a] text-zinc-100 antialiased overflow-x-hidden">
-      <HeaderNav
-        connectionState={connectionState}
+    <main className="min-h-screen bg-[#0d0d12] text-[#dedede] font-sans antialiased overflow-x-hidden">
+      {/* ── TOP ZERODHA NAVBAR ── */}
+      <ZerodhaNavbar
+        activeTab={activeTab}
+        setActiveTab={setActiveTab}
         latencyMs={metrics.latencyMs}
+        availableFunds={availableFunds}
+        niftyPrice={24850.75}
+        niftyChange={0.62}
+        bankNiftyPrice={52340.1}
+        bankNiftyChange={0.85}
+        btcPrice={metrics.bestBid.price || 64250.0}
+        btcChange={2.1}
+        onOpenBuyModal={handleOpenBuyModal}
+        onOpenSellModal={handleOpenSellModal}
       />
-      <HeroSection metrics={metrics} />
 
-      <section className="mx-auto max-w-[1600px] px-3.5 sm:px-6 pb-20 sm:pb-24">
-        {/* Bento grid workspace */}
-        <div className="grid grid-cols-1 gap-3.5 sm:gap-4 md:grid-cols-2 lg:grid-cols-4">
-          <PredictorCard metrics={metrics} />
-          <DepthCard side="ask" level={metrics.bestAsk} maxQty={maxQty} />
-          <DepthCard side="bid" level={metrics.bestBid} maxQty={maxQty} />
-          <DepthLadder bids={metrics.bids} asks={metrics.asks} />
-        </div>
+      {/* ── MAIN WORKSPACE LAYOUT: Watchlist Sidebar + Main Panel ── */}
+      <div className="flex h-[calc(100vh-56px-28px)] overflow-hidden">
+        
+        {/* LEFT SIDEBAR: Zerodha MarketWatch (Fixed on Desktop) */}
+        <aside className="w-80 shrink-0 hidden md:block h-full shadow-2xl">
+          <ZerodhaWatchlist
+            onSelectStock={(st) => setSelectedStock(st)}
+            selectedSymbol={selectedStock.symbol}
+            onOpenBuyModal={handleOpenBuyModal}
+            onOpenSellModal={handleOpenSellModal}
+            liveBtcPrice={metrics.bestBid.price}
+          />
+        </aside>
 
-        {/* Analytics + sparkline + signals */}
-        <div className="mt-3.5 sm:mt-4 grid grid-cols-1 gap-3.5 sm:gap-4 lg:grid-cols-4">
-          <div className="lg:col-span-2">
-            <AnalyticsPanel metrics={metrics} />
-          </div>
-          <div className="lg:col-span-1">
-            <Sparkline data={sparkline} />
-          </div>
-          <div className="lg:col-span-1">
-            <ConsensusMatrix />
-          </div>
-        </div>
+        {/* RIGHT CONTENT WORKSPACE */}
+        <section className="flex-1 overflow-y-auto no-scrollbar p-3 sm:p-6 space-y-4">
 
-        {/* Indian Market & Multi-Broker Liquidity Section */}
-        <div className="mt-5 sm:mt-6">
-          <IndianMarketMatrix />
-        </div>
-      </section>
+          {/* ── TAB 1: TERMINAL & L2 DEPTH ── */}
+          {activeTab === "terminal" && (
+            <>
+              {/* Top Banner for Active Symbol */}
+              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between bg-[#14141a] border border-[#262634] p-4 rounded-2xl shadow-xl gap-3">
+                <div className="flex items-center space-x-3">
+                  <span className="px-2.5 py-1 rounded bg-[#387ed1]/20 text-[#387ed1] border border-[#387ed1]/40 font-mono font-extrabold text-xs">
+                    {selectedStock.exchange}
+                  </span>
+                  <div>
+                    <h1 className="text-xl sm:text-2xl font-black font-mono text-white">
+                      {selectedStock.symbol}
+                    </h1>
+                    <p className="text-xs text-[#747888] font-mono">{selectedStock.name}</p>
+                  </div>
+                </div>
+
+                <div className="flex items-center space-x-4">
+                  <div className="flex flex-col text-right font-mono">
+                    <span className="text-lg sm:text-xl font-bold text-white">
+                      {selectedStock.exchange === "BINANCE"
+                        ? `$${metrics.bestBid.price ? metrics.bestBid.price.toLocaleString("en-US", { minimumFractionDigits: 2 }) : selectedStock.price.toFixed(2)}`
+                        : `₹${selectedStock.price.toLocaleString("en-IN", { minimumFractionDigits: 2 })}`}
+                    </span>
+                    <span
+                      className={`text-xs font-bold ${
+                        selectedStock.changePct >= 0 ? "text-[#10b981]" : "text-[#f43f5e]"
+                      }`}
+                    >
+                      {selectedStock.changePct >= 0
+                        ? `+${selectedStock.changePct}%`
+                        : `${selectedStock.changePct}%`}
+                    </span>
+                  </div>
+
+                  <div className="flex items-center space-x-2">
+                    <button
+                      onClick={() => handleOpenBuyModal(selectedStock.symbol, selectedStock.price)}
+                      className="bg-[#387ed1] hover:bg-[#306ec0] text-white text-xs font-extrabold px-4 py-2 rounded-xl transition-all shadow-lg shadow-[#387ed1]/20"
+                    >
+                      BUY
+                    </button>
+                    <button
+                      onClick={() => handleOpenSellModal(selectedStock.symbol, selectedStock.price)}
+                      className="bg-[#ff5722] hover:bg-[#e64a19] text-white text-xs font-extrabold px-4 py-2 rounded-xl transition-all shadow-lg shadow-[#ff5722]/20"
+                    >
+                      SELL
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              {/* Bento Grid Core Cards */}
+              <div className="grid grid-cols-1 gap-3.5 sm:gap-4 md:grid-cols-2 lg:grid-cols-4">
+                <PredictorCard metrics={metrics} />
+                <DepthCard side="ask" level={metrics.bestAsk} maxQty={maxQty} />
+                <DepthCard side="bid" level={metrics.bestBid} maxQty={maxQty} />
+                <DepthLadder bids={metrics.bids} asks={metrics.asks} />
+              </div>
+
+              {/* Analytics & Sparkline */}
+              <div className="grid grid-cols-1 gap-3.5 sm:gap-4 lg:grid-cols-3">
+                <div className="lg:col-span-2">
+                  <AnalyticsPanel metrics={metrics} />
+                </div>
+                <div className="lg:col-span-1">
+                  <Sparkline data={sparkline} />
+                </div>
+              </div>
+
+              {/* Live Positions Summary Card */}
+              <ZerodhaPositionsAndOrders
+                orders={orders}
+                positions={positions}
+                onExitPosition={handleExitPosition}
+                onSquareOffAll={handleSquareOffAll}
+              />
+            </>
+          )}
+
+          {/* ── TAB 2: ORDERS & TRADES ── */}
+          {activeTab === "orders" && (
+            <ZerodhaPositionsAndOrders
+              orders={orders}
+              positions={positions}
+              onExitPosition={handleExitPosition}
+              onSquareOffAll={handleSquareOffAll}
+            />
+          )}
+
+          {/* ── TAB 3: POSITIONS & PNL ── */}
+          {activeTab === "positions" && (
+            <ZerodhaPositionsAndOrders
+              orders={orders}
+              positions={positions}
+              onExitPosition={handleExitPosition}
+              onSquareOffAll={handleSquareOffAll}
+            />
+          )}
+
+          {/* ── TAB 4: MULTI-BROKER LIQUIDITY MATRIX ── */}
+          {activeTab === "multibroker" && <IndianMarketMatrix />}
+
+          {/* ── TAB 5: AI MICROSTRUCTURE ANALYTICS ── */}
+          {activeTab === "analytics" && (
+            <div className="space-y-4">
+              <ConsensusMatrix />
+              <IndianMarketMatrix />
+            </div>
+          )}
+
+        </section>
+      </div>
+
+      {/* ── PRODUCTION-GRADE ZERODHA ORDER TICKET MODAL ── */}
+      <ZerodhaOrderTicketModal
+        isOpen={orderModal.isOpen}
+        onClose={() => setOrderModal((m) => ({ ...m, isOpen: false }))}
+        initialSymbol={orderModal.symbol}
+        initialPrice={orderModal.price}
+        initialType={orderModal.type}
+        availableFunds={availableFunds}
+        onExecuteOrder={handleExecuteOrder}
+      />
     </main>
   );
 }
