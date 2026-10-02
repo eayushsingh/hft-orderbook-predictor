@@ -8,6 +8,10 @@ import {
   Gauge,
   Wifi,
   Zap,
+  ListFilter,
+  Briefcase,
+  Layers,
+  X,
 } from "lucide-react";
 
 import LalanNavbar from "@/components/LalanNavbar";
@@ -637,6 +641,7 @@ export default function DashboardPage() {
   const [activePlanId, setActivePlanId] = useState<string>("pro");
   const [pricingModalOpen, setPricingModalOpen] = useState<boolean>(false);
   const [aboutModalOpen, setAboutModalOpen] = useState<boolean>(false);
+  const [mobileWatchlistOpen, setMobileWatchlistOpen] = useState<boolean>(false);
 
   // Order Ticket Modal state
   const [orderModal, setOrderModal] = useState<{
@@ -847,7 +852,7 @@ export default function DashboardPage() {
         </aside>
 
         {/* RIGHT CONTENT WORKSPACE */}
-        <section className="flex-1 overflow-y-auto no-scrollbar p-3 sm:p-6 space-y-4">
+        <section className="flex-1 overflow-y-auto no-scrollbar p-3 sm:p-6 pb-20 md:pb-6 space-y-4">
 
           {/* ── TAB 1: TERMINAL & L2 DEPTH ── */}
           {activeTab === "terminal" && (
@@ -962,6 +967,92 @@ export default function DashboardPage() {
 
         </section>
       </div>
+
+      {/* ── MOBILE BOTTOM NAVIGATION BAR (Sleek App Experience) ── */}
+      <div className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-[#0e0e14]/95 border-t border-[#262634] backdrop-blur-xl flex items-center justify-around py-2 px-1 text-[10px] font-mono font-bold text-[#8a8d9b]">
+        <button
+          onClick={() => setMobileWatchlistOpen(true)}
+          className="flex flex-col items-center gap-1 p-1 hover:text-white"
+        >
+          <ListFilter className="h-4 w-4 text-[#387ed1]" />
+          <span>Watchlist</span>
+        </button>
+
+        <button
+          onClick={() => setActiveTab("terminal")}
+          className={`flex flex-col items-center gap-1 p-1 ${
+            activeTab === "terminal" ? "text-[#387ed1]" : "hover:text-white"
+          }`}
+        >
+          <Zap className="h-4 w-4" />
+          <span>Terminal</span>
+        </button>
+
+        <button
+          onClick={() => setActiveTab("positions")}
+          className={`flex flex-col items-center gap-1 p-1 ${
+            activeTab === "positions" || activeTab === "orders" ? "text-[#387ed1]" : "hover:text-white"
+          }`}
+        >
+          <Briefcase className="h-4 w-4" />
+          <span>Positions</span>
+        </button>
+
+        <button
+          onClick={() => setActiveTab("multibroker")}
+          className={`flex flex-col items-center gap-1 p-1 ${
+            activeTab === "multibroker" ? "text-[#387ed1]" : "hover:text-white"
+          }`}
+        >
+          <Layers className="h-4 w-4" />
+          <span>Matrix</span>
+        </button>
+      </div>
+
+      {/* ── MOBILE WATCHLIST SLIDE-UP DRAWER ── */}
+      <AnimatePresence>
+        {mobileWatchlistOpen && (
+          <div className="md:hidden fixed inset-0 z-50 flex flex-col bg-black/80 backdrop-blur-md">
+            <motion.div
+              initial={{ y: "100%" }}
+              animate={{ y: 0 }}
+              exit={{ y: "100%" }}
+              transition={{ type: "spring", damping: 25, stiffness: 200 }}
+              className="flex-1 mt-12 bg-[#121216] border-t border-[#262634] rounded-t-2xl overflow-hidden flex flex-col shadow-2xl"
+            >
+              <div className="flex items-center justify-between p-3 border-b border-[#262630] bg-[#0c0c0f]">
+                <span className="font-mono text-xs font-bold text-white uppercase tracking-wider">
+                  Select Instrument / MarketWatch
+                </span>
+                <button
+                  onClick={() => setMobileWatchlistOpen(false)}
+                  className="p-1 rounded bg-[#1c1c24] text-[#8a8d9b] hover:text-white"
+                >
+                  <X className="h-4 w-4" />
+                </button>
+              </div>
+              <div className="flex-1 overflow-hidden">
+                <LalanWatchlist
+                  onSelectStock={(st) => {
+                    setSelectedStock(st);
+                    setMobileWatchlistOpen(false);
+                  }}
+                  selectedSymbol={selectedStock.symbol}
+                  onOpenBuyModal={(sym, pr) => {
+                    setMobileWatchlistOpen(false);
+                    handleOpenBuyModal(sym, pr);
+                  }}
+                  onOpenSellModal={(sym, pr) => {
+                    setMobileWatchlistOpen(false);
+                    handleOpenSellModal(sym, pr);
+                  }}
+                  liveBtcPrice={metrics.bestBid.price}
+                />
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
 
       {/* ── PRODUCTION-GRADE LALAN ORDER TICKET MODAL ── */}
       <LalanOrderTicketModal
