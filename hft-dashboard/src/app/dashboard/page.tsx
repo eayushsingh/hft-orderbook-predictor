@@ -18,6 +18,7 @@ import LalanNavbar from "@/components/LalanNavbar";
 import LalanWatchlist, { WatchlistStock, INITIAL_WATCHLIST } from "@/components/LalanWatchlist";
 import LalanOrderTicketModal, { ExecutedOrder } from "@/components/LalanOrderTicketModal";
 import LalanPositionsAndOrders, { ActivePosition } from "@/components/LalanPositionsAndOrders";
+import LalanOrderBook from "@/components/LalanOrderBook";
 import SubscriptionPricingModal from "@/components/SubscriptionPricingModal";
 import AboutUsModal from "@/components/AboutUsModal";
 import ConsensusMatrix from "@/components/ConsensusMatrix";
@@ -906,21 +907,39 @@ export default function DashboardPage() {
                 </div>
               </div>
 
-              {/* Bento Grid Core Cards */}
-              <div className="grid grid-cols-1 gap-3.5 sm:gap-4 md:grid-cols-2 lg:grid-cols-4">
-                <PredictorCard metrics={metrics} />
-                <DepthCard side="ask" level={metrics.bestAsk} maxQty={maxQty} />
-                <DepthCard side="bid" level={metrics.bestBid} maxQty={maxQty} />
-                <DepthLadder bids={metrics.bids} asks={metrics.asks} />
-              </div>
-
-              {/* Analytics & Sparkline */}
+              {/* Bento Grid Core Cards & Institutional Order Book */}
               <div className="grid grid-cols-1 gap-3.5 sm:gap-4 lg:grid-cols-3">
-                <div className="lg:col-span-2">
+                {/* Left 2 Columns: AI Predictor, Best Ask/Bid, Analytics & Tick Sparkline */}
+                <div className="lg:col-span-2 space-y-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
+                    <PredictorCard metrics={metrics} />
+                    <div className="space-y-3">
+                      <DepthCard side="ask" level={metrics.bestAsk} maxQty={maxQty} />
+                      <DepthCard side="bid" level={metrics.bestBid} maxQty={maxQty} />
+                    </div>
+                  </div>
                   <AnalyticsPanel metrics={metrics} />
-                </div>
-                <div className="lg:col-span-1">
                   <Sparkline data={sparkline} />
+                </div>
+
+                {/* Right Column: Professional Level 2 Order Book Widget */}
+                <div className="lg:col-span-1">
+                  <LalanOrderBook
+                    bids={metrics.bids}
+                    asks={metrics.asks}
+                    spread={metrics.spread}
+                    spreadBps={metrics.spreadBps}
+                    midPrice={metrics.midPrice}
+                    obi={metrics.obi}
+                    currencySymbol={selectedStock.exchange === "BINANCE" ? "$" : "₹"}
+                    onSelectPrice={(price, type) => {
+                      if (type === "BUY") {
+                        handleOpenBuyModal(selectedStock.symbol, price);
+                      } else {
+                        handleOpenSellModal(selectedStock.symbol, price);
+                      }
+                    }}
+                  />
                 </div>
               </div>
 
