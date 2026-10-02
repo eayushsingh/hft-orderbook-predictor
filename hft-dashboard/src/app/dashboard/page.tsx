@@ -3,7 +3,6 @@
 import React, { useEffect, useRef, useState, useCallback, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
-  Activity,
   ArrowUpRight,
   ArrowDownRight,
   Gauge,
@@ -16,6 +15,7 @@ import ZerodhaWatchlist, { WatchlistStock, INITIAL_WATCHLIST } from "@/component
 import ZerodhaOrderTicketModal, { ExecutedOrder } from "@/components/ZerodhaOrderTicketModal";
 import ZerodhaPositionsAndOrders, { ActivePosition } from "@/components/ZerodhaPositionsAndOrders";
 import SubscriptionPricingModal from "@/components/SubscriptionPricingModal";
+import AboutUsModal from "@/components/AboutUsModal";
 import ConsensusMatrix from "@/components/ConsensusMatrix";
 import IndianMarketMatrix from "@/components/IndianMarketMatrix";
 
@@ -636,6 +636,7 @@ export default function DashboardPage() {
   const [selectedStock, setSelectedStock] = useState<WatchlistStock>(INITIAL_WATCHLIST[0]);
   const [activePlanId, setActivePlanId] = useState<string>("pro");
   const [pricingModalOpen, setPricingModalOpen] = useState<boolean>(false);
+  const [aboutModalOpen, setAboutModalOpen] = useState<boolean>(false);
 
   // Order Ticket Modal state
   const [orderModal, setOrderModal] = useState<{
@@ -828,6 +829,7 @@ export default function DashboardPage() {
         onOpenBuyModal={handleOpenBuyModal}
         onOpenSellModal={handleOpenSellModal}
         onOpenPricingModal={() => setPricingModalOpen(true)}
+        onOpenAboutModal={() => setAboutModalOpen(true)}
       />
 
       {/* ── MAIN WORKSPACE LAYOUT: Watchlist Sidebar + Main Panel ── */}
@@ -978,6 +980,12 @@ export default function DashboardPage() {
         onClose={() => setPricingModalOpen(false)}
         currentPlanId={activePlanId}
         onSelectPlan={(planId) => setActivePlanId(planId)}
+      />
+
+      {/* ── ABOUT US & TECHNICAL SPECS MODAL ── */}
+      <AboutUsModal
+        isOpen={aboutModalOpen}
+        onClose={() => setAboutModalOpen(false)}
       />
     </main>
   );

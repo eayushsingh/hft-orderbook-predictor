@@ -14,6 +14,7 @@ import {
   BarChart3,
   BookOpen,
   Crown,
+  Info,
 } from "lucide-react";
 
 interface ZerodhaNavbarProps {
@@ -31,6 +32,7 @@ interface ZerodhaNavbarProps {
   onOpenBuyModal?: (ticker?: string) => void;
   onOpenSellModal?: (ticker?: string) => void;
   onOpenPricingModal?: () => void;
+  onOpenAboutModal?: () => void;
 }
 
 export default function ZerodhaNavbar({
@@ -48,6 +50,7 @@ export default function ZerodhaNavbar({
   onOpenBuyModal,
   onOpenSellModal,
   onOpenPricingModal,
+  onOpenAboutModal,
 }: ZerodhaNavbarProps) {
   const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
   const [notificationsOpen, setNotificationsOpen] = useState(false);
@@ -59,6 +62,7 @@ export default function ZerodhaNavbar({
     { id: "multibroker", label: "Multi-Broker", icon: Layers },
     { id: "analytics", label: "AI Microstructure", icon: BarChart3 },
     { id: "pricing", label: "Pricing & Plans", icon: Crown },
+    { id: "about", label: "About & Specs", icon: Info },
   ];
 
   const planBadgeName =
@@ -193,17 +197,19 @@ export default function ZerodhaNavbar({
                 onClick={() => {
                   if (item.id === "pricing" && onOpenPricingModal) {
                     onOpenPricingModal();
+                  } else if (item.id === "about" && onOpenAboutModal) {
+                    onOpenAboutModal();
                   } else {
                     setActiveTab(item.id);
                   }
                 }}
-                className={`flex items-center space-x-1.5 px-3.5 py-2 rounded-md text-xs font-semibold transition-all ${
+                className={`flex items-center space-x-1.5 px-3 py-2 rounded-md text-xs font-semibold transition-all ${
                   isActive
                     ? "bg-[#1f1f28] text-white border-b-2 border-[#387ed1] shadow-inner"
                     : "text-[#9e9ea8] hover:bg-[#1a1a20] hover:text-white"
                 }`}
               >
-                <Icon className={`h-3.5 w-3.5 ${isActive || item.id === "pricing" ? "text-[#387ed1]" : "text-[#747888]"}`} />
+                <Icon className={`h-3.5 w-3.5 ${isActive || item.id === "pricing" || item.id === "about" ? "text-[#387ed1]" : "text-[#747888]"}`} />
                 <span>{item.label}</span>
               </button>
             );
@@ -327,9 +333,18 @@ export default function ZerodhaNavbar({
                     <button
                       onClick={() => {
                         setProfileDropdownOpen(false);
+                        onOpenAboutModal && onOpenAboutModal();
+                      }}
+                      className="w-full mt-2 py-1.5 bg-[#181822] hover:bg-[#242432] text-white border border-[#282838] font-mono font-bold text-[11px] rounded transition-all"
+                    >
+                      About Engine &amp; Specs
+                    </button>
+                    <button
+                      onClick={() => {
+                        setProfileDropdownOpen(false);
                         onOpenPricingModal && onOpenPricingModal();
                       }}
-                      className="w-full mt-2 py-1.5 bg-[#387ed1] hover:bg-[#306ec0] text-white font-mono font-bold text-[11px] rounded transition-all"
+                      className="w-full mt-1 py-1.5 bg-[#387ed1] hover:bg-[#306ec0] text-white font-mono font-bold text-[11px] rounded transition-all"
                     >
                       Manage Subscription Tiers
                     </button>
@@ -352,6 +367,8 @@ export default function ZerodhaNavbar({
               onClick={() => {
                 if (item.id === "pricing" && onOpenPricingModal) {
                   onOpenPricingModal();
+                } else if (item.id === "about" && onOpenAboutModal) {
+                  onOpenAboutModal();
                 } else {
                   setActiveTab(item.id);
                 }
