@@ -15,7 +15,10 @@ import {
   BookOpen,
   Crown,
   Info,
+  Sun,
+  Moon,
 } from "lucide-react";
+import { useTheme } from "@/context/ThemeContext";
 
 interface ZerodhaNavbarProps {
   activeTab: string;
@@ -54,6 +57,7 @@ export default function ZerodhaNavbar({
 }: ZerodhaNavbarProps) {
   const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
   const [notificationsOpen, setNotificationsOpen] = useState(false);
+  const { theme, toggleTheme } = useTheme();
 
   const navItems = [
     { id: "terminal", label: "Terminal / L2", icon: Zap },
@@ -73,7 +77,7 @@ export default function ZerodhaNavbar({
       : "RETAIL";
 
   return (
-    <header className="sticky top-0 z-40 border-b border-[#262630] bg-[#121216] text-[#e0e0e0] font-sans shadow-md">
+    <header className="sticky top-0 z-40 border-b border-[#262630] bg-[#121216] text-[#e0e0e0] font-sans shadow-md transition-colors duration-200">
       {/* ── TOP INDICES & LATENCY BAR ── */}
       <div className="flex h-7 items-center justify-between border-b border-[#1f1f26] bg-[#0c0c0f] px-3 text-[11px] font-mono text-[#8a8d9b]">
         {/* Indices Ticker */}
@@ -257,6 +261,26 @@ export default function ZerodhaNavbar({
 
           <div className="h-4 w-px bg-[#262630] hidden xs:block" />
 
+          {/* ☀️/🌙 Dark & Light Theme Switcher Button */}
+          <button
+            onClick={toggleTheme}
+            aria-label="Toggle Theme"
+            title={`Switch to ${theme === "dark" ? "Light" : "Dark"} Mode`}
+            className="flex items-center gap-1.5 p-2 sm:px-2.5 sm:py-1.5 rounded-md bg-[#1c1c24] border border-[#282834] text-[#a0a3b0] hover:text-white hover:border-[#387ed1] transition-all text-xs font-mono font-semibold active:scale-95"
+          >
+            {theme === "dark" ? (
+              <>
+                <Sun className="h-4 w-4 text-amber-400" />
+                <span className="hidden sm:inline">Light</span>
+              </>
+            ) : (
+              <>
+                <Moon className="h-4 w-4 text-indigo-400" />
+                <span className="hidden sm:inline">Dark</span>
+              </>
+            )}
+          </button>
+
           {/* Notifications Bell */}
           <div className="relative">
             <button
@@ -320,6 +344,16 @@ export default function ZerodhaNavbar({
                     <p className="font-mono text-[11px] text-[#747888]">AY8899 · Zerodha Kite API</p>
                   </div>
                   <div className="space-y-1.5 text-[#b0b3c0]">
+                    <div className="flex justify-between py-1 items-center">
+                      <span>Display Mode</span>
+                      <button
+                        onClick={toggleTheme}
+                        className="flex items-center gap-1 text-xs font-mono font-bold text-[#387ed1] hover:underline"
+                      >
+                        {theme === "dark" ? <Sun className="h-3 w-3 text-amber-400" /> : <Moon className="h-3 w-3 text-indigo-400" />}
+                        <span>{theme === "dark" ? "Switch to Light" : "Switch to Dark"}</span>
+                      </button>
+                    </div>
                     <div className="flex justify-between py-1">
                       <span>Active Plan</span>
                       <span className="font-mono font-bold text-[#387ed1]">{planBadgeName}</span>
@@ -355,6 +389,7 @@ export default function ZerodhaNavbar({
           </div>
         </div>
       </div>
+
 
       {/* Mobile Nav Tabs */}
       <div className="flex lg:hidden overflow-x-auto border-t border-[#1f1f26] bg-[#0e0e12] px-2 py-1 space-x-1 no-scrollbar">

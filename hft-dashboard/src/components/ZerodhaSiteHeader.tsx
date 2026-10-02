@@ -3,11 +3,13 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Menu, X, ArrowRight, Zap } from "lucide-react";
+import { Menu, X, Zap, Sun, Moon } from "lucide-react";
+import { useTheme } from "@/context/ThemeContext";
 
 export default function ZerodhaSiteHeader() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const pathname = usePathname();
+  const { theme, toggleTheme } = useTheme();
 
   const navLinks = [
     { href: "/about", label: "About" },
@@ -17,7 +19,7 @@ export default function ZerodhaSiteHeader() {
   ];
 
   return (
-    <header className="sticky top-0 z-50 bg-[#0a0a0e]/90 backdrop-blur-xl border-b border-[#1f1f2b] text-[#e0e0e0] font-sans">
+    <header className="sticky top-0 z-50 bg-[#0a0a0e]/90 backdrop-blur-xl border-b border-[#1f1f2b] text-[#e0e0e0] font-sans transition-colors duration-200">
       <div className="mx-auto flex h-16 max-w-[1300px] items-center justify-between px-4 sm:px-8">
         {/* Brand Logo */}
         <Link href="/" className="flex items-center space-x-2.5 group">
@@ -40,7 +42,7 @@ export default function ZerodhaSiteHeader() {
         </Link>
 
         {/* Navigation Links - Desktop */}
-        <nav className="hidden md:flex items-center space-x-8 text-sm font-medium">
+        <nav className="hidden md:flex items-center space-x-6 text-sm font-medium">
           {navLinks.map((link) => {
             const isActive = pathname === link.href;
             return (
@@ -58,6 +60,26 @@ export default function ZerodhaSiteHeader() {
             );
           })}
 
+          {/* Theme Toggle Button */}
+          <button
+            onClick={toggleTheme}
+            aria-label="Toggle Dark/Light Mode"
+            title={`Switch to ${theme === "dark" ? "Light" : "Dark"} Mode`}
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-[#262634] bg-[#14141a] hover:bg-[#1f1f28] text-xs font-semibold font-mono text-[#a0a3b0] hover:text-white transition-all shadow-sm active:scale-95"
+          >
+            {theme === "dark" ? (
+              <>
+                <Sun className="h-4 w-4 text-amber-400" />
+                <span>Light</span>
+              </>
+            ) : (
+              <>
+                <Moon className="h-4 w-4 text-indigo-400" />
+                <span>Dark</span>
+              </>
+            )}
+          </button>
+
           <Link
             href="/dashboard"
             className="inline-flex items-center space-x-1.5 bg-[#387ed1] hover:bg-[#306ec0] text-white font-bold text-xs px-4 py-2 rounded-lg transition-all shadow-md shadow-[#387ed1]/20 active:scale-95"
@@ -67,13 +89,28 @@ export default function ZerodhaSiteHeader() {
           </Link>
         </nav>
 
-        {/* Mobile Hamburger Toggle */}
-        <button
-          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          className="p-2 text-[#a0a3b0] hover:text-white md:hidden"
-        >
-          {mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-        </button>
+        {/* Mobile Actions & Hamburger Toggle */}
+        <div className="flex items-center space-x-2 md:hidden">
+          {/* Mobile Theme Switcher */}
+          <button
+            onClick={toggleTheme}
+            aria-label="Toggle Dark/Light Mode"
+            className="p-2 rounded-lg border border-[#262634] bg-[#14141a] text-[#a0a3b0] hover:text-white"
+          >
+            {theme === "dark" ? (
+              <Sun className="h-5 w-5 text-amber-400" />
+            ) : (
+              <Moon className="h-5 w-5 text-indigo-400" />
+            )}
+          </button>
+
+          <button
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            className="p-2 text-[#a0a3b0] hover:text-white"
+          >
+            {mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+          </button>
+        </div>
       </div>
 
       {/* Mobile Drawer Menu */}
@@ -89,10 +126,29 @@ export default function ZerodhaSiteHeader() {
               {link.label}
             </Link>
           ))}
+          <div className="pt-2 border-t border-[#1f1f2b] flex items-center justify-between">
+            <span className="text-xs text-[#a0a3b0] font-mono">Theme Mode</span>
+            <button
+              onClick={toggleTheme}
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded bg-[#14141a] border border-[#262634] text-xs font-mono font-bold"
+            >
+              {theme === "dark" ? (
+                <>
+                  <Sun className="h-3.5 w-3.5 text-amber-400" />
+                  <span>Switch to Light</span>
+                </>
+              ) : (
+                <>
+                  <Moon className="h-3.5 w-3.5 text-indigo-400" />
+                  <span>Switch to Dark</span>
+                </>
+              )}
+            </button>
+          </div>
           <Link
             href="/dashboard"
             onClick={() => setMobileMenuOpen(false)}
-            className="block w-full text-center bg-[#387ed1] text-white font-bold py-2.5 rounded-lg"
+            className="block w-full text-center bg-[#387ed1] text-white font-bold py-2.5 rounded-lg mt-2"
           >
             Open Live Terminal
           </Link>
@@ -101,3 +157,4 @@ export default function ZerodhaSiteHeader() {
     </header>
   );
 }
+

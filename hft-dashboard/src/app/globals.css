@@ -3,6 +3,22 @@
 :root {
   --background: #08080a;
   --foreground: #ededed;
+  --card-bg: #14141a;
+  --border-color: #262630;
+}
+
+html.light {
+  --background: #f4f6f9;
+  --foreground: #0f172a;
+  --card-bg: #ffffff;
+  --border-color: #e2e8f0;
+}
+
+html.dark {
+  --background: #08080a;
+  --foreground: #ededed;
+  --card-bg: #14141a;
+  --border-color: #262630;
 }
 
 @theme inline {
@@ -15,6 +31,7 @@
 html {
   scroll-behavior: smooth;
   -webkit-text-size-adjust: 100%;
+  transition: background-color 0.25s ease, color 0.25s ease;
 }
 
 body {
@@ -24,6 +41,7 @@ body {
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  transition: background-color 0.25s ease, color 0.25s ease;
 }
 
 /* Custom scrollbar utility for mobile touch lists */
@@ -38,4 +56,116 @@ body {
 /* Mobile tap highlight reset */
 * {
   -webkit-tap-highlight-color: transparent;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   LIGHT THEME COMPREHENSIVE OVERRIDES
+   Ensures Zerodha Kite-style bright, high-contrast, production-grade light mode.
+   ═══════════════════════════════════════════════════════════════ */
+
+/* Header & Navigation Overrides in Light Mode */
+html.light header {
+  background-color: rgba(255, 255, 255, 0.95) !important;
+  border-color: #e2e8f0 !important;
+  color: #0f172a !important;
+}
+
+html.light header div.bg-\[\#0c0c0f\] {
+  background-color: #f8fafc !important;
+  border-color: #e2e8f0 !important;
+  color: #475569 !important;
+}
+
+/* Page Backgrounds */
+html.light .bg-\[\#060608\],
+html.light .bg-\[\#060609\],
+html.light .bg-\[\#08080a\],
+html.light .bg-\[\#08080c\],
+html.light .bg-\[\#08080c\]\/90,
+html.light .bg-\[\#0a0a0e\],
+html.light .bg-\[\#0a0a0f\],
+html.light .bg-\[\#0c0c0f\],
+html.light .bg-\[\#0c0c10\],
+html.light .bg-\[\#0e0e12\],
+html.light .bg-\[\#0e0e13\],
+html.light .bg-\[\#0e0e13\]\/90,
+html.light .bg-\[\#0f0f13\],
+html.light .bg-\[\#0f0f13\]\/90,
+html.light .bg-\[\#0f0f16\] {
+  background-color: #f4f6f9 !important;
+}
+
+/* Card & Box Overrides */
+html.light .bg-\[\#121216\],
+html.light .bg-\[\#14141a\],
+html.light .bg-\[\#16161c\],
+html.light .bg-\[\#181822\],
+html.light .bg-\[\#1c1c24\] {
+  background-color: #ffffff !important;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05), 0 1px 2px -1px rgba(0, 0, 0, 0.05) !important;
+}
+
+/* Sub-card & Active Tab Overrides */
+html.light .bg-\[\#1f1f28\],
+html.light .bg-\[\#1a1a20\],
+html.light .bg-\[\#242432\] {
+  background-color: #f1f5f9 !important;
+}
+
+/* Border Color Overrides */
+html.light .border-\[\#181824\],
+html.light .border-\[\#1f1f26\],
+html.light .border-\[\#1f1f2b\],
+html.light .border-\[\#242432\],
+html.light .border-\[\#262630\],
+html.light .border-\[\#262634\],
+html.light .border-\[\#282834\],
+html.light .border-\[\#282838\],
+html.light .border-white\/\[0\.06\],
+html.light .border-white\/\[0\.08\],
+html.light .border-white\/\[0\.14\] {
+  border-color: #e2e8f0 !important;
+}
+
+/* Text Color Overrides */
+html.light .text-white,
+html.light .text-zinc-100 {
+  color: #0f172a !important;
+}
+
+html.light .text-zinc-400,
+html.light .text-zinc-300,
+html.light .text-\[\#e0e0e0\],
+html.light .text-\[\#b0b3c0\] {
+  color: #334155 !important;
+}
+
+html.light .text-\[\#a0a3b0\],
+html.light .text-\[\#9e9ea8\],
+html.light .text-\[\#8a8d9b\],
+html.light .text-\[\#747888\] {
+  color: #64748b !important;
+}
+
+/* Table Header and Hover Overrides in Light Mode */
+html.light table th {
+  color: #64748b !important;
+  background-color: #f8fafc !important;
+  border-color: #e2e8f0 !important;
+}
+
+html.light table td {
+  border-color: #f1f5f9 !important;
+}
+
+html.light table tr:hover {
+  background-color: #f8fafc !important;
+}
+
+/* Modal Content Overrides in Light Mode */
+html.light .modal-container,
+html.light [role="dialog"] {
+  background-color: #ffffff !important;
+  color: #0f172a !important;
+  border-color: #cbd5e1 !important;
 }
