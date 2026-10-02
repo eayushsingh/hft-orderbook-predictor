@@ -6,26 +6,16 @@ import {
   Activity,
   ArrowUpRight,
   ArrowDownRight,
-  Radio,
-  BookOpen,
-  TerminalSquare,
   Gauge,
-  ChevronDown,
   Wifi,
-  WifiOff,
   Zap,
-  Briefcase,
-  Layers,
-  BarChart3,
-  ShieldCheck,
-  TrendingUp,
-  TrendingDown,
 } from "lucide-react";
 
 import ZerodhaNavbar from "@/components/ZerodhaNavbar";
 import ZerodhaWatchlist, { WatchlistStock, INITIAL_WATCHLIST } from "@/components/ZerodhaWatchlist";
 import ZerodhaOrderTicketModal, { ExecutedOrder } from "@/components/ZerodhaOrderTicketModal";
 import ZerodhaPositionsAndOrders, { ActivePosition } from "@/components/ZerodhaPositionsAndOrders";
+import SubscriptionPricingModal from "@/components/SubscriptionPricingModal";
 import ConsensusMatrix from "@/components/ConsensusMatrix";
 import IndianMarketMatrix from "@/components/IndianMarketMatrix";
 
@@ -644,6 +634,8 @@ export default function DashboardPage() {
   const [activeTab, setActiveTab] = useState<string>("terminal");
   const [availableFunds, setAvailableFunds] = useState<number>(542800.0);
   const [selectedStock, setSelectedStock] = useState<WatchlistStock>(INITIAL_WATCHLIST[0]);
+  const [activePlanId, setActivePlanId] = useState<string>("pro");
+  const [pricingModalOpen, setPricingModalOpen] = useState<boolean>(false);
 
   // Order Ticket Modal state
   const [orderModal, setOrderModal] = useState<{
@@ -832,8 +824,10 @@ export default function DashboardPage() {
         bankNiftyChange={0.85}
         btcPrice={metrics.bestBid.price || 64250.0}
         btcChange={2.1}
+        activePlanId={activePlanId}
         onOpenBuyModal={handleOpenBuyModal}
         onOpenSellModal={handleOpenSellModal}
+        onOpenPricingModal={() => setPricingModalOpen(true)}
       />
 
       {/* ── MAIN WORKSPACE LAYOUT: Watchlist Sidebar + Main Panel ── */}
@@ -976,6 +970,14 @@ export default function DashboardPage() {
         initialType={orderModal.type}
         availableFunds={availableFunds}
         onExecuteOrder={handleExecuteOrder}
+      />
+
+      {/* ── INDIAN HFT SUBSCRIPTION PRICING MODAL ── */}
+      <SubscriptionPricingModal
+        isOpen={pricingModalOpen}
+        onClose={() => setPricingModalOpen(false)}
+        currentPlanId={activePlanId}
+        onSelectPlan={(planId) => setActivePlanId(planId)}
       />
     </main>
   );

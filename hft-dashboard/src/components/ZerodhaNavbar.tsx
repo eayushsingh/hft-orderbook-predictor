@@ -6,15 +6,14 @@ import {
   TrendingUp,
   TrendingDown,
   Wifi,
-  User,
   Bell,
   ChevronDown,
-  ShieldCheck,
   Zap,
   Briefcase,
   Layers,
   BarChart3,
   BookOpen,
+  Crown,
 } from "lucide-react";
 
 interface ZerodhaNavbarProps {
@@ -28,8 +27,10 @@ interface ZerodhaNavbarProps {
   bankNiftyChange: number;
   btcPrice: number;
   btcChange: number;
+  activePlanId?: string;
   onOpenBuyModal?: (ticker?: string) => void;
   onOpenSellModal?: (ticker?: string) => void;
+  onOpenPricingModal?: () => void;
 }
 
 export default function ZerodhaNavbar({
@@ -43,8 +44,10 @@ export default function ZerodhaNavbar({
   bankNiftyChange,
   btcPrice,
   btcChange,
+  activePlanId = "pro",
   onOpenBuyModal,
   onOpenSellModal,
+  onOpenPricingModal,
 }: ZerodhaNavbarProps) {
   const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
   const [notificationsOpen, setNotificationsOpen] = useState(false);
@@ -55,7 +58,15 @@ export default function ZerodhaNavbar({
     { id: "positions", label: "Positions & P&L", icon: Briefcase },
     { id: "multibroker", label: "Multi-Broker", icon: Layers },
     { id: "analytics", label: "AI Microstructure", icon: BarChart3 },
+    { id: "pricing", label: "Pricing & Plans", icon: Crown },
   ];
+
+  const planBadgeName =
+    activePlanId === "institutional"
+      ? "INSTITUTIONAL"
+      : activePlanId === "pro"
+      ? "PRO QUANT"
+      : "RETAIL";
 
   return (
     <header className="sticky top-0 z-40 border-b border-[#262630] bg-[#121216] text-[#e0e0e0] font-sans shadow-md">
@@ -161,7 +172,7 @@ export default function ZerodhaNavbar({
                   LALAN
                 </span>
                 <span className="bg-[#387ed1]/20 text-[#387ed1] border border-[#387ed1]/40 text-[9px] font-mono font-bold px-1.5 py-0.2 rounded uppercase">
-                  KITE HFT
+                  {planBadgeName}
                 </span>
               </div>
               <span className="text-[9px] font-mono text-[#747888] uppercase tracking-wider hidden sm:block">
@@ -179,14 +190,20 @@ export default function ZerodhaNavbar({
             return (
               <button
                 key={item.id}
-                onClick={() => setActiveTab(item.id)}
+                onClick={() => {
+                  if (item.id === "pricing" && onOpenPricingModal) {
+                    onOpenPricingModal();
+                  } else {
+                    setActiveTab(item.id);
+                  }
+                }}
                 className={`flex items-center space-x-1.5 px-3.5 py-2 rounded-md text-xs font-semibold transition-all ${
                   isActive
                     ? "bg-[#1f1f28] text-white border-b-2 border-[#387ed1] shadow-inner"
                     : "text-[#9e9ea8] hover:bg-[#1a1a20] hover:text-white"
                 }`}
               >
-                <Icon className={`h-3.5 w-3.5 ${isActive ? "text-[#387ed1]" : "text-[#747888]"}`} />
+                <Icon className={`h-3.5 w-3.5 ${isActive || item.id === "pricing" ? "text-[#387ed1]" : "text-[#747888]"}`} />
                 <span>{item.label}</span>
               </button>
             );
@@ -195,6 +212,15 @@ export default function ZerodhaNavbar({
 
         {/* Right User Actions & Quick Orders */}
         <div className="flex items-center space-x-2 sm:space-x-3">
+          {/* Upgrade Plan Button */}
+          <button
+            onClick={() => onOpenPricingModal && onOpenPricingModal()}
+            className="hidden xl:flex items-center space-x-1 bg-gradient-to-r from-[#387ed1]/20 to-[#10b981]/20 hover:from-[#387ed1]/30 hover:to-[#10b981]/30 border border-[#387ed1]/40 text-white text-[11px] font-bold font-mono px-3 py-1.5 rounded transition-all active:scale-95 shadow"
+          >
+            <Crown className="h-3.5 w-3.5 text-[#10b981]" />
+            <span>Upgrade Subscription</span>
+          </button>
+
           {/* Quick Buy/Sell Buttons */}
           <div className="hidden sm:flex items-center space-x-1.5">
             <button
@@ -281,27 +307,32 @@ export default function ZerodhaNavbar({
                   initial={{ opacity: 0, y: 8, scale: 0.95 }}
                   animate={{ opacity: 1, y: 0, scale: 1 }}
                   exit={{ opacity: 0, y: 8, scale: 0.95 }}
-                  className="absolute right-0 mt-2 w-56 rounded-lg border border-[#282834] bg-[#16161c] p-3 text-xs shadow-2xl z-50"
+                  className="absolute right-0 mt-2 w-60 rounded-lg border border-[#282834] bg-[#16161c] p-3 text-xs shadow-2xl z-50"
                 >
                   <div className="border-b border-[#262630] pb-2.5 mb-2.5">
                     <p className="font-bold text-white">Ayush Singh</p>
                     <p className="font-mono text-[11px] text-[#747888]">AY8899 · Zerodha Kite API</p>
                   </div>
-                  <div className="space-y-1 text-[#b0b3c0]">
+                  <div className="space-y-1.5 text-[#b0b3c0]">
+                    <div className="flex justify-between py-1">
+                      <span>Active Plan</span>
+                      <span className="font-mono font-bold text-[#387ed1]">{planBadgeName}</span>
+                    </div>
                     <div className="flex justify-between py-1">
                       <span>Available Cash</span>
                       <span className="font-mono font-bold text-white">
                         ₹{availableFunds.toLocaleString("en-IN")}
                       </span>
                     </div>
-                    <div className="flex justify-between py-1">
-                      <span>Used Margin</span>
-                      <span className="font-mono text-[#747888]">₹0.00</span>
-                    </div>
-                    <div className="flex justify-between py-1 border-t border-[#262630] pt-1.5">
-                      <span>API Status</span>
-                      <span className="font-mono font-bold text-[#10b981]">ACTIVE (L2)</span>
-                    </div>
+                    <button
+                      onClick={() => {
+                        setProfileDropdownOpen(false);
+                        onOpenPricingModal && onOpenPricingModal();
+                      }}
+                      className="w-full mt-2 py-1.5 bg-[#387ed1] hover:bg-[#306ec0] text-white font-mono font-bold text-[11px] rounded transition-all"
+                    >
+                      Manage Subscription Tiers
+                    </button>
                   </div>
                 </motion.div>
               )}
@@ -318,7 +349,13 @@ export default function ZerodhaNavbar({
           return (
             <button
               key={item.id}
-              onClick={() => setActiveTab(item.id)}
+              onClick={() => {
+                if (item.id === "pricing" && onOpenPricingModal) {
+                  onOpenPricingModal();
+                } else {
+                  setActiveTab(item.id);
+                }
+              }}
               className={`flex items-center space-x-1 px-3 py-1.5 rounded text-[11px] font-semibold shrink-0 transition-all ${
                 isActive
                   ? "bg-[#387ed1] text-white"
