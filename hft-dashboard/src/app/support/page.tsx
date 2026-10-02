@@ -2,8 +2,8 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import ZerodhaSiteHeader from "@/components/ZerodhaSiteHeader";
-import ZerodhaSiteFooter from "@/components/ZerodhaSiteFooter";
+import LalanSiteHeader from "@/components/LalanSiteHeader";
+import LalanSiteFooter from "@/components/LalanSiteFooter";
 import { Search, HelpCircle, BookOpen, Terminal, ShieldCheck, Mail, ChevronRight } from "lucide-react";
 
 export default function SupportPage() {
@@ -15,8 +15,8 @@ export default function SupportPage() {
       a: "LALAN uses Java 17 LMAX Disruptor primitive ring buffers, cache-line padding (64 bytes), and TCP_NODELAY sockets to eliminate thread locks and JVM garbage collection pauses.",
     },
     {
-      q: "How do I connect my Zerodha Kite or DhanHQ API keys?",
-      a: "Open the LALAN HFT Terminal, click on settings/profile, enter your Kite Connect API Key and Access Token. Ticks will stream directly into the L2 order book.",
+      q: "How do I connect my LALAN Direct or DhanHQ API keys?",
+      a: "Open the LALAN HFT Terminal, click on settings/profile, enter your LALAN Direct API Key and Access Token. Ticks will stream directly into the L2 order book.",
     },
     {
       q: "What is Order Book Imbalance (OBI)?",
@@ -30,7 +30,7 @@ export default function SupportPage() {
 
   return (
     <div className="min-h-screen bg-[#060609] text-[#e0e0e0] font-sans selection:bg-[#387ed1] selection:text-white flex flex-col">
-      <ZerodhaSiteHeader />
+      <LalanSiteHeader />
 
       <main className="flex-1 py-16 px-4 sm:px-8 max-w-[1100px] mx-auto space-y-12">
         {/* Search Header */}
@@ -39,7 +39,7 @@ export default function SupportPage() {
             Support &amp; Developer Portal
           </h1>
           <p className="text-sm text-[#8a8d9b]">
-            Search our knowledge base for HFT engine configuration, Kite Connect WebSocket guides, and FAQs.
+            Search our knowledge base for HFT engine configuration, LALAN Direct WebSocket guides, and FAQs.
           </p>
 
           <div className="relative mt-6">
@@ -48,7 +48,7 @@ export default function SupportPage() {
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Eg: how to connect kite connect, disruptor ring buffer, OBI..."
+              placeholder="Eg: how to connect LALAN direct API, disruptor ring buffer, OBI..."
               className="w-full bg-[#0e0e14] text-xs sm:text-sm text-white pl-11 pr-4 py-3.5 rounded-xl border border-[#1f1f2c] focus:outline-none focus:border-[#387ed1] transition-colors font-mono"
             />
           </div>
@@ -86,7 +86,7 @@ export default function SupportPage() {
         </div>
       </main>
 
-      <ZerodhaSiteFooter />
+      <LalanSiteFooter />
     </div>
   );
 }

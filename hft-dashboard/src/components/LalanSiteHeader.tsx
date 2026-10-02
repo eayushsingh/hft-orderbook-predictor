@@ -6,7 +6,7 @@ import { usePathname } from "next/navigation";
 import { Menu, X, Zap, Sun, Moon } from "lucide-react";
 import { useTheme } from "@/context/ThemeContext";
 
-export default function ZerodhaSiteHeader() {
+export default function LalanSiteHeader() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const pathname = usePathname();
   const { theme, toggleTheme } = useTheme();
@@ -35,7 +35,7 @@ export default function ZerodhaSiteHeader() {
                 LALAN
               </span>
               <span className="bg-[#387ed1]/20 text-[#387ed1] border border-[#387ed1]/40 text-[9px] font-mono font-bold px-1.5 py-0.2 rounded uppercase">
-                ZERODHA HFT
+                HFT QUANT ENGINE
               </span>
             </div>
           </div>
@@ -157,4 +157,3 @@ export default function ZerodhaSiteHeader() {
     </header>
   );
 }
-

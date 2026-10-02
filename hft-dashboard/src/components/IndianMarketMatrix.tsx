@@ -55,7 +55,7 @@ const DEFAULT_INDIAN_STOCKS: Record<string, IndianStockData> = {
     consensus: "STRONG BULLISH",
     platforms: [
       { platform: "DhanHQ (Direct L2 Feed)", brokerCode: "DHAN", logoColor: "text-emerald-400 border-emerald-500/30 bg-emerald-500/10", buyRatio: 74, sellRatio: 26, obi: 0.48, liquidityDepth: "₹128.4 Cr", latencyMs: 0.8, status: "ACTIVE" },
-      { platform: "Zerodha (Kite Connect)", brokerCode: "KITE", logoColor: "text-orange-400 border-orange-500/30 bg-orange-500/10", buyRatio: 69, sellRatio: 31, obi: 0.38, liquidityDepth: "₹245.1 Cr", latencyMs: 1.4, status: "ACTIVE" },
+      { platform: "LALAN Direct Gateway", brokerCode: "LALAN", logoColor: "text-blue-400 border-blue-500/30 bg-blue-500/10", buyRatio: 69, sellRatio: 31, obi: 0.38, liquidityDepth: "₹245.1 Cr", latencyMs: 0.8, status: "ACTIVE" },
       { platform: "Groww (Order Engine)", brokerCode: "GROWW", logoColor: "text-cyan-400 border-cyan-500/30 bg-cyan-500/10", buyRatio: 72, sellRatio: 28, obi: 0.44, liquidityDepth: "₹182.9 Cr", latencyMs: 2.1, status: "ACTIVE" },
       { platform: "Angel One (SmartAPI)", brokerCode: "ANGEL", logoColor: "text-indigo-400 border-indigo-500/30 bg-indigo-500/10", buyRatio: 65, sellRatio: 35, obi: 0.30, liquidityDepth: "₹94.2 Cr", latencyMs: 1.8, status: "ACTIVE" },
       { platform: "Upstox (Developer API)", brokerCode: "UPSTX", logoColor: "text-purple-400 border-purple-500/30 bg-purple-500/10", buyRatio: 70, sellRatio: 30, obi: 0.40, liquidityDepth: "₹81.6 Cr", latencyMs: 1.6, status: "ACTIVE" },
@@ -75,7 +75,7 @@ const DEFAULT_INDIAN_STOCKS: Record<string, IndianStockData> = {
     consensus: "BULLISH",
     platforms: [
       { platform: "DhanHQ (Direct L2 Feed)", brokerCode: "DHAN", logoColor: "text-emerald-400 border-emerald-500/30 bg-emerald-500/10", buyRatio: 67, sellRatio: 33, obi: 0.34, liquidityDepth: "₹850.2 Cr", latencyMs: 0.7, status: "ACTIVE" },
-      { platform: "Zerodha (Kite Connect)", brokerCode: "KITE", logoColor: "text-orange-400 border-orange-500/30 bg-orange-500/10", buyRatio: 63, sellRatio: 37, obi: 0.26, liquidityDepth: "₹1,420.5 Cr", latencyMs: 1.2, status: "ACTIVE" },
+      { platform: "LALAN Direct Gateway", brokerCode: "LALAN", logoColor: "text-blue-400 border-blue-500/30 bg-blue-500/10", buyRatio: 63, sellRatio: 37, obi: 0.26, liquidityDepth: "₹1,420.5 Cr", latencyMs: 0.8, status: "ACTIVE" },
       { platform: "Groww (Order Engine)", brokerCode: "GROWW", logoColor: "text-cyan-400 border-cyan-500/30 bg-cyan-500/10", buyRatio: 65, sellRatio: 35, obi: 0.30, liquidityDepth: "₹960.0 Cr", latencyMs: 1.9, status: "ACTIVE" },
       { platform: "Angel One (SmartAPI)", brokerCode: "ANGEL", logoColor: "text-indigo-400 border-indigo-500/30 bg-indigo-500/10", buyRatio: 61, sellRatio: 39, obi: 0.22, liquidityDepth: "₹620.4 Cr", latencyMs: 1.5, status: "ACTIVE" },
       { platform: "Upstox (Developer API)", brokerCode: "UPSTX", logoColor: "text-purple-400 border-purple-500/30 bg-purple-500/10", buyRatio: 64, sellRatio: 36, obi: 0.28, liquidityDepth: "₹480.1 Cr", latencyMs: 1.4, status: "ACTIVE" },
@@ -94,7 +94,7 @@ const DEFAULT_INDIAN_STOCKS: Record<string, IndianStockData> = {
     consensus: "BEARISH",
     platforms: [
       { platform: "DhanHQ (Direct L2 Feed)", brokerCode: "DHAN", logoColor: "text-emerald-400 border-emerald-500/30 bg-emerald-500/10", buyRatio: 37, sellRatio: 63, obi: -0.26, liquidityDepth: "₹98.5 Cr", latencyMs: 0.9, status: "HIGH DRIFT" },
-      { platform: "Zerodha (Kite Connect)", brokerCode: "KITE", logoColor: "text-orange-400 border-orange-500/30 bg-orange-500/10", buyRatio: 41, sellRatio: 59, obi: -0.18, liquidityDepth: "₹190.2 Cr", latencyMs: 1.5, status: "ACTIVE" },
+      { platform: "LALAN Direct Gateway", brokerCode: "LALAN", logoColor: "text-blue-400 border-blue-500/30 bg-blue-500/10", buyRatio: 41, sellRatio: 59, obi: -0.18, liquidityDepth: "₹190.2 Cr", latencyMs: 0.9, status: "ACTIVE" },
       { platform: "Groww (Order Engine)", brokerCode: "GROWW", logoColor: "text-cyan-400 border-cyan-500/30 bg-cyan-500/10", buyRatio: 38, sellRatio: 62, obi: -0.24, liquidityDepth: "₹140.7 Cr", latencyMs: 2.2, status: "ACTIVE" },
       { platform: "Angel One (SmartAPI)", brokerCode: "ANGEL", logoColor: "text-indigo-400 border-indigo-500/30 bg-indigo-500/10", buyRatio: 40, sellRatio: 60, obi: -0.20, liquidityDepth: "₹75.3 Cr", latencyMs: 1.7, status: "ACTIVE" },
     ],
@@ -112,7 +112,7 @@ const DEFAULT_INDIAN_STOCKS: Record<string, IndianStockData> = {
     consensus: "STRONG BULLISH",
     platforms: [
       { platform: "DhanHQ (Direct L2 Feed)", brokerCode: "DHAN", logoColor: "text-emerald-400 border-emerald-500/30 bg-emerald-500/10", buyRatio: 82, sellRatio: 18, obi: 0.64, liquidityDepth: "₹112.0 Cr", latencyMs: 0.8, status: "ACTIVE" },
-      { platform: "Zerodha (Kite Connect)", brokerCode: "KITE", logoColor: "text-orange-400 border-orange-500/30 bg-orange-500/10", buyRatio: 77, sellRatio: 23, obi: 0.54, liquidityDepth: "₹210.4 Cr", latencyMs: 1.3, status: "ACTIVE" },
+      { platform: "LALAN Direct Gateway", brokerCode: "LALAN", logoColor: "text-blue-400 border-blue-500/30 bg-blue-500/10", buyRatio: 77, sellRatio: 23, obi: 0.54, liquidityDepth: "₹210.4 Cr", latencyMs: 0.8, status: "ACTIVE" },
       { platform: "Groww (Order Engine)", brokerCode: "GROWW", logoColor: "text-cyan-400 border-cyan-500/30 bg-cyan-500/10", buyRatio: 80, sellRatio: 20, obi: 0.60, liquidityDepth: "₹165.8 Cr", latencyMs: 2.0, status: "ACTIVE" },
       { platform: "Upstox (Developer API)", brokerCode: "UPSTX", logoColor: "text-purple-400 border-purple-500/30 bg-purple-500/10", buyRatio: 78, sellRatio: 22, obi: 0.56, liquidityDepth: "₹74.9 Cr", latencyMs: 1.5, status: "ACTIVE" },
     ],
@@ -130,7 +130,7 @@ const DEFAULT_INDIAN_STOCKS: Record<string, IndianStockData> = {
     consensus: "NEUTRAL",
     platforms: [
       { platform: "DhanHQ (Direct L2 Feed)", brokerCode: "DHAN", logoColor: "text-emerald-400 border-emerald-500/30 bg-emerald-500/10", buyRatio: 53, sellRatio: 47, obi: 0.06, liquidityDepth: "₹76.2 Cr", latencyMs: 0.8, status: "EQUILIBRIUM" },
-      { platform: "Zerodha (Kite Connect)", brokerCode: "KITE", logoColor: "text-orange-400 border-orange-500/30 bg-orange-500/10", buyRatio: 51, sellRatio: 49, obi: 0.02, liquidityDepth: "₹155.0 Cr", latencyMs: 1.4, status: "EQUILIBRIUM" },
+      { platform: "LALAN Direct Gateway", brokerCode: "LALAN", logoColor: "text-blue-400 border-blue-500/30 bg-blue-500/10", buyRatio: 51, sellRatio: 49, obi: 0.02, liquidityDepth: "₹155.0 Cr", latencyMs: 0.8, status: "EQUILIBRIUM" },
       { platform: "Groww (Order Engine)", brokerCode: "GROWW", logoColor: "text-cyan-400 border-cyan-500/30 bg-cyan-500/10", buyRatio: 52, sellRatio: 48, obi: 0.04, liquidityDepth: "₹110.3 Cr", latencyMs: 2.1, status: "EQUILIBRIUM" },
     ],
   }
@@ -209,7 +209,7 @@ export default function IndianMarketMatrix() {
           consensus: "BULLISH",
           platforms: [
             { platform: "DhanHQ (Direct L2 Feed)", brokerCode: "DHAN", logoColor: "text-emerald-400 border-emerald-500/30 bg-emerald-500/10", buyRatio: 70, sellRatio: 30, obi: 0.40, liquidityDepth: "₹45.2 Cr", latencyMs: 0.8, status: "ACTIVE" },
-            { platform: "Zerodha (Kite Connect)", brokerCode: "KITE", logoColor: "text-orange-400 border-orange-500/30 bg-orange-500/10", buyRatio: 66, sellRatio: 34, obi: 0.32, liquidityDepth: "₹110.5 Cr", latencyMs: 1.3, status: "ACTIVE" },
+            { platform: "LALAN Direct Gateway", brokerCode: "LALAN", logoColor: "text-blue-400 border-blue-500/30 bg-blue-500/10", buyRatio: 66, sellRatio: 34, obi: 0.32, liquidityDepth: "₹110.5 Cr", latencyMs: 0.8, status: "ACTIVE" },
             { platform: "Groww (Order Engine)", brokerCode: "GROWW", logoColor: "text-cyan-400 border-cyan-500/30 bg-cyan-500/10", buyRatio: 69, sellRatio: 31, obi: 0.38, liquidityDepth: "₹88.1 Cr", latencyMs: 2.0, status: "ACTIVE" },
             { platform: "Angel One (SmartAPI)", brokerCode: "ANGEL", logoColor: "text-indigo-400 border-indigo-500/30 bg-indigo-500/10", buyRatio: 65, sellRatio: 35, obi: 0.30, liquidityDepth: "₹52.4 Cr", latencyMs: 1.6, status: "ACTIVE" },
             { platform: "Upstox (Developer API)", brokerCode: "UPSTX", logoColor: "text-purple-400 border-purple-500/30 bg-purple-500/10", buyRatio: 67, sellRatio: 33, obi: 0.34, liquidityDepth: "₹41.9 Cr", latencyMs: 1.5, status: "ACTIVE" },
@@ -257,7 +257,7 @@ export default function IndianMarketMatrix() {
             </span>
           </h2>
           <p className="text-xs text-zinc-400 mt-1 max-w-2xl">
-            Buying vs. selling volume ratio, order book imbalance (OBI), and micro-price drift aggregated across DhanHQ, Zerodha Kite, Groww, Angel One, and Upstox.
+            Buying vs. selling volume ratio, order book imbalance (OBI), and micro-price drift aggregated across DhanHQ, LALAN Engine, Groww, Angel One, and Upstox.
           </p>
         </div>
 

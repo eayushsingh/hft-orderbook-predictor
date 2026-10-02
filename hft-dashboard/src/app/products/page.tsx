@@ -2,16 +2,16 @@
 
 import React from "react";
 import Link from "next/link";
-import ZerodhaSiteHeader from "@/components/ZerodhaSiteHeader";
-import ZerodhaSiteFooter from "@/components/ZerodhaSiteFooter";
+import LalanSiteHeader from "@/components/LalanSiteHeader";
+import LalanSiteFooter from "@/components/LalanSiteFooter";
 import { Zap, Layers, Cpu, Code2, ArrowRight, Activity, Terminal } from "lucide-react";
 
 export default function ProductsPage() {
   const products = [
     {
-      title: "Kite HFT Terminal",
+      title: "LALAN HFT Terminal",
       badge: "Flagship Terminal",
-      desc: "Our ultra-fast, lock-free order execution & L2 depth visualization platform with built-in Zerodha Kite and DhanHQ order tickets.",
+      desc: "Our ultra-fast, lock-free order execution & L2 depth visualization platform with built-in LALAN Direct and DhanHQ order tickets.",
       icon: Terminal,
       href: "/dashboard",
       color: "text-[#387ed1]",
@@ -35,7 +35,7 @@ export default function ProductsPage() {
     {
       title: "Multi-Broker Liquidity Matrix",
       badge: "Unified Liquidity",
-      desc: "Aggregates real-time feeds from Zerodha Kite Connect, DhanHQ, Groww, Angel One, and Upstox into a single institutional view.",
+      desc: "Aggregates real-time feeds from LALAN Direct Engine, DhanHQ, Groww, Angel One, and Upstox into a single institutional view.",
       icon: Layers,
       href: "/dashboard",
       color: "text-[#a855f7]",
@@ -44,7 +44,7 @@ export default function ProductsPage() {
 
   return (
     <div className="min-h-screen bg-[#060609] text-[#e0e0e0] font-sans selection:bg-[#387ed1] selection:text-white flex flex-col">
-      <ZerodhaSiteHeader />
+      <LalanSiteHeader />
 
       <main className="flex-1 py-16 sm:py-20 px-4 sm:px-8 max-w-[1200px] mx-auto space-y-16">
         <div className="text-center space-y-4 max-w-3xl mx-auto">
@@ -86,7 +86,7 @@ export default function ProductsPage() {
         </div>
       </main>
 
-      <ZerodhaSiteFooter />
+      <LalanSiteFooter />
     </div>
   );
 }

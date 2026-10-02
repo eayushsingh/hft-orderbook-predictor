@@ -63,12 +63,12 @@ export const PRICING_PLANS: SubscriptionPlan[] = [
     annualPriceINR: 799,
     monthlyPriceUSD: 14,
     annualPriceUSD: 11,
-    description: "Sub-millisecond L2 depth, Kite & DhanHQ feeds, and AI microstructure signals.",
+    description: "Sub-millisecond L2 depth, LALAN HFT feeds, and AI microstructure signals.",
     features: [
       "Sub-millisecond L2 Depth Stream",
-      "Zerodha Kite Connect & DhanHQ L2 Direct Feed",
+      "NSE/BSE L2 Direct Feed & DhanHQ API",
       "AI Microstructure Directional Signals",
-      "Multi-Broker Liquidity Matrix (Zerodha, Groww, Angel)",
+      "Multi-Broker Liquidity Matrix (Dhan, Groww, Angel)",
       "Unlimited Watchlists & Custom Alerts",
       "Simulated Order Execution Engine (MIS / CNC)",
       "Priority Email & Telegram Alpha Channel",
@@ -477,7 +477,7 @@ export default function SubscriptionPricingModal({
               </div>
               <h3 className="text-2xl font-bold font-mono text-white">Subscription Activated!</h3>
               <p className="text-xs text-[#b0b3c0] max-w-md mx-auto">
-                Your account has been upgraded to <strong className="text-white">{checkoutPlan?.name}</strong>. Zero-GC LMAX Disruptor stream and direct Kite Connect telemetry unlocked.
+                Your account has been upgraded to <strong className="text-white">{checkoutPlan?.name}</strong>. Zero-GC LMAX Disruptor stream and direct LALAN HFT telemetry unlocked.
               </p>
               <button
                 onClick={resetAndClose}

@@ -10,10 +10,10 @@ import {
   Zap,
 } from "lucide-react";
 
-import ZerodhaNavbar from "@/components/ZerodhaNavbar";
-import ZerodhaWatchlist, { WatchlistStock, INITIAL_WATCHLIST } from "@/components/ZerodhaWatchlist";
-import ZerodhaOrderTicketModal, { ExecutedOrder } from "@/components/ZerodhaOrderTicketModal";
-import ZerodhaPositionsAndOrders, { ActivePosition } from "@/components/ZerodhaPositionsAndOrders";
+import LalanNavbar from "@/components/LalanNavbar";
+import LalanWatchlist, { WatchlistStock, INITIAL_WATCHLIST } from "@/components/LalanWatchlist";
+import LalanOrderTicketModal, { ExecutedOrder } from "@/components/LalanOrderTicketModal";
+import LalanPositionsAndOrders, { ActivePosition } from "@/components/LalanPositionsAndOrders";
 import SubscriptionPricingModal from "@/components/SubscriptionPricingModal";
 import AboutUsModal from "@/components/AboutUsModal";
 import ConsensusMatrix from "@/components/ConsensusMatrix";
@@ -374,7 +374,7 @@ function PredictorCard({ metrics }: { metrics: EngineMetrics }) {
     >
       <div className="flex items-center justify-between">
         <span className="text-[10px] sm:text-[11px] font-bold uppercase tracking-[0.15em] text-[#747888] font-mono">
-          AI Predictor Matrix (Kite HFT)
+          AI Predictor Matrix (LALAN HFT)
         </span>
         <Gauge className="h-4 w-4 text-[#747888]" />
       </div>
@@ -813,8 +813,8 @@ export default function DashboardPage() {
 
   return (
     <main className="min-h-screen bg-[#0d0d12] text-[#dedede] font-sans antialiased overflow-x-hidden">
-      {/* ── TOP ZERODHA NAVBAR ── */}
-      <ZerodhaNavbar
+      {/* ── TOP LALAN NAVBAR ── */}
+      <LalanNavbar
         activeTab={activeTab}
         setActiveTab={setActiveTab}
         latencyMs={metrics.latencyMs}
@@ -835,9 +835,9 @@ export default function DashboardPage() {
       {/* ── MAIN WORKSPACE LAYOUT: Watchlist Sidebar + Main Panel ── */}
       <div className="flex h-[calc(100vh-56px-28px)] overflow-hidden">
         
-        {/* LEFT SIDEBAR: Zerodha MarketWatch (Fixed on Desktop) */}
+        {/* LEFT SIDEBAR: LALAN MarketWatch (Fixed on Desktop) */}
         <aside className="w-80 shrink-0 hidden md:block h-full shadow-2xl">
-          <ZerodhaWatchlist
+          <LalanWatchlist
             onSelectStock={(st) => setSelectedStock(st)}
             selectedSymbol={selectedStock.symbol}
             onOpenBuyModal={handleOpenBuyModal}
@@ -920,7 +920,7 @@ export default function DashboardPage() {
               </div>
 
               {/* Live Positions Summary Card */}
-              <ZerodhaPositionsAndOrders
+              <LalanPositionsAndOrders
                 orders={orders}
                 positions={positions}
                 onExitPosition={handleExitPosition}
@@ -931,7 +931,7 @@ export default function DashboardPage() {
 
           {/* ── TAB 2: ORDERS & TRADES ── */}
           {activeTab === "orders" && (
-            <ZerodhaPositionsAndOrders
+            <LalanPositionsAndOrders
               orders={orders}
               positions={positions}
               onExitPosition={handleExitPosition}
@@ -941,7 +941,7 @@ export default function DashboardPage() {
 
           {/* ── TAB 3: POSITIONS & PNL ── */}
           {activeTab === "positions" && (
-            <ZerodhaPositionsAndOrders
+            <LalanPositionsAndOrders
               orders={orders}
               positions={positions}
               onExitPosition={handleExitPosition}
@@ -963,11 +963,11 @@ export default function DashboardPage() {
         </section>
       </div>
 
-      {/* ── PRODUCTION-GRADE ZERODHA ORDER TICKET MODAL ── */}
-      <ZerodhaOrderTicketModal
+      {/* ── PRODUCTION-GRADE LALAN ORDER TICKET MODAL ── */}
+      <LalanOrderTicketModal
         isOpen={orderModal.isOpen}
         onClose={() => setOrderModal((m) => ({ ...m, isOpen: false }))}
-        initialSymbol={orderModal.symbol}
+        symbol={orderModal.symbol}
         initialPrice={orderModal.price}
         initialType={orderModal.type}
         availableFunds={availableFunds}

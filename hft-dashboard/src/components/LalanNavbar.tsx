@@ -20,7 +20,7 @@ import {
 } from "lucide-react";
 import { useTheme } from "@/context/ThemeContext";
 
-interface ZerodhaNavbarProps {
+interface LalanNavbarProps {
   activeTab: string;
   setActiveTab: (tab: string) => void;
   latencyMs: number;
@@ -38,7 +38,7 @@ interface ZerodhaNavbarProps {
   onOpenAboutModal?: () => void;
 }
 
-export default function ZerodhaNavbar({
+export default function LalanNavbar({
   activeTab,
   setActiveTab,
   latencyMs,
@@ -54,7 +54,7 @@ export default function ZerodhaNavbar({
   onOpenSellModal,
   onOpenPricingModal,
   onOpenAboutModal,
-}: ZerodhaNavbarProps) {
+}: LalanNavbarProps) {
   const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
   const [notificationsOpen, setNotificationsOpen] = useState(false);
   const { theme, toggleTheme } = useTheme();
@@ -153,7 +153,7 @@ export default function ZerodhaNavbar({
               <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#10b981] opacity-75" />
               <span className="relative inline-flex h-2 w-2 rounded-full bg-[#10b981]" />
             </span>
-            <span className="text-[#10b981] font-bold hidden md:inline">KITE CONNECT API</span>
+            <span className="text-[#10b981] font-bold hidden md:inline">LALAN HFT STREAM</span>
           </div>
 
           <div className="flex items-center space-x-1 text-[#a0a3b0]">
@@ -165,7 +165,7 @@ export default function ZerodhaNavbar({
 
       {/* ── MAIN NAVBAR ── */}
       <div className="mx-auto flex h-14 max-w-[1700px] items-center justify-between px-3 sm:px-6">
-        {/* Brand Logo & Kite Style Badge */}
+        {/* Brand Logo & LALAN Badge */}
         <div className="flex items-center space-x-3">
           <a href="/" className="flex items-center space-x-2 group">
             {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -261,7 +261,7 @@ export default function ZerodhaNavbar({
 
           <div className="h-4 w-px bg-[#262630] hidden xs:block" />
 
-          {/* ☀️/🌙 Dark & Light Theme Switcher Button */}
+          {/* Dark & Light Theme Switcher Button */}
           <button
             onClick={toggleTheme}
             aria-label="Toggle Theme"
@@ -305,7 +305,7 @@ export default function ZerodhaNavbar({
                   </div>
                   <div className="space-y-2 text-[#b0b3c0]">
                     <div className="p-2 rounded bg-[#10b981]/10 border border-[#10b981]/20 text-[11px]">
-                      <span className="font-bold text-[#10b981]">Kite Connect WebSocket:</span> Live feed connected at 0.8ms.
+                      <span className="font-bold text-[#10b981]">LALAN HFT Gateway:</span> Live feed connected at 0.8ms.
                     </div>
                     <div className="p-2 rounded bg-[#387ed1]/10 border border-[#387ed1]/20 text-[11px]">
                       <span className="font-bold text-[#387ed1]">Disruptor Ring-Buffer:</span> Zero GC pause verified.
@@ -341,7 +341,7 @@ export default function ZerodhaNavbar({
                 >
                   <div className="border-b border-[#262630] pb-2.5 mb-2.5">
                     <p className="font-bold text-white">Ayush Singh</p>
-                    <p className="font-mono text-[11px] text-[#747888]">AY8899 · Zerodha Kite API</p>
+                    <p className="font-mono text-[11px] text-[#747888]">AY8899 · LALAN Direct API</p>
                   </div>
                   <div className="space-y-1.5 text-[#b0b3c0]">
                     <div className="flex justify-between py-1 items-center">
@@ -389,7 +389,6 @@ export default function ZerodhaNavbar({
           </div>
         </div>
       </div>
-
 
       {/* Mobile Nav Tabs */}
       <div className="flex lg:hidden overflow-x-auto border-t border-[#1f1f26] bg-[#0e0e12] px-2 py-1 space-x-1 no-scrollbar">

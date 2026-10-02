@@ -3,7 +3,7 @@
 import React from "react";
 import Link from "next/link";
 
-export default function ZerodhaSiteFooter() {
+export default function LalanSiteFooter() {
   return (
     <footer className="bg-[#08080c] border-t border-[#1f1f2b] text-[#8a8d9b] font-sans text-xs pt-12 pb-8">
       <div className="mx-auto max-w-[1300px] px-4 sm:px-8 space-y-10">
@@ -37,8 +37,8 @@ export default function ZerodhaSiteFooter() {
           <div className="space-y-2">
             <p className="text-white font-bold text-sm mb-3">Products &amp; Feeds</p>
             <ul className="space-y-2 text-[#a0a3b0]">
-              <li><Link href="/dashboard" className="hover:text-white transition-colors">Kite HFT Terminal</Link></li>
-              <li><Link href="/dashboard" className="hover:text-white transition-colors">DhanHQ L2 Feed</Link></li>
+              <li><Link href="/dashboard" className="hover:text-white transition-colors">LALAN HFT Terminal</Link></li>
+              <li><Link href="/dashboard" className="hover:text-white transition-colors">L2 Direct Feed</Link></li>
               <li><Link href="/dashboard" className="hover:text-white transition-colors">Order Book Imbalance (OBI)</Link></li>
               <li><Link href="/dashboard" className="hover:text-white transition-colors">Disruptor Engine</Link></li>
             </ul>
@@ -62,7 +62,7 @@ export default function ZerodhaSiteFooter() {
             Procedure to file a complaint on SEBI SCORES: Register on SCORES portal. Mandatory details for filing complaints on SCORES: Name, PAN, Address, Mobile Number, E-mail ID. Benefits: Effective Communication, Speedy redressal of the grievances.
           </p>
           <p>
-            Investments in securities market are subject to market risks; read all the related documents carefully before investing. Zerodha Kite, DhanHQ, Groww, Angel One, and Upstox are trademarks of their respective entities.
+            Investments in securities market are subject to market risks; read all the related documents carefully before investing. Multi-broker platform integrations are provided via standard exchange APIs.
           </p>
         </div>
 

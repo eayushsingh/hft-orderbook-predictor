@@ -3,14 +3,14 @@
 import React from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import ZerodhaSiteHeader from "@/components/ZerodhaSiteHeader";
-import ZerodhaSiteFooter from "@/components/ZerodhaSiteFooter";
+import LalanSiteHeader from "@/components/LalanSiteHeader";
+import LalanSiteFooter from "@/components/LalanSiteFooter";
 import { Zap, Cpu, ShieldCheck, Activity, Users, ArrowRight, Award } from "lucide-react";
 
 export default function AboutPage() {
   return (
     <div className="min-h-screen bg-[#060609] text-[#e0e0e0] font-sans selection:bg-[#387ed1] selection:text-white flex flex-col">
-      <ZerodhaSiteHeader />
+      <LalanSiteHeader />
 
       <main className="flex-1">
         {/* ── HERO BANNER ── */}
@@ -36,7 +36,7 @@ export default function AboutPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 text-sm sm:text-base leading-relaxed text-[#b0b3c0]">
             <div className="space-y-4">
               <p>
-                We set out in 2024 to create a zero-allocation, lock-free matching engine capable of streaming live L2 depth across Zerodha Kite, DhanHQ, Groww, and Upstox with sub-millisecond precision.
+                We set out in 2024 to create a zero-allocation, lock-free matching engine capable of streaming live L2 depth across LALAN Engine, DhanHQ, Groww, and Upstox with sub-millisecond precision.
               </p>
               <p>
                 Today, our LMAX Disruptor ring-buffer pipeline processes over <strong className="text-white font-bold">1,000,000 order events per second</strong> without single JVM garbage collection pause.
@@ -115,7 +115,7 @@ export default function AboutPage() {
               <h3 className="text-lg font-bold text-white">Priya Kulkarni</h3>
               <p className="text-xs text-[#ff5722] font-mono font-bold">Lead Infrastructure Engineer</p>
               <p className="text-xs text-[#8a8d9b] leading-relaxed">
-                Architects binary WebSocket telemetry, Zerodha Kite API adapters, and co-location servers.
+                Architects binary WebSocket telemetry, LALAN Direct API adapters, and co-location servers.
               </p>
             </div>
           </div>
@@ -143,7 +143,7 @@ export default function AboutPage() {
         </section>
       </main>
 
-      <ZerodhaSiteFooter />
+      <LalanSiteFooter />
     </div>
   );
 }

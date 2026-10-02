@@ -14,8 +14,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "LALAN Zerodha HFT - Market Microstructure & L2 Engine",
-  description: "Institutional market microstructure analysis, order book forecasting, and live L2 order book engine for Zerodha option traders.",
+  title: "LALAN HFT - Market Microstructure & L2 Engine",
+  description: "Institutional market microstructure analysis, order book forecasting, and live L2 order book engine for option traders.",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

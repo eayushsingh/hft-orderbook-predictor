@@ -21,13 +21,13 @@ Built in **Java 17+**, leveraging the **LMAX Disruptor** design pattern.
   * **Iceberg & Spoofing Detector (`IcebergDetector`)**: Detects hidden volume refills and abnormal liquidity walls in real-time.
   * **Order Flow Toxicity (VPIN)**: Volume-Synchronized Probability of Toxicity tracking buyer/seller aggressive volume imbalances.
   * **AI Predictor Matrix**: Computes directional mid-price drift probability (in basis points) and signal state (`STRONG BUY`, `BUY`, `NEUTRAL`, `SELL`, `STRONG SELL`).
-* **Multi-Broker Feed Adapters**: Modular architecture supporting Binance L2 Depth, **DhanHQ Direct L2 Feed**, **Zerodha Kite Connect Ticker**, and synthetic market flow simulators.
+* **Multi-Broker Feed Adapters**: Modular architecture supporting Binance L2 Depth, **DhanHQ Direct L2 Feed**, **LALAN Direct Ticker**, and synthetic market flow simulators.
 
 ### 2. The Intelligence Terminal (Frontend)
 Built with **Next.js 15**, **React**, and **TypeScript**, styled for an elite, Bloomberg-terminal aesthetic.
 * Streams live WebSocket signals directly from the Java Engine (`ws://localhost:8887`).
 * Replaces standard charts with quantitative gauges: Order Book Imbalance (OBI), Micro-Price Drift, VPIN Toxicity, and AI Predictive Directional Flow.
-* **Indian Market Intelligence & Multi-Broker Matrix**: Live L2 depth, tick-level Order Book Imbalance, and cross-platform buying vs. selling ratio breakdowns for top NSE/BSE stocks & indices (NIFTY 50, RELIANCE, HDFCBANK, TATAMOTORS, INFY) across major Indian brokers (**DhanHQ, Zerodha Kite, Groww, Angel One, Upstox, ICICI Direct**).
+* **Indian Market Intelligence & Multi-Broker Matrix**: Live L2 depth, tick-level Order Book Imbalance, and cross-platform buying vs. selling ratio breakdowns for top NSE/BSE stocks & indices (NIFTY 50, RELIANCE, HDFCBANK, TATAMOTORS, INFY) across major Indian brokers (**DhanHQ, LALAN Engine, Groww, Angel One, Upstox, ICICI Direct**).
 
 ## Core Mathematical Models
 
@@ -56,7 +56,7 @@ Directly predicts the direction toward which price will slip based on relative l
 | **Microstructure ML** | Custom Feature Extractor | OBI, Micro-Price Drift, VPIN Toxicity, Iceberg Detection |
 | **Network Protocol** | Java-WebSocket & JSON | High-Frequency Throttled Broadcasts (100ms) |
 | **Terminal UI** | Next.js, Framer Motion, Lucide | Bloomberg Dark Aesthetics, CountUp Animations, Mobile Responsive |
-| **Broker Suite** | DhanHQ, Zerodha Kite, Upstox, Binance | Multi-Broker Depth & Liquidity Matrix |
+| **Broker Suite** | DhanHQ, LALAN Engine, Upstox, Binance | Multi-Broker Depth & Liquidity Matrix |
 
 ---
 

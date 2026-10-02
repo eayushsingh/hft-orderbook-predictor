@@ -108,7 +108,7 @@ export default function AboutUsModal({ isOpen, onClose }: AboutUsModalProps) {
                     We don&apos;t chase alpha. We eliminate risk, and alpha chases us.
                   </h3>
                   <p className="text-xs text-[#9e9ea8]">
-                    LALAN HFT is a ultra-low latency quantitative market microstructure engine engineered specifically for retail and institutional traders in India. By combining LMAX Disruptor ring-buffer concurrency, zero Garbage Collection memory layouts, and real-time Order Book Imbalance (OBI) signals, LALAN bridges retail trading terminals like Zerodha Kite with institutional-grade price forecasting.
+                    LALAN HFT is a ultra-low latency quantitative market microstructure engine engineered specifically for retail and institutional traders in India. By combining LMAX Disruptor ring-buffer concurrency, zero Garbage Collection memory layouts, and real-time Order Book Imbalance (OBI) signals, LALAN bridges retail trading terminals with institutional-grade price forecasting.
                   </p>
                 </div>
 
@@ -137,9 +137,9 @@ export default function AboutUsModal({ isOpen, onClose }: AboutUsModalProps) {
                     <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#ff5722]/20 text-[#ff5722] mb-2">
                       <Building2 className="h-4 w-4" />
                     </div>
-                    <h4 className="font-bold text-white font-mono text-xs">Zerodha &amp; Dhan Feeds</h4>
+                    <h4 className="font-bold text-white font-mono text-xs">LALAN &amp; Multi-Broker Feeds</h4>
                     <p className="text-[11px] text-[#747888] mt-1">
-                      Aggregated buying/selling liquidity matrix across Zerodha Kite, DhanHQ, Groww, and Upstox.
+                      Aggregated buying/selling liquidity matrix across LALAN Engine, DhanHQ, Groww, and Upstox.
                     </p>
                   </div>
                 </div>
@@ -219,8 +219,8 @@ export default function AboutUsModal({ isOpen, onClose }: AboutUsModalProps) {
 
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs">
                   <div className="p-2.5 rounded bg-[#101016] border border-[#242432] text-center">
-                    <span className="text-[#ff5722] font-bold block">Zerodha Kite</span>
-                    <span className="text-[10px] text-[#747888]">Kite Connect WebSocket</span>
+                    <span className="text-[#ff5722] font-bold block">LALAN Gateway</span>
+                    <span className="text-[10px] text-[#747888]">LALAN Direct WebSocket</span>
                   </div>
                   <div className="p-2.5 rounded bg-[#101016] border border-[#242432] text-center">
                     <span className="text-[#10b981] font-bold block">DhanHQ</span>

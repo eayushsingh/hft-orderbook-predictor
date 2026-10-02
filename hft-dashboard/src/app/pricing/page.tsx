@@ -3,8 +3,8 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import ZerodhaSiteHeader from "@/components/ZerodhaSiteHeader";
-import ZerodhaSiteFooter from "@/components/ZerodhaSiteFooter";
+import LalanSiteHeader from "@/components/LalanSiteHeader";
+import LalanSiteFooter from "@/components/LalanSiteFooter";
 import SubscriptionPricingModal, { PRICING_PLANS } from "@/components/SubscriptionPricingModal";
 import { Check, ArrowRight, IndianRupee, HelpCircle, Zap, ShieldCheck } from "lucide-react";
 
@@ -15,7 +15,7 @@ export default function PricingPage() {
 
   return (
     <div className="min-h-screen bg-[#060609] text-[#e0e0e0] font-sans selection:bg-[#387ed1] selection:text-white flex flex-col">
-      <ZerodhaSiteHeader />
+      <LalanSiteHeader />
 
       <main className="flex-1">
         {/* ── HERO BANNER ── */}
@@ -30,7 +30,7 @@ export default function PricingPage() {
           </div>
         </section>
 
-        {/* ── ZERODHA 3 HIGHLIGHT CARDS ── */}
+        {/* ── LALAN 3 HIGHLIGHT CARDS ── */}
         <section className="py-16 px-4 sm:px-8 max-w-[1100px] mx-auto border-b border-[#181824]">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
             {/* Card 1 */}
@@ -233,7 +233,7 @@ export default function PricingPage() {
         </section>
       </main>
 
-      <ZerodhaSiteFooter />
+      <LalanSiteFooter />
 
       <SubscriptionPricingModal
         isOpen={pricingModalOpen}

@@ -4,8 +4,8 @@ import { motion } from "framer-motion";
 import CountUp from "react-countup";
 import Link from "next/link";
 import { Zap, ShieldCheck, Cpu, Layers, ArrowRight, Sparkles, Activity } from "lucide-react";
-import ZerodhaSiteHeader from "@/components/ZerodhaSiteHeader";
-import ZerodhaSiteFooter from "@/components/ZerodhaSiteFooter";
+import LalanSiteHeader from "@/components/LalanSiteHeader";
+import LalanSiteFooter from "@/components/LalanSiteFooter";
 
 const featureCards = [
   {
@@ -27,7 +27,7 @@ const featureCards = [
     color: "text-[#ff5722] bg-[#ff5722]/10 border-[#ff5722]/20",
     title: "Indian Market Liquidity",
     description:
-      "Real-time Order Book Imbalance (OBI) and buying/selling pressure matrix aggregated across DhanHQ, Zerodha, Groww, Angel One, and Upstox.",
+      "Real-time Order Book Imbalance (OBI) and buying/selling pressure matrix aggregated across DhanHQ, LALAN Engine, Groww, Angel One, and Upstox.",
   },
   {
     icon: ShieldCheck,
@@ -41,7 +41,7 @@ const featureCards = [
 export default function LandingPage() {
   return (
     <div className="font-sans bg-[#060608] text-zinc-100 min-h-screen selection:bg-[#387ed1] selection:text-white relative overflow-x-hidden flex flex-col">
-      <ZerodhaSiteHeader />
+      <LalanSiteHeader />
 
       <main className="flex-1">
         {/* Ambient background glow spheres */}
@@ -67,7 +67,7 @@ export default function LandingPage() {
           >
             <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#387ed1]/10 border border-[#387ed1]/20 text-[#387ed1] text-[11px] sm:text-xs font-mono uppercase tracking-wider shadow-inner">
               <Sparkles className="h-3.5 w-3.5 text-[#387ed1] animate-pulse" />
-              Zerodha-Grade HFT Order Book Engine
+              LALAN Enterprise HFT Order Book Engine
             </div>
 
             <h1 className="flex flex-col gap-2 sm:gap-4">
@@ -117,7 +117,7 @@ export default function LandingPage() {
                 </div>
                 <div className="flex items-center gap-1.5 text-[10px] font-mono text-emerald-400 font-bold hidden sm:flex">
                   <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping" />
-                  LIVE KITE STREAM
+                  LIVE LALAN HFT STREAM
                 </div>
               </div>
 
@@ -197,7 +197,7 @@ export default function LandingPage() {
         </section>
       </main>
 
-      <ZerodhaSiteFooter />
+      <LalanSiteFooter />
     </div>
   );
 }
