@@ -831,42 +831,20 @@ export default function DashboardPage() {
         niftyChange={0.62}
         bankNiftyPrice={52340.1}
         bankNiftyChange={0.85}
-        btcPrice={metrics.bestBid.price || 64250.0}
+        btcPrice={metrics.bestBid.price || 84572.52}
         btcChange={2.1}
-        activePlanId={activePlanId}
+        selectedSymbol={selectedStock.symbol}
         onOpenBuyModal={handleOpenBuyModal}
         onOpenSellModal={handleOpenSellModal}
         onOpenPricingModal={() => setPricingModalOpen(true)}
         onOpenAboutModal={() => setAboutModalOpen(true)}
       />
 
-      {/* ── LAUNCH SPECIAL FREE TRIAL TOP BANNER ── */}
-      {isTrialActive && (
-        <div className="bg-gradient-to-r from-[#10b981]/20 via-[#387ed1]/25 to-[#10b981]/20 border-b border-[#10b981]/30 px-4 py-2 flex flex-col sm:flex-row items-center justify-between text-xs font-mono text-zinc-100 gap-2">
-          <div className="flex items-center space-x-2">
-            <span className="flex h-2.5 w-2.5 relative">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#10b981] opacity-75" />
-              <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-[#10b981]" />
-            </span>
-            <span>
-              🚀 <strong>Launch Offer Active:</strong> You are on a <strong>14-Day Free Trial</strong> for <strong className="uppercase text-[#10b981]">{activePlanId}</strong> tier. {daysRemainingInTrial} days left ($0 upfront).
-            </span>
-          </div>
-          <button
-            onClick={() => setPricingModalOpen(true)}
-            className="bg-[#10b981] hover:bg-[#0da673] text-black font-extrabold px-3 py-1 rounded text-[10px] tracking-wider uppercase shadow transition-all shrink-0"
-          >
-            Manage Trial
-          </button>
-        </div>
-      )}
-
-
       {/* ── MAIN WORKSPACE LAYOUT: Watchlist Sidebar + Main Panel ── */}
-      <div className="flex h-[calc(100vh-56px-28px)] overflow-hidden">
+      <div className="flex h-[calc(100vh-52px-28px)] overflow-hidden">
         
         {/* LEFT SIDEBAR: LALAN MarketWatch (Fixed on Desktop) */}
-        <aside className="w-80 shrink-0 hidden md:block h-full shadow-2xl">
+        <aside className="w-80 shrink-0 hidden md:block h-full border-r border-[#222230]">
           <LalanWatchlist
             onSelectStock={(st) => setSelectedStock(st)}
             selectedSymbol={selectedStock.symbol}
@@ -877,28 +855,28 @@ export default function DashboardPage() {
         </aside>
 
         {/* RIGHT CONTENT WORKSPACE */}
-        <section className="flex-1 overflow-y-auto no-scrollbar p-3 sm:p-6 pb-20 md:pb-6 space-y-4">
+        <section className="flex-1 overflow-y-auto no-scrollbar p-3 sm:p-5 pb-20 md:pb-6 space-y-4">
 
           {/* ── TAB 1: TERMINAL & L2 DEPTH ── */}
           {activeTab === "terminal" && (
             <>
-              {/* Top Banner for Active Symbol */}
-              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between bg-[#14141a] border border-[#262634] p-4 rounded-2xl shadow-xl gap-3">
+              {/* Backpack-Style Pair Header Bar */}
+              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between bg-[#121218] border border-[#222230] p-3.5 sm:p-4 rounded-xl shadow-lg gap-3">
                 <div className="flex items-center space-x-3">
-                  <span className="px-2.5 py-1 rounded bg-[#387ed1]/20 text-[#387ed1] border border-[#387ed1]/40 font-mono font-extrabold text-xs">
+                  <span className="px-2.5 py-0.5 rounded-md bg-[#387ed1]/20 text-[#387ed1] border border-[#387ed1]/40 font-mono font-extrabold text-[11px] uppercase">
                     {selectedStock.exchange}
                   </span>
                   <div>
-                    <h1 className="text-xl sm:text-2xl font-black font-mono text-white">
+                    <h1 className="text-lg sm:text-2xl font-black font-mono text-white tracking-tight flex items-center gap-2">
                       {selectedStock.symbol}
                     </h1>
-                    <p className="text-xs text-[#747888] font-mono">{selectedStock.name}</p>
+                    <p className="text-[11px] text-[#747888] font-mono">{selectedStock.name}</p>
                   </div>
                 </div>
 
                 <div className="flex items-center space-x-4">
                   <div className="flex flex-col text-right font-mono">
-                    <span className="text-lg sm:text-xl font-bold text-white">
+                    <span className="text-lg sm:text-2xl font-black text-white">
                       {selectedStock.exchange === "BINANCE"
                         ? `$${metrics.bestBid.price ? metrics.bestBid.price.toLocaleString("en-US", { minimumFractionDigits: 2 }) : selectedStock.price.toFixed(2)}`
                         : `₹${selectedStock.price.toLocaleString("en-IN", { minimumFractionDigits: 2 })}`}
@@ -917,19 +895,21 @@ export default function DashboardPage() {
                   <div className="flex items-center space-x-2">
                     <button
                       onClick={() => handleOpenBuyModal(selectedStock.symbol, selectedStock.price)}
-                      className="bg-[#387ed1] hover:bg-[#306ec0] text-white text-xs font-extrabold px-4 py-2 rounded-xl transition-all shadow-lg shadow-[#387ed1]/20"
+                      className="bg-[#10b981] hover:bg-[#0da673] text-black font-mono text-xs font-extrabold px-3.5 py-2 rounded-lg transition-all active:scale-95 shadow"
                     >
                       BUY
                     </button>
                     <button
                       onClick={() => handleOpenSellModal(selectedStock.symbol, selectedStock.price)}
-                      className="bg-[#ff5722] hover:bg-[#e64a19] text-white text-xs font-extrabold px-4 py-2 rounded-xl transition-all shadow-lg shadow-[#ff5722]/20"
+                      className="bg-[#f43f5e] hover:bg-[#e11d48] text-white font-mono text-xs font-extrabold px-3.5 py-2 rounded-lg transition-all active:scale-95 shadow"
                     >
                       SELL
                     </button>
                   </div>
                 </div>
               </div>
+
+
 
               {/* Bento Grid Core Cards & Institutional Order Book */}
               <div className="grid grid-cols-1 gap-3.5 sm:gap-4 lg:grid-cols-3">
