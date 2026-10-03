@@ -66,6 +66,12 @@ export default function LalanSiteFooter() {
           </p>
         </div>
 
+        {/* Made by Ayush Credit */}
+        <div className="border-t border-[#181822] pt-4 text-center font-mono text-xs text-[#a0a3b0]">
+          Made with ❤️ by <span className="font-bold text-white">Ayush</span>
+        </div>
+
+
       </div>
     </footer>
   );

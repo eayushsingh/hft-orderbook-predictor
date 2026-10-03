@@ -178,4 +178,5 @@ hft-orderbook-predictor/
 
 ## 📄 License & Attribution
 
-Distributed under the MIT License. Designed and developed by **LALAN Quant Engineering**.
+Distributed under the MIT License. Designed and developed with ❤️ by **Ayush**.
+
