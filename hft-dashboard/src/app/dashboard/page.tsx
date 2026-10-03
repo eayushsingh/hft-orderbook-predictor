@@ -23,6 +23,8 @@ import SubscriptionPricingModal from "@/components/SubscriptionPricingModal";
 import AboutUsModal from "@/components/AboutUsModal";
 import ConsensusMatrix from "@/components/ConsensusMatrix";
 import IndianMarketMatrix from "@/components/IndianMarketMatrix";
+import { useSubscription } from "@/context/SubscriptionContext";
+
 
 /* ============================================================
    TYPES — strict WebSocket & Engine payload contracts
@@ -635,14 +637,14 @@ function Sparkline({ data }: { data: number[] }) {
 export default function DashboardPage() {
   const { metrics, connectionState, sparkline } = useMarketEngine();
 
-  // Top level dashboard state
+  const { activePlanId, isTrialActive, daysRemainingInTrial } = useSubscription();
   const [activeTab, setActiveTab] = useState<string>("terminal");
   const [availableFunds, setAvailableFunds] = useState<number>(542800.0);
   const [selectedStock, setSelectedStock] = useState<WatchlistStock>(INITIAL_WATCHLIST[0]);
-  const [activePlanId, setActivePlanId] = useState<string>("pro");
   const [pricingModalOpen, setPricingModalOpen] = useState<boolean>(false);
   const [aboutModalOpen, setAboutModalOpen] = useState<boolean>(false);
   const [mobileWatchlistOpen, setMobileWatchlistOpen] = useState<boolean>(false);
+
 
   // Order Ticket Modal state
   const [orderModal, setOrderModal] = useState<{
@@ -837,6 +839,28 @@ export default function DashboardPage() {
         onOpenPricingModal={() => setPricingModalOpen(true)}
         onOpenAboutModal={() => setAboutModalOpen(true)}
       />
+
+      {/* ── LAUNCH SPECIAL FREE TRIAL TOP BANNER ── */}
+      {isTrialActive && (
+        <div className="bg-gradient-to-r from-[#10b981]/20 via-[#387ed1]/25 to-[#10b981]/20 border-b border-[#10b981]/30 px-4 py-2 flex flex-col sm:flex-row items-center justify-between text-xs font-mono text-zinc-100 gap-2">
+          <div className="flex items-center space-x-2">
+            <span className="flex h-2.5 w-2.5 relative">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#10b981] opacity-75" />
+              <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-[#10b981]" />
+            </span>
+            <span>
+              🚀 <strong>Launch Offer Active:</strong> You are on a <strong>14-Day Free Trial</strong> for <strong className="uppercase text-[#10b981]">{activePlanId}</strong> tier. {daysRemainingInTrial} days left ($0 upfront).
+            </span>
+          </div>
+          <button
+            onClick={() => setPricingModalOpen(true)}
+            className="bg-[#10b981] hover:bg-[#0da673] text-black font-extrabold px-3 py-1 rounded text-[10px] tracking-wider uppercase shadow transition-all shrink-0"
+          >
+            Manage Trial
+          </button>
+        </div>
+      )}
+
 
       {/* ── MAIN WORKSPACE LAYOUT: Watchlist Sidebar + Main Panel ── */}
       <div className="flex h-[calc(100vh-56px-28px)] overflow-hidden">
@@ -1089,8 +1113,8 @@ export default function DashboardPage() {
         isOpen={pricingModalOpen}
         onClose={() => setPricingModalOpen(false)}
         currentPlanId={activePlanId}
-        onSelectPlan={(planId) => setActivePlanId(planId)}
       />
+
 
       {/* ── ABOUT US & TECHNICAL SPECS MODAL ── */}
       <AboutUsModal

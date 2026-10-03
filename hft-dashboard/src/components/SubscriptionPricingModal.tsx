@@ -4,22 +4,20 @@ import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Check,
-  Zap,
-  ShieldCheck,
   Crown,
-  Sparkles,
   X,
-  CreditCard,
-  Building2,
   ArrowRight,
   CheckCircle2,
-  IndianRupee,
-  Activity,
-  Layers,
+  Gift,
+  Clock,
+  Sparkles,
+  ShieldCheck,
+  Zap,
 } from "lucide-react";
+import { useSubscription, SubscriptionPlanId } from "@/context/SubscriptionContext";
 
 export interface SubscriptionPlan {
-  id: string;
+  id: SubscriptionPlanId;
   name: string;
   badge?: string;
   popular?: boolean;
@@ -30,6 +28,7 @@ export interface SubscriptionPlan {
   description: string;
   features: string[];
   cta: string;
+  trialCta: string;
   color: string;
   borderColor: string;
 }
@@ -51,6 +50,7 @@ export const PRICING_PLANS: SubscriptionPlan[] = [
       "Community Discord Support",
     ],
     cta: "Current Free Plan",
+    trialCta: "Current Free Plan",
     color: "text-zinc-300",
     borderColor: "border-[#262634]",
   },
@@ -58,7 +58,7 @@ export const PRICING_PLANS: SubscriptionPlan[] = [
     id: "pro",
     name: "Pro Quant Trader",
     popular: true,
-    badge: "MOST POPULAR IN INDIA",
+    badge: "14-DAY FREE TRIAL AVAILABLE",
     monthlyPriceINR: 999,
     annualPriceINR: 799,
     monthlyPriceUSD: 14,
@@ -74,13 +74,14 @@ export const PRICING_PLANS: SubscriptionPlan[] = [
       "Priority Email & Telegram Alpha Channel",
     ],
     cta: "Upgrade to Pro Quant",
+    trialCta: "Start 14-Day Free Trial",
     color: "text-[#387ed1]",
     borderColor: "border-[#387ed1]",
   },
   {
     id: "institutional",
     name: "Institutional HFT",
-    badge: "ZERO-GC ENGINE",
+    badge: "ZERO-GC ENGINE • FREE TRIAL",
     monthlyPriceINR: 4999,
     annualPriceINR: 3999,
     monthlyPriceUSD: 65,
@@ -95,7 +96,8 @@ export const PRICING_PLANS: SubscriptionPlan[] = [
       "Full Microstructure Analytics & Historical Replay",
       "1-on-1 Dedicated Quant Engineer Support",
     ],
-    cta: "Start Institutional Trial",
+    cta: "Upgrade to Institutional",
+    trialCta: "Start 14-Day Institutional Trial",
     color: "text-[#10b981]",
     borderColor: "border-[#10b981]",
   },
@@ -111,33 +113,64 @@ interface SubscriptionPricingModalProps {
 export default function SubscriptionPricingModal({
   isOpen,
   onClose,
-  currentPlanId = "pro",
   onSelectPlan,
 }: SubscriptionPricingModalProps) {
+  const {
+    activePlanId,
+    isTrialActive,
+    daysRemainingInTrial,
+    startFreeTrial,
+    upgradePlan,
+  } = useSubscription();
+
   const [billingCycle, setBillingCycle] = useState<"monthly" | "annual">("annual");
   const [currency, setCurrency] = useState<"INR" | "USD">("INR");
   const [checkoutPlan, setCheckoutPlan] = useState<SubscriptionPlan | null>(null);
+  const [isTrialCheckout, setIsTrialCheckout] = useState<boolean>(true);
   const [paymentStep, setPaymentStep] = useState<"select" | "checkout" | "success">("select");
   const [paymentMethod, setPaymentMethod] = useState<"upi" | "card" | "netbanking">("upi");
   const [isProcessing, setIsProcessing] = useState(false);
+  const [actionMessage, setActionMessage] = useState<string>("");
 
   if (!isOpen) return null;
 
-  const handleStartCheckout = (plan: SubscriptionPlan) => {
-    if (plan.id === currentPlanId && plan.id === "retail") return;
+  const handleStartCheckout = (plan: SubscriptionPlan, isTrial = true) => {
+    if (plan.id === activePlanId && !isTrialActive) return;
     setCheckoutPlan(plan);
+    setIsTrialCheckout(isTrial);
     setPaymentStep("checkout");
   };
 
-  const handleConfirmPayment = () => {
+  const handleConfirmAction = async () => {
+    if (!checkoutPlan) return;
     setIsProcessing(true);
-    setTimeout(() => {
+
+    if (isTrialCheckout && checkoutPlan.id !== "retail") {
+      const res = await startFreeTrial(checkoutPlan.id, 14);
       setIsProcessing(false);
-      setPaymentStep("success");
-      if (onSelectPlan && checkoutPlan) {
-        onSelectPlan(checkoutPlan.id);
+      if (res.success) {
+        setActionMessage(res.message);
+        setPaymentStep("success");
+        if (onSelectPlan) onSelectPlan(checkoutPlan.id);
       }
-    }, 1200);
+    } else {
+      const price =
+        currency === "INR"
+          ? billingCycle === "annual"
+            ? checkoutPlan.annualPriceINR
+            : checkoutPlan.monthlyPriceINR
+          : billingCycle === "annual"
+          ? checkoutPlan.annualPriceUSD
+          : checkoutPlan.monthlyPriceUSD;
+
+      const res = await upgradePlan(checkoutPlan.id, paymentMethod, price, currency);
+      setIsProcessing(false);
+      if (res.success) {
+        setActionMessage(res.message);
+        setPaymentStep("success");
+        if (onSelectPlan) onSelectPlan(checkoutPlan.id);
+      }
+    }
   };
 
   const resetAndClose = () => {
@@ -164,12 +197,12 @@ export default function SubscriptionPricingModal({
               <div>
                 <h2 className="text-lg sm:text-xl font-bold font-mono text-white flex items-center gap-2">
                   LALAN HFT Subscription Tiers
-                  <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-[#10b981]/15 text-[#10b981] border border-[#10b981]/30 font-bold uppercase">
-                    INR &amp; USD Plans
+                  <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-[#10b981]/15 text-[#10b981] border border-[#10b981]/30 font-bold uppercase flex items-center gap-1">
+                    <Gift className="h-3 w-3" /> 14-Day Free Trial Launch Offer
                   </span>
                 </h2>
                 <p className="text-xs text-[#747888] font-mono mt-0.5">
-                  Institutional market microstructure &amp; order book predictor engine for Indian quants.
+                  Start for free today without upfront payment or credit card commitments.
                 </p>
               </div>
             </div>
@@ -181,6 +214,22 @@ export default function SubscriptionPricingModal({
               <X className="h-5 w-5" />
             </button>
           </div>
+
+          {/* ── ACTIVE TRIAL STATUS BANNER ── */}
+          {isTrialActive && (
+            <div className="bg-gradient-to-r from-[#387ed1]/20 via-[#10b981]/20 to-[#387ed1]/20 border-b border-[#387ed1]/30 px-5 py-2.5 flex items-center justify-between text-xs font-mono">
+              <div className="flex items-center space-x-2 text-white">
+                <Clock className="h-4 w-4 text-[#10b981] animate-pulse" />
+                <span>
+                  <strong>Active Trial:</strong> You currently have full access to{" "}
+                  <strong className="text-[#10b981] uppercase">{activePlanId}</strong> tier.
+                </span>
+              </div>
+              <span className="bg-[#10b981] text-black font-extrabold px-2.5 py-0.5 rounded-full text-[10px]">
+                {daysRemainingInTrial} DAYS REMAINING
+              </span>
+            </div>
+          )}
 
           {/* ── STEP 1: PLAN SELECTION ── */}
           {paymentStep === "select" && (
@@ -248,7 +297,7 @@ export default function SubscriptionPricingModal({
               {/* Pricing Cards Grid */}
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 {PRICING_PLANS.map((plan) => {
-                  const isCurrent = currentPlanId === plan.id;
+                  const isCurrent = activePlanId === plan.id;
                   const price =
                     currency === "INR"
                       ? billingCycle === "annual"
@@ -267,9 +316,9 @@ export default function SubscriptionPricingModal({
                           : "border-[#242432] hover:border-[#387ed1]/40"
                       }`}
                     >
-                      {/* Popular Badge */}
+                      {/* Badge */}
                       {plan.badge && (
-                        <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-[#387ed1] text-white font-mono font-extrabold text-[9px] uppercase px-3 py-0.5 rounded-full shadow border border-white/20">
+                        <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-[#387ed1] text-white font-mono font-extrabold text-[9px] uppercase px-3 py-0.5 rounded-full shadow border border-white/20 whitespace-nowrap">
                           {plan.badge}
                         </div>
                       )}
@@ -296,9 +345,9 @@ export default function SubscriptionPricingModal({
                               <span className="text-xs text-[#747888]">/ month</span>
                             )}
                           </div>
-                          {billingCycle === "annual" && price > 0 && (
-                            <p className="text-[10px] text-[#10b981] font-mono mt-0.5">
-                              Billed annually ({currency === "INR" ? `₹${(price * 12).toLocaleString("en-IN")}` : `$${price * 12}`}/yr)
+                          {price > 0 && (
+                            <p className="text-[10px] text-[#10b981] font-mono mt-1 font-semibold">
+                              ✨ 14-Day Free Trial ($0 today)
                             </p>
                           )}
                         </div>
@@ -317,20 +366,34 @@ export default function SubscriptionPricingModal({
                         </div>
                       </div>
 
-                      {/* Action Button */}
-                      <button
-                        onClick={() => handleStartCheckout(plan)}
-                        disabled={isCurrent && plan.id === "retail"}
-                        className={`w-full py-2.5 rounded-xl font-mono text-xs font-bold transition-all shadow-md active:scale-95 ${
-                          isCurrent
-                            ? "bg-[#242432] text-[#10b981] border border-[#10b981]/40"
-                            : plan.popular
-                            ? "bg-[#387ed1] hover:bg-[#306ec0] text-white"
-                            : "bg-[#1f1f2a] hover:bg-[#387ed1] text-white border border-[#2c2c3e]"
-                        }`}
-                      >
-                        {isCurrent ? "Active Current Plan" : plan.cta}
-                      </button>
+                      {/* Action Buttons */}
+                      <div className="space-y-2">
+                        {plan.id !== "retail" && (
+                          <button
+                            onClick={() => handleStartCheckout(plan, true)}
+                            className="w-full py-2.5 rounded-xl font-mono text-xs font-bold transition-all shadow-md active:scale-95 bg-gradient-to-r from-[#10b981] to-[#059669] hover:from-[#0da673] hover:to-[#047857] text-black font-extrabold flex items-center justify-center space-x-1.5"
+                          >
+                            <Gift className="h-4 w-4 text-black" />
+                            <span>{isCurrent && isTrialActive ? `Trial Active (${daysRemainingInTrial}d left)` : plan.trialCta}</span>
+                          </button>
+                        )}
+
+                        {plan.id === "retail" ? (
+                          <button
+                            disabled={isCurrent}
+                            className="w-full py-2.5 rounded-xl font-mono text-xs font-bold bg-[#242432] text-[#747888]"
+                          >
+                            {isCurrent ? "Active Current Plan" : "Switch to Free Retail"}
+                          </button>
+                        ) : (
+                          <button
+                            onClick={() => handleStartCheckout(plan, false)}
+                            className="w-full py-2 rounded-xl font-mono text-[11px] font-semibold text-[#747888] hover:text-white hover:bg-[#1a1a24] transition-all border border-[#242432]"
+                          >
+                            Buy Subscription Directly
+                          </button>
+                        )}
+                      </div>
                     </div>
                   );
                 })}
@@ -338,109 +401,163 @@ export default function SubscriptionPricingModal({
             </div>
           )}
 
-          {/* ── STEP 2: CHECKOUT MODAL ── */}
+          {/* ── STEP 2: CHECKOUT / TRIAL ACTIVATION MODAL ── */}
           {paymentStep === "checkout" && checkoutPlan && (
             <div className="p-5 sm:p-8 space-y-5">
               <div className="bg-[#0e0e13] p-4 rounded-xl border border-[#242432] flex items-center justify-between">
                 <div>
-                  <span className="text-[10px] uppercase font-mono text-[#747888]">Selected Plan</span>
-                  <h3 className="text-xl font-bold font-mono text-white">{checkoutPlan.name}</h3>
-                  <p className="text-xs text-[#747888]">{billingCycle === "annual" ? "Annual Billing (20% Savings)" : "Monthly Billing"}</p>
-                </div>
-                <div className="text-right font-mono">
-                  <span className="text-2xl font-black text-[#10b981]">
-                    {currency === "INR"
-                      ? `₹${(billingCycle === "annual" ? checkoutPlan.annualPriceINR : checkoutPlan.monthlyPriceINR).toLocaleString("en-IN")}`
-                      : `$${billingCycle === "annual" ? checkoutPlan.annualPriceUSD : checkoutPlan.monthlyPriceUSD}`}
+                  <span className="text-[10px] uppercase font-mono text-[#747888]">
+                    {isTrialCheckout ? "Free Trial Activation" : "Selected Subscription"}
                   </span>
-                  <span className="text-xs text-[#747888]">/mo</span>
+                  <h3 className="text-xl font-bold font-mono text-white flex items-center gap-2">
+                    {checkoutPlan.name}
+                    {isTrialCheckout && (
+                      <span className="text-xs bg-[#10b981]/20 text-[#10b981] px-2.5 py-0.5 rounded-full border border-[#10b981]/40 font-bold">
+                        14 DAYS FREE
+                      </span>
+                    )}
+                  </h3>
+                  <p className="text-xs text-[#747888]">
+                    {isTrialCheckout
+                      ? "Zero upfront payment required. Full access enabled immediately."
+                      : billingCycle === "annual"
+                      ? "Annual Billing (20% Savings)"
+                      : "Monthly Billing"}
+                  </p>
+                </div>
+
+                <div className="text-right font-mono">
+                  {isTrialCheckout ? (
+                    <div>
+                      <span className="text-2xl font-black text-[#10b981]">₹0 / $0</span>
+                      <p className="text-[10px] text-[#747888]">For 14 Days</p>
+                    </div>
+                  ) : (
+                    <div>
+                      <span className="text-2xl font-black text-[#10b981]">
+                        {currency === "INR"
+                          ? `₹${(billingCycle === "annual" ? checkoutPlan.annualPriceINR : checkoutPlan.monthlyPriceINR).toLocaleString("en-IN")}`
+                          : `$${billingCycle === "annual" ? checkoutPlan.annualPriceUSD : checkoutPlan.monthlyPriceUSD}`}
+                      </span>
+                      <span className="text-xs text-[#747888]">/mo</span>
+                    </div>
+                  )}
                 </div>
               </div>
 
-              {/* Payment Method Tabs for India */}
-              <div className="space-y-3">
-                <label className="text-xs font-mono font-bold text-[#747888]">Select Payment Gateway (India / Global):</label>
-                <div className="grid grid-cols-3 gap-2">
-                  <button
-                    onClick={() => setPaymentMethod("upi")}
-                    className={`p-3 rounded-xl border text-center font-mono text-xs font-bold transition-all ${
-                      paymentMethod === "upi"
-                        ? "bg-[#387ed1]/20 border-[#387ed1] text-white"
-                        : "bg-[#101016] border-[#242432] text-[#747888]"
-                    }`}
-                  >
-                    BHIM UPI / GPay
-                  </button>
-                  <button
-                    onClick={() => setPaymentMethod("card")}
-                    className={`p-3 rounded-xl border text-center font-mono text-xs font-bold transition-all ${
-                      paymentMethod === "card"
-                        ? "bg-[#387ed1]/20 border-[#387ed1] text-white"
-                        : "bg-[#101016] border-[#242432] text-[#747888]"
-                    }`}
-                  >
-                    Credit / Debit Card
-                  </button>
-                  <button
-                    onClick={() => setPaymentMethod("netbanking")}
-                    className={`p-3 rounded-xl border text-center font-mono text-xs font-bold transition-all ${
-                      paymentMethod === "netbanking"
-                        ? "bg-[#387ed1]/20 border-[#387ed1] text-white"
-                        : "bg-[#101016] border-[#242432] text-[#747888]"
-                    }`}
-                  >
-                    NetBanking (SBI/HDFC)
-                  </button>
-                </div>
-
-                {/* Simulated Payment Input */}
-                <div className="p-4 rounded-xl bg-[#0f0f14] border border-[#242432] space-y-3">
-                  {paymentMethod === "upi" && (
+              {/* Trial Vs Paid Details */}
+              {isTrialCheckout ? (
+                <div className="p-5 rounded-2xl bg-[#0f0f16] border border-[#10b981]/30 space-y-4">
+                  <div className="flex items-center space-x-3 text-[#10b981]">
+                    <Sparkles className="h-6 w-6 shrink-0" />
                     <div>
-                      <label className="text-[10px] text-[#747888] font-mono block mb-1">Enter VPA / UPI ID</label>
-                      <input
-                        type="text"
-                        defaultValue="trader@upi"
-                        className="w-full bg-[#181822] text-xs font-mono text-white p-2.5 rounded border border-[#282838] focus:outline-none focus:border-[#387ed1]"
-                      />
+                      <h4 className="text-sm font-bold font-mono text-white">
+                        Production-Grade 14-Day Free Trial
+                      </h4>
+                      <p className="text-xs text-[#9a9db0] mt-0.5">
+                        Experience institutional L2 order book streaming, OBI telemetry, and DhanHQ integration with zero credit card entry.
+                      </p>
                     </div>
-                  )}
+                  </div>
 
-                  {paymentMethod === "card" && (
-                    <div className="space-y-2">
-                      <input
-                        type="text"
-                        placeholder="Card Number (4532 •••• •••• 8899)"
-                        defaultValue="4532 8901 2234 8899"
-                        className="w-full bg-[#181822] text-xs font-mono text-white p-2.5 rounded border border-[#282838]"
-                      />
-                      <div className="grid grid-cols-2 gap-2">
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2 text-xs font-mono">
+                    <div className="bg-[#161622] p-3 rounded-xl border border-[#262638] flex items-center space-x-2">
+                      <ShieldCheck className="h-4 w-4 text-[#10b981]" />
+                      <span>No Credit Card Needed</span>
+                    </div>
+                    <div className="bg-[#161622] p-3 rounded-xl border border-[#262638] flex items-center space-x-2">
+                      <Zap className="h-4 w-4 text-[#387ed1]" />
+                      <span>Sub-ms L2 Telemetry</span>
+                    </div>
+                    <div className="bg-[#161622] p-3 rounded-xl border border-[#262638] flex items-center space-x-2">
+                      <Clock className="h-4 w-4 text-purple-400" />
+                      <span>14 Days Access</span>
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                /* Payment Method Tabs for Paid Upgrade */
+                <div className="space-y-3">
+                  <label className="text-xs font-mono font-bold text-[#747888]">Select Payment Gateway:</label>
+                  <div className="grid grid-cols-3 gap-2">
+                    <button
+                      onClick={() => setPaymentMethod("upi")}
+                      className={`p-3 rounded-xl border text-center font-mono text-xs font-bold transition-all ${
+                        paymentMethod === "upi"
+                          ? "bg-[#387ed1]/20 border-[#387ed1] text-white"
+                          : "bg-[#101016] border-[#242432] text-[#747888]"
+                      }`}
+                    >
+                      BHIM UPI / GPay
+                    </button>
+                    <button
+                      onClick={() => setPaymentMethod("card")}
+                      className={`p-3 rounded-xl border text-center font-mono text-xs font-bold transition-all ${
+                        paymentMethod === "card"
+                          ? "bg-[#387ed1]/20 border-[#387ed1] text-white"
+                          : "bg-[#101016] border-[#242432] text-[#747888]"
+                      }`}
+                    >
+                      Credit / Debit Card
+                    </button>
+                    <button
+                      onClick={() => setPaymentMethod("netbanking")}
+                      className={`p-3 rounded-xl border text-center font-mono text-xs font-bold transition-all ${
+                        paymentMethod === "netbanking"
+                          ? "bg-[#387ed1]/20 border-[#387ed1] text-white"
+                          : "bg-[#101016] border-[#242432] text-[#747888]"
+                      }`}
+                    >
+                      NetBanking (SBI/HDFC)
+                    </button>
+                  </div>
+
+                  <div className="p-4 rounded-xl bg-[#0f0f14] border border-[#242432] space-y-3">
+                    {paymentMethod === "upi" && (
+                      <div>
+                        <label className="text-[10px] text-[#747888] font-mono block mb-1">Enter VPA / UPI ID</label>
                         <input
                           type="text"
-                          placeholder="MM/YY"
-                          defaultValue="11/28"
-                          className="bg-[#181822] text-xs font-mono text-white p-2.5 rounded border border-[#282838]"
-                        />
-                        <input
-                          type="password"
-                          placeholder="CVV"
-                          defaultValue="889"
-                          className="bg-[#181822] text-xs font-mono text-white p-2.5 rounded border border-[#282838]"
+                          defaultValue="trader@upi"
+                          className="w-full bg-[#181822] text-xs font-mono text-white p-2.5 rounded border border-[#282838] focus:outline-none focus:border-[#387ed1]"
                         />
                       </div>
-                    </div>
-                  )}
-
-                  {paymentMethod === "netbanking" && (
-                    <select className="w-full bg-[#181822] text-xs font-mono text-white p-2.5 rounded border border-[#282838]">
-                      <option>HDFC Bank Direct Portal</option>
-                      <option>ICICI Bank Retail Gateway</option>
-                      <option>State Bank of India (SBI)</option>
-                      <option>Axis Bank Netbanking</option>
-                    </select>
-                  )}
+                    )}
+                    {paymentMethod === "card" && (
+                      <div className="space-y-2">
+                        <input
+                          type="text"
+                          placeholder="Card Number (4532 •••• •••• 8899)"
+                          defaultValue="4532 8901 2234 8899"
+                          className="w-full bg-[#181822] text-xs font-mono text-white p-2.5 rounded border border-[#282838]"
+                        />
+                        <div className="grid grid-cols-2 gap-2">
+                          <input
+                            type="text"
+                            placeholder="MM/YY"
+                            defaultValue="11/28"
+                            className="bg-[#181822] text-xs font-mono text-white p-2.5 rounded border border-[#282838]"
+                          />
+                          <input
+                            type="password"
+                            placeholder="CVV"
+                            defaultValue="889"
+                            className="bg-[#181822] text-xs font-mono text-white p-2.5 rounded border border-[#282838]"
+                          />
+                        </div>
+                      </div>
+                    )}
+                    {paymentMethod === "netbanking" && (
+                      <select className="w-full bg-[#181822] text-xs font-mono text-white p-2.5 rounded border border-[#282838]">
+                        <option>HDFC Bank Direct Portal</option>
+                        <option>ICICI Bank Retail Gateway</option>
+                        <option>State Bank of India (SBI)</option>
+                        <option>Axis Bank Netbanking</option>
+                      </select>
+                    )}
+                  </div>
                 </div>
-              </div>
+              )}
 
               {/* Checkout Action Buttons */}
               <div className="flex items-center justify-between pt-3">
@@ -452,15 +569,19 @@ export default function SubscriptionPricingModal({
                 </button>
 
                 <button
-                  onClick={handleConfirmPayment}
+                  onClick={handleConfirmAction}
                   disabled={isProcessing}
-                  className="bg-[#10b981] hover:bg-[#0da673] text-black font-mono text-xs font-black px-6 py-2.5 rounded-xl transition-all shadow-lg active:scale-95 flex items-center space-x-2"
+                  className={`font-mono text-xs font-black px-6 py-2.5 rounded-xl transition-all shadow-lg active:scale-95 flex items-center space-x-2 ${
+                    isTrialCheckout
+                      ? "bg-[#10b981] hover:bg-[#0da673] text-black"
+                      : "bg-[#387ed1] hover:bg-[#306ec0] text-white"
+                  }`}
                 >
                   {isProcessing ? (
-                    <span>Authenticating Gateway...</span>
+                    <span>Activating Plan...</span>
                   ) : (
                     <>
-                      <span>Pay &amp; Activate Plan</span>
+                      <span>{isTrialCheckout ? "Activate 14-Day Free Trial" : "Pay & Activate Plan"}</span>
                       <ArrowRight className="h-4 w-4" />
                     </>
                   )}
@@ -475,9 +596,12 @@ export default function SubscriptionPricingModal({
               <div className="flex h-16 w-16 items-center justify-center rounded-full bg-[#10b981]/20 text-[#10b981] border border-[#10b981]/40 mx-auto">
                 <CheckCircle2 className="h-10 w-10" />
               </div>
-              <h3 className="text-2xl font-bold font-mono text-white">Subscription Activated!</h3>
-              <p className="text-xs text-[#b0b3c0] max-w-md mx-auto">
-                Your account has been upgraded to <strong className="text-white">{checkoutPlan?.name}</strong>. Zero-GC LMAX Disruptor stream and direct LALAN HFT telemetry unlocked.
+              <h3 className="text-2xl font-bold font-mono text-white">
+                {isTrialCheckout ? "14-Day Free Trial Activated! 🎉" : "Subscription Activated!"}
+              </h3>
+              <p className="text-xs text-[#b0b3c0] max-w-md mx-auto leading-relaxed">
+                {actionMessage ||
+                  `Your account has been upgraded to ${checkoutPlan?.name}. Zero-GC LMAX Disruptor stream and direct LALAN HFT telemetry unlocked.`}
               </p>
               <button
                 onClick={resetAndClose}
@@ -487,7 +611,6 @@ export default function SubscriptionPricingModal({
               </button>
             </div>
           )}
-
         </motion.div>
       </div>
     </AnimatePresence>

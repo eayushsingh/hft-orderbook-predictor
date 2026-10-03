@@ -17,8 +17,11 @@ import {
   Info,
   Sun,
   Moon,
+  Gift,
+  Clock,
 } from "lucide-react";
 import { useTheme } from "@/context/ThemeContext";
+import { useSubscription } from "@/context/SubscriptionContext";
 
 interface LalanNavbarProps {
   activeTab: string;
@@ -49,7 +52,6 @@ export default function LalanNavbar({
   bankNiftyChange,
   btcPrice,
   btcChange,
-  activePlanId = "pro",
   onOpenBuyModal,
   onOpenSellModal,
   onOpenPricingModal,
@@ -58,6 +60,7 @@ export default function LalanNavbar({
   const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
   const [notificationsOpen, setNotificationsOpen] = useState(false);
   const { theme, toggleTheme } = useTheme();
+  const { activePlanId, isTrialActive, daysRemainingInTrial, getPlanBadgeLabel } = useSubscription();
 
   const navItems = [
     { id: "terminal", label: "Terminal / L2", icon: Zap },
@@ -68,13 +71,6 @@ export default function LalanNavbar({
     { id: "pricing", label: "Pricing & Plans", icon: Crown },
     { id: "about", label: "About & Specs", icon: Info },
   ];
-
-  const planBadgeName =
-    activePlanId === "institutional"
-      ? "INSTITUTIONAL"
-      : activePlanId === "pro"
-      ? "PRO QUANT"
-      : "RETAIL";
 
   return (
     <header className="sticky top-0 z-40 border-b border-[#262630] bg-[#121216] text-[#e0e0e0] font-sans shadow-md transition-colors duration-200">
@@ -179,8 +175,9 @@ export default function LalanNavbar({
                 <span className="text-base sm:text-lg font-black uppercase tracking-[0.15em] text-white">
                   LALAN
                 </span>
-                <span className="bg-[#387ed1]/20 text-[#387ed1] border border-[#387ed1]/40 text-[9px] font-mono font-bold px-1.5 py-0.2 rounded uppercase">
-                  {planBadgeName}
+                <span className="bg-[#10b981]/15 text-[#10b981] border border-[#10b981]/40 text-[9px] font-mono font-bold px-1.5 py-0.2 rounded uppercase flex items-center gap-1">
+                  {isTrialActive && <Clock className="h-2.5 w-2.5 animate-spin" />}
+                  {getPlanBadgeLabel()}
                 </span>
               </div>
               <span className="text-[9px] font-mono text-[#747888] uppercase tracking-wider hidden sm:block">
@@ -222,13 +219,13 @@ export default function LalanNavbar({
 
         {/* Right User Actions & Quick Orders */}
         <div className="flex items-center space-x-2 sm:space-x-3">
-          {/* Upgrade Plan Button */}
+          {/* Free Trial / Upgrade Plan Button */}
           <button
             onClick={() => onOpenPricingModal && onOpenPricingModal()}
-            className="hidden xl:flex items-center space-x-1 bg-gradient-to-r from-[#387ed1]/20 to-[#10b981]/20 hover:from-[#387ed1]/30 hover:to-[#10b981]/30 border border-[#387ed1]/40 text-white text-[11px] font-bold font-mono px-3 py-1.5 rounded transition-all active:scale-95 shadow"
+            className="hidden xl:flex items-center space-x-1 bg-gradient-to-r from-[#10b981]/20 to-[#387ed1]/20 hover:from-[#10b981]/30 hover:to-[#387ed1]/30 border border-[#10b981]/40 text-white text-[11px] font-bold font-mono px-3 py-1.5 rounded transition-all active:scale-95 shadow"
           >
-            <Crown className="h-3.5 w-3.5 text-[#10b981]" />
-            <span>Upgrade Subscription</span>
+            <Gift className="h-3.5 w-3.5 text-[#10b981]" />
+            <span>{isTrialActive ? `Free Trial (${daysRemainingInTrial}d left)` : "14-Day Free Trial"}</span>
           </button>
 
           {/* Quick Buy/Sell Buttons */}
@@ -288,7 +285,7 @@ export default function LalanNavbar({
               className="relative p-2 rounded-md text-[#9e9ea8] hover:bg-[#1f1f28] hover:text-white transition-colors"
             >
               <Bell className="h-4 w-4" />
-              <span className="absolute top-1 right-1 h-2 w-2 rounded-full bg-[#387ed1]" />
+              <span className="absolute top-1 right-1 h-2 w-2 rounded-full bg-[#10b981]" />
             </button>
 
             <AnimatePresence>
@@ -301,11 +298,11 @@ export default function LalanNavbar({
                 >
                   <div className="flex items-center justify-between border-b border-[#262630] pb-2 mb-2 font-bold text-white">
                     <span>System Alerts</span>
-                    <span className="text-[10px] text-[#387ed1] font-mono">3 New</span>
+                    <span className="text-[10px] text-[#10b981] font-mono">Launch Offer Active</span>
                   </div>
                   <div className="space-y-2 text-[#b0b3c0]">
                     <div className="p-2 rounded bg-[#10b981]/10 border border-[#10b981]/20 text-[11px]">
-                      <span className="font-bold text-[#10b981]">LALAN HFT Gateway:</span> Live feed connected at 0.8ms.
+                      <span className="font-bold text-[#10b981]">14-Day Free Trial:</span> Activated for new account setup. $0 charge.
                     </div>
                     <div className="p-2 rounded bg-[#387ed1]/10 border border-[#387ed1]/20 text-[11px]">
                       <span className="font-bold text-[#387ed1]">Disruptor Ring-Buffer:</span> Zero GC pause verified.
@@ -337,7 +334,7 @@ export default function LalanNavbar({
                   initial={{ opacity: 0, y: 8, scale: 0.95 }}
                   animate={{ opacity: 1, y: 0, scale: 1 }}
                   exit={{ opacity: 0, y: 8, scale: 0.95 }}
-                  className="absolute right-0 mt-2 w-60 rounded-lg border border-[#282834] bg-[#16161c] p-3 text-xs shadow-2xl z-50"
+                  className="absolute right-0 mt-2 w-64 rounded-lg border border-[#282834] bg-[#16161c] p-3 text-xs shadow-2xl z-50"
                 >
                   <div className="border-b border-[#262630] pb-2.5 mb-2.5">
                     <p className="font-bold text-white">Ayush Singh</p>
@@ -351,12 +348,18 @@ export default function LalanNavbar({
                         className="flex items-center gap-1 text-xs font-mono font-bold text-[#387ed1] hover:underline"
                       >
                         {theme === "dark" ? <Sun className="h-3 w-3 text-amber-400" /> : <Moon className="h-3 w-3 text-indigo-400" />}
-                        <span>{theme === "dark" ? "Switch to Light" : "Switch to Dark"}</span>
+                        <span>{theme === "dark" ? "Light" : "Dark"}</span>
                       </button>
                     </div>
                     <div className="flex justify-between py-1">
                       <span>Active Plan</span>
-                      <span className="font-mono font-bold text-[#387ed1]">{planBadgeName}</span>
+                      <span className="font-mono font-bold text-[#10b981]">{getPlanBadgeLabel()}</span>
+                    </div>
+                    <div className="flex justify-between py-1">
+                      <span>Trial Status</span>
+                      <span className="font-mono font-bold text-[#10b981]">
+                        {isTrialActive ? `${daysRemainingInTrial} Days Left ($0)` : "Paid Plan"}
+                      </span>
                     </div>
                     <div className="flex justify-between py-1">
                       <span>Available Cash</span>
@@ -378,9 +381,9 @@ export default function LalanNavbar({
                         setProfileDropdownOpen(false);
                         onOpenPricingModal && onOpenPricingModal();
                       }}
-                      className="w-full mt-1 py-1.5 bg-[#387ed1] hover:bg-[#306ec0] text-white font-mono font-bold text-[11px] rounded transition-all"
+                      className="w-full mt-1 py-1.5 bg-[#10b981] hover:bg-[#0da673] text-black font-mono font-bold text-[11px] rounded transition-all"
                     >
-                      Manage Subscription Tiers
+                      Manage 14-Day Free Trial
                     </button>
                   </div>
                 </motion.div>
@@ -388,36 +391,6 @@ export default function LalanNavbar({
             </AnimatePresence>
           </div>
         </div>
-      </div>
-
-      {/* Mobile Nav Tabs */}
-      <div className="flex lg:hidden overflow-x-auto border-t border-[#1f1f26] bg-[#0e0e12] px-2 py-1 space-x-1 no-scrollbar">
-        {navItems.map((item) => {
-          const Icon = item.icon;
-          const isActive = activeTab === item.id;
-          return (
-            <button
-              key={item.id}
-              onClick={() => {
-                if (item.id === "pricing" && onOpenPricingModal) {
-                  onOpenPricingModal();
-                } else if (item.id === "about" && onOpenAboutModal) {
-                  onOpenAboutModal();
-                } else {
-                  setActiveTab(item.id);
-                }
-              }}
-              className={`flex items-center space-x-1 px-3 py-1.5 rounded text-[11px] font-semibold shrink-0 transition-all ${
-                isActive
-                  ? "bg-[#387ed1] text-white"
-                  : "text-[#9e9ea8] hover:bg-[#1a1a20]"
-              }`}
-            >
-              <Icon className="h-3 w-3" />
-              <span>{item.label}</span>
-            </button>
-          );
-        })}
       </div>
     </header>
   );

@@ -6,27 +6,48 @@ import { motion } from "framer-motion";
 import LalanSiteHeader from "@/components/LalanSiteHeader";
 import LalanSiteFooter from "@/components/LalanSiteFooter";
 import SubscriptionPricingModal, { PRICING_PLANS } from "@/components/SubscriptionPricingModal";
-import { Check, ArrowRight, IndianRupee, HelpCircle, Zap, ShieldCheck } from "lucide-react";
+import { Check, ArrowRight, IndianRupee, Gift, Sparkles, Clock, ShieldCheck } from "lucide-react";
+import { useSubscription } from "@/context/SubscriptionContext";
 
 export default function PricingPage() {
   const [billingCycle, setBillingCycle] = useState<"monthly" | "annual">("annual");
   const [currency, setCurrency] = useState<"INR" | "USD">("INR");
   const [pricingModalOpen, setPricingModalOpen] = useState(false);
+  const { activePlanId, isTrialActive, daysRemainingInTrial } = useSubscription();
 
   return (
     <div className="min-h-screen bg-[#060609] text-[#e0e0e0] font-sans selection:bg-[#387ed1] selection:text-white flex flex-col">
       <LalanSiteHeader />
 
       <main className="flex-1">
-        {/* ── HERO BANNER ── */}
-        <section className="py-16 sm:py-20 px-4 sm:px-8 border-b border-[#181824] bg-gradient-to-b from-[#0a0a0f] to-[#060609]">
-          <div className="max-w-4xl mx-auto text-center space-y-4">
+        {/* ── HERO BANNER WITH LAUNCH FREE TRIAL OFFER ── */}
+        <section className="py-16 sm:py-20 px-4 sm:px-8 border-b border-[#181824] bg-gradient-to-b from-[#0a0a0f] via-[#0b0f19] to-[#060609] relative overflow-hidden">
+          <div className="max-w-4xl mx-auto text-center space-y-5">
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#10b981]/15 border border-[#10b981]/30 text-[#10b981] text-xs font-mono font-bold uppercase tracking-wider shadow-inner">
+              <Gift className="h-4 w-4 text-[#10b981] animate-bounce" />
+              Launch Special: 14-Day Free Unlimited Trial Enabled
+            </div>
+
             <h1 className="text-3xl sm:text-5xl font-black text-white tracking-tight">
-              Pricing &amp; Brokerage Charges
+              Transparent Pricing &amp; 14-Day Free Trial
             </h1>
-            <p className="text-sm sm:text-lg text-[#8a8d9b] max-w-xl mx-auto">
-              Free equity delivery and flat ₹20 or 0.03% per executed HFT trade. No hidden fees.
+            <p className="text-sm sm:text-lg text-[#8a8d9b] max-w-2xl mx-auto leading-relaxed">
+              We are starting the site with <strong className="text-white">100% Free Access for 14 Days</strong>. Test institutional L2 depth, OBI signals, and DhanHQ integration with zero credit card entry.
             </p>
+
+            <div className="pt-2 flex flex-wrap justify-center items-center gap-4 text-xs font-mono text-zinc-400">
+              <span className="flex items-center gap-1 text-[#10b981]">
+                <ShieldCheck className="h-4 w-4" /> No Credit Card Required
+              </span>
+              <span className="text-[#262638]">•</span>
+              <span className="flex items-center gap-1 text-[#387ed1]">
+                <Sparkles className="h-4 w-4" /> Full Pro &amp; Institutional Features
+              </span>
+              <span className="text-[#262638]">•</span>
+              <span className="flex items-center gap-1 text-purple-400">
+                <Clock className="h-4 w-4" /> Instant 1-Click Activation
+              </span>
+            </div>
           </div>
         </section>
 
@@ -68,8 +89,8 @@ export default function PricingPage() {
         {/* ── SUBSCRIPTION TIERS FOR QUANTS ── */}
         <section className="py-16 sm:py-24 px-4 sm:px-8 max-w-[1200px] mx-auto border-b border-[#181824]">
           <div className="text-center mb-12 space-y-3">
-            <span className="text-xs font-mono font-bold uppercase tracking-wider text-[#387ed1] bg-[#387ed1]/10 px-3 py-1 rounded-full border border-[#387ed1]/20">
-              Quantitative Subscription Tiers
+            <span className="text-xs font-mono font-bold uppercase tracking-wider text-[#10b981] bg-[#10b981]/10 px-3 py-1 rounded-full border border-[#10b981]/20">
+              Quantitative Subscription Tiers (14-Day Free Trial)
             </span>
             <h2 className="text-2xl sm:text-4xl font-bold text-white tracking-tight">
               Flexible Plans for Indian Algorithmic Traders
@@ -136,6 +157,8 @@ export default function PricingPage() {
                   ? plan.annualPriceUSD
                   : plan.monthlyPriceUSD;
 
+              const isCurrent = activePlanId === plan.id;
+
               return (
                 <div
                   key={plan.id}
@@ -158,6 +181,11 @@ export default function PricingPage() {
                           : `$${price}`}
                       </span>
                       {price > 0 && <span className="text-xs text-[#747888] font-mono"> / month</span>}
+                      {price > 0 && (
+                        <p className="text-xs text-[#10b981] font-mono font-bold mt-1">
+                          🎁 14 Days Free ($0 Today)
+                        </p>
+                      )}
                     </div>
 
                     <div className="space-y-3 mb-8">
@@ -172,9 +200,17 @@ export default function PricingPage() {
 
                   <button
                     onClick={() => setPricingModalOpen(true)}
-                    className="w-full py-3 rounded-xl font-mono text-xs font-bold bg-[#387ed1] hover:bg-[#306ec0] text-white transition-all shadow"
+                    className={`w-full py-3 rounded-xl font-mono text-xs font-bold transition-all shadow ${
+                      plan.id !== "retail"
+                        ? "bg-[#10b981] hover:bg-[#0da673] text-black font-extrabold"
+                        : "bg-[#1f1f2c] hover:bg-[#387ed1] text-white"
+                    }`}
                   >
-                    {plan.cta}
+                    {plan.id !== "retail"
+                      ? isCurrent && isTrialActive
+                        ? `Trial Active (${daysRemainingInTrial}d left)`
+                        : plan.trialCta
+                      : plan.cta}
                   </button>
                 </div>
               );
