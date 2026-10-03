@@ -59,24 +59,25 @@ body {
 }
 
 /* ═══════════════════════════════════════════════════════════════
-   LIGHT THEME COMPREHENSIVE OVERRIDES
-   Ensures Zerodha Kite-style bright, high-contrast, production-grade light mode.
+   PRODUCTION-GRADE DUAL THEME OVERRIDES (LIGHT & DARK MODE)
+   Ensures 100% text visibility, high contrast, & Zerodha Kite polish.
    ═══════════════════════════════════════════════════════════════ */
 
-/* Header & Navigation Overrides in Light Mode */
+/* Light Theme Header & Navigation */
 html.light header {
   background-color: rgba(255, 255, 255, 0.95) !important;
-  border-color: #e2e8f0 !important;
+  border-color: #cbd5e1 !important;
   color: #0f172a !important;
 }
 
 html.light header div.bg-\[\#0c0c0f\] {
-  background-color: #f8fafc !important;
+  background-color: #f1f5f9 !important;
   border-color: #e2e8f0 !important;
-  color: #475569 !important;
+  color: #334155 !important;
 }
 
-/* Page Backgrounds */
+/* Light Theme Page Backgrounds */
+html.light main,
 html.light .bg-\[\#060608\],
 html.light .bg-\[\#060609\],
 html.light .bg-\[\#08080a\],
@@ -86,33 +87,39 @@ html.light .bg-\[\#0a0a0e\],
 html.light .bg-\[\#0a0a0f\],
 html.light .bg-\[\#0c0c0f\],
 html.light .bg-\[\#0c0c10\],
+html.light .bg-\[\#0d0d12\],
 html.light .bg-\[\#0e0e12\],
 html.light .bg-\[\#0e0e13\],
 html.light .bg-\[\#0e0e13\]\/90,
 html.light .bg-\[\#0f0f13\],
 html.light .bg-\[\#0f0f13\]\/90,
 html.light .bg-\[\#0f0f16\] {
-  background-color: #f4f6f9 !important;
+  background-color: #f8fafc !important;
 }
 
-/* Card & Box Overrides */
+/* Light Theme Card & Container Overrides */
+html.light .bg-\[\#101016\],
+html.light .bg-\[\#10101b\],
 html.light .bg-\[\#121216\],
 html.light .bg-\[\#14141a\],
 html.light .bg-\[\#16161c\],
 html.light .bg-\[\#181822\],
-html.light .bg-\[\#1c1c24\] {
+html.light .bg-\[\#1c1c24\],
+html.light aside {
   background-color: #ffffff !important;
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05), 0 1px 2px -1px rgba(0, 0, 0, 0.05) !important;
+  color: #0f172a !important;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.08), 0 1px 2px -1px rgba(0, 0, 0, 0.04) !important;
 }
 
-/* Sub-card & Active Tab Overrides */
+/* Light Theme Sub-containers, Hover States & Inputs */
 html.light .bg-\[\#1f1f28\],
 html.light .bg-\[\#1a1a20\],
-html.light .bg-\[\#242432\] {
+html.light .bg-\[\#242432\],
+html.light .bg-\[\#181822\] {
   background-color: #f1f5f9 !important;
 }
 
-/* Border Color Overrides */
+/* Light Theme Border Color Overrides */
 html.light .border-\[\#181824\],
 html.light .border-\[\#1f1f26\],
 html.light .border-\[\#1f1f2b\],
@@ -121,51 +128,107 @@ html.light .border-\[\#262630\],
 html.light .border-\[\#262634\],
 html.light .border-\[\#282834\],
 html.light .border-\[\#282838\],
+html.light .border-\[\#22222f\],
 html.light .border-white\/\[0\.06\],
 html.light .border-white\/\[0\.08\],
 html.light .border-white\/\[0\.14\] {
-  border-color: #e2e8f0 !important;
+  border-color: #cbd5e1 !important;
 }
 
-/* Text Color Overrides */
+/* Light Theme High-Contrast Text Overrides */
+html.light h1,
+html.light h2,
+html.light h3,
+html.light h4,
 html.light .text-white,
-html.light .text-zinc-100 {
+html.light .text-zinc-100,
+html.light .text-zinc-200 {
   color: #0f172a !important;
 }
 
 html.light .text-zinc-400,
 html.light .text-zinc-300,
 html.light .text-\[\#e0e0e0\],
+html.light .text-\[\#dedede\],
 html.light .text-\[\#b0b3c0\] {
-  color: #334155 !important;
+  color: #1e293b !important;
 }
 
 html.light .text-\[\#a0a3b0\],
 html.light .text-\[\#9e9ea8\],
 html.light .text-\[\#8a8d9b\],
 html.light .text-\[\#747888\] {
-  color: #64748b !important;
+  color: #475569 !important;
 }
 
-/* Table Header and Hover Overrides in Light Mode */
-html.light table th {
-  color: #64748b !important;
-  background-color: #f8fafc !important;
-  border-color: #e2e8f0 !important;
+/* Gradient Text In Light Mode (Converts white gradient to deep slate/black gradient) */
+html.light .bg-clip-text {
+  background-image: linear-gradient(to bottom, #0f172a, #1e293b, #334155) !important;
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+  color: transparent !important;
+  filter: none !important;
+  drop-shadow: none !important;
 }
 
-html.light table td {
-  border-color: #f1f5f9 !important;
+/* Solid Buttons & Badges: Preserve Crisp White Text in Light Mode */
+html.light button.bg-\[\#387ed1\],
+html.light button.bg-\[\#ff5722\],
+html.light button.bg-\[\#10b981\],
+html.light a.bg-\[\#387ed1\],
+html.light a.bg-\[\#ff5722\],
+html.light a.bg-\[\#10b981\],
+html.light .bg-\[\#387ed1\] span.text-white,
+html.light .bg-\[\#387ed1\] div,
+html.light .bg-\[\#387ed1\] {
+  color: #ffffff !important;
 }
 
-html.light table tr:hover {
-  background-color: #f8fafc !important;
+html.light button.bg-\[\#10b981\],
+html.light a.bg-\[\#10b981\] {
+  color: #000000 !important;
 }
 
-/* Modal Content Overrides in Light Mode */
-html.light .modal-container,
-html.light [role="dialog"] {
+/* Form Inputs & Selects in Light Mode */
+html.light input,
+html.light select,
+html.light textarea {
   background-color: #ffffff !important;
   color: #0f172a !important;
   border-color: #cbd5e1 !important;
+}
+
+html.light input::placeholder {
+  color: #64748b !important;
+}
+
+/* Table Header and Row Overrides in Light Mode */
+html.light table th {
+  color: #475569 !important;
+  background-color: #f1f5f9 !important;
+  border-color: #cbd5e1 !important;
+}
+
+html.light table td {
+  border-color: #e2e8f0 !important;
+}
+
+html.light table tr:hover {
+  background-color: #f1f5f9 !important;
+}
+
+/* Modals & Dialog Windows in Light Mode */
+html.light .modal-container,
+html.light [role="dialog"],
+html.light div.fixed.inset-0 > div > div {
+  background-color: #ffffff !important;
+  color: #0f172a !important;
+  border-color: #cbd5e1 !important;
+}
+
+/* Footer in Light Mode */
+html.light footer {
+  background-color: #f1f5f9 !important;
+  border-color: #cbd5e1 !important;
+  color: #475569 !important;
 }

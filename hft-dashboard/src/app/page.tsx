@@ -40,7 +40,7 @@ const featureCards = [
 
 export default function LandingPage() {
   return (
-    <div className="font-sans bg-[#060608] text-zinc-100 min-h-screen selection:bg-[#387ed1] selection:text-white relative overflow-x-hidden flex flex-col">
+    <div className="font-sans bg-[#060608] text-zinc-100 min-h-screen selection:bg-[#387ed1] selection:text-white relative overflow-x-hidden flex flex-col transition-colors duration-200">
       <LalanSiteHeader />
 
       <main className="flex-1">
@@ -56,7 +56,7 @@ export default function LandingPage() {
         {/* ════════════════════════════════════════════════
             SECTION 1 — HERO + LIVE TERMINAL MOCKUP
             ════════════════════════════════════════════════ */}
-        <section className="text-white min-h-[85vh] flex flex-col items-center justify-center px-4 sm:px-6 py-12 sm:py-20 relative">
+        <section className="min-h-[85vh] flex flex-col items-center justify-center px-4 sm:px-6 py-12 sm:py-20 relative">
           
           {/* Headline */}
           <motion.div
@@ -71,15 +71,15 @@ export default function LandingPage() {
             </div>
 
             <h1 className="flex flex-col gap-2 sm:gap-4">
-              <span className="text-2xl sm:text-4xl font-medium tracking-tight text-zinc-400">
+              <span className="text-2xl sm:text-4xl font-medium tracking-tight text-zinc-600 dark:text-zinc-400">
                 Invest &amp; Trade in Everything
               </span>
-              <span className="text-3xl sm:text-6xl md:text-7xl font-black tracking-tighter leading-[1.05] sm:leading-[0.98] bg-gradient-to-b from-white via-zinc-100 to-zinc-400 bg-clip-text text-transparent">
+              <span className="text-3xl sm:text-6xl md:text-7xl font-black tracking-tighter leading-[1.05] sm:leading-[0.98] bg-gradient-to-b from-slate-900 via-slate-800 to-slate-600 dark:from-white dark:via-zinc-100 dark:to-zinc-400 bg-clip-text text-transparent">
                 We eliminate risk,<br className="hidden sm:inline" /> and alpha chases us.
               </span>
             </h1>
 
-            <p className="text-zinc-400 text-sm sm:text-lg md:text-xl max-w-2xl mx-auto leading-relaxed font-normal">
+            <p className="text-zinc-600 dark:text-zinc-400 text-sm sm:text-lg md:text-xl max-w-2xl mx-auto leading-relaxed font-normal">
               Institutional market microstructure analysis for retail &amp; options traders. Sub-millisecond latency. Live Order Book Imbalance (OBI).
             </p>
 
@@ -104,15 +104,15 @@ export default function LandingPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
           >
-            <div className="bg-[#0f0f13]/90 border border-white/[0.14] rounded-xl sm:rounded-2xl shadow-2xl shadow-black/90 backdrop-blur-xl overflow-hidden ring-1 ring-white/10 hover:border-[#387ed1]/40 transition-colors">
+            <div className="bg-[#0f0f13] border border-zinc-700/50 dark:border-white/[0.14] rounded-xl sm:rounded-2xl shadow-2xl backdrop-blur-xl overflow-hidden ring-1 ring-black/10 hover:border-[#387ed1]/40 transition-colors">
               {/* Window Header */}
-              <div className="flex items-center justify-between px-3.5 sm:px-4 py-2.5 bg-[#08080b] border-b border-white/[0.08]">
+              <div className="flex items-center justify-between px-3.5 sm:px-4 py-2.5 bg-[#08080b] border-b border-zinc-800">
                 <div className="flex items-center space-x-2">
                   <div className="w-3 h-3 rounded-full bg-[#ff5f57] border border-red-600/40" />
                   <div className="w-3 h-3 rounded-full bg-[#febc2e] border border-amber-600/40" />
                   <div className="w-3 h-3 rounded-full bg-[#28c840] border border-emerald-600/40" />
                 </div>
-                <div className="bg-[#14141c] border border-white/[0.08] rounded-md px-3 py-1 text-zinc-400 text-[10px] sm:text-xs font-mono text-center max-w-[220px] sm:max-w-xs truncate">
+                <div className="bg-[#14141c] border border-zinc-800 rounded-md px-3 py-1 text-zinc-300 text-[10px] sm:text-xs font-mono text-center max-w-[220px] sm:max-w-xs truncate">
                   lalan-hft.internal/dashboard
                 </div>
                 <div className="flex items-center gap-1.5 text-[10px] font-mono text-emerald-400 font-bold hidden sm:flex">
@@ -136,7 +136,7 @@ export default function LandingPage() {
         {/* ════════════════════════════════════════════════
             SECTION 2 — LOCK-FREE COUNTER STAT
             ════════════════════════════════════════════════ */}
-        <section className="bg-[#08080c]/90 text-white py-16 sm:py-24 px-4 sm:px-6 border-t border-b border-white/[0.06] backdrop-blur-xl">
+        <section className="bg-[#08080c]/90 py-16 sm:py-24 px-4 sm:px-6 border-t border-b border-zinc-200 dark:border-white/[0.06] backdrop-blur-xl">
           <div className="max-w-4xl mx-auto text-center">
             <motion.div
               initial={{ opacity: 0, y: 16 }}
@@ -155,10 +155,10 @@ export default function LandingPage() {
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
             >
-              <div className="text-5xl sm:text-7xl md:text-8xl font-black text-transparent bg-clip-text bg-gradient-to-b from-white via-zinc-100 to-zinc-500 leading-none tracking-tight font-mono drop-shadow-[0_0_35px_rgba(255,255,255,0.15)]">
+              <div className="text-5xl sm:text-7xl md:text-8xl font-black text-transparent bg-clip-text bg-gradient-to-b from-slate-900 via-slate-800 to-slate-600 dark:from-white dark:via-zinc-100 dark:to-zinc-500 leading-none tracking-tight font-mono">
                 <CountUp start={985536} end={1000000} duration={2.5} separator="," />
               </div>
-              <p className="text-zinc-400 text-sm sm:text-lg mt-4 sm:mt-6 max-w-md mx-auto leading-relaxed px-2 font-normal">
+              <p className="text-zinc-600 dark:text-zinc-400 text-sm sm:text-lg mt-4 sm:mt-6 max-w-md mx-auto leading-relaxed px-2 font-normal">
                 Order events processed per second through our LMAX Disruptor ring buffer. Zero Garbage Collection pauses.
               </p>
             </motion.div>
@@ -168,14 +168,14 @@ export default function LandingPage() {
         {/* ════════════════════════════════════════════════
             SECTION 3 — FEATURE CARDS GRID
             ════════════════════════════════════════════════ */}
-        <section className="bg-[#060608] text-white py-16 sm:py-24 px-4 sm:px-6">
+        <section className="py-16 sm:py-24 px-4 sm:px-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 max-w-5xl mx-auto">
             {featureCards.map((card, i) => {
               const Icon = card.icon;
               return (
                 <motion.div
                   key={card.title}
-                  className="bg-[#0e0e13]/90 border border-white/[0.08] hover:border-[#387ed1]/40 rounded-2xl p-6 sm:p-8 transition-all hover:bg-white/[0.02] shadow-xl group"
+                  className="bg-[#0e0e13] border border-zinc-200 dark:border-white/[0.08] hover:border-[#387ed1]/40 rounded-2xl p-6 sm:p-8 transition-all shadow-xl group"
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
@@ -185,11 +185,11 @@ export default function LandingPage() {
                     <div className={`flex h-10 w-10 items-center justify-center rounded-xl border ${card.color}`}>
                       <Icon className="h-5 w-5" />
                     </div>
-                    <h3 className="text-lg sm:text-xl font-bold text-white tracking-tight">
+                    <h3 className="text-lg sm:text-xl font-bold text-slate-900 dark:text-white tracking-tight">
                       {card.title}
                     </h3>
                   </div>
-                  <p className="text-zinc-400 text-xs sm:text-sm leading-relaxed font-normal">{card.description}</p>
+                  <p className="text-slate-600 dark:text-zinc-400 text-xs sm:text-sm leading-relaxed font-normal">{card.description}</p>
                 </motion.div>
               );
             })}
