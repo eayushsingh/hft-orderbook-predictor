@@ -69,16 +69,9 @@ export default function LandingPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
           >
-            <div className="flex flex-wrap items-center justify-center gap-2">
-              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#387ed1]/10 border border-[#387ed1]/20 text-[#387ed1] text-[11px] sm:text-xs font-mono uppercase tracking-wider shadow-inner">
-                <Sparkles className="h-3.5 w-3.5 text-[#387ed1] animate-pulse" />
-                LALAN Enterprise HFT Order Book Engine
-              </div>
-
-              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-[11px] sm:text-xs font-mono uppercase tracking-wider shadow-sm animate-pulse">
-                <span>💸</span>
-                <span>Live Alpha Flow (Click screen for Cash Burst)</span>
-              </div>
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#387ed1]/10 border border-[#387ed1]/20 text-[#387ed1] text-[11px] sm:text-xs font-mono uppercase tracking-wider shadow-inner">
+              <Sparkles className="h-3.5 w-3.5 text-[#387ed1] animate-pulse" />
+              LALAN Enterprise HFT Order Book Engine
             </div>
 
             <h1 className="flex flex-col gap-2 sm:gap-4">
