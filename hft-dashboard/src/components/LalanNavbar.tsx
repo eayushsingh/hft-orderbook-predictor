@@ -157,7 +157,7 @@ export default function LalanNavbar({
       {/* ── MAIN NAVBAR (BACKPACK.EXCHANGE UI REF) ── */}
       <div className="mx-auto flex h-13 items-center justify-between px-3 sm:px-5">
         {/* Left Section: Logo + Symbol Selector + Plan Badge */}
-        <div className="flex items-center space-x-3">
+        <div className="flex items-center space-x-2.5">
           <a href="/" className="flex items-center space-x-2 group shrink-0">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
@@ -169,6 +169,16 @@ export default function LalanNavbar({
               LALAN
             </span>
           </a>
+
+          <div className="hidden sm:inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-[#090d16] border border-[#387ed1]/40 shadow-[0_0_10px_rgba(56,126,209,0.2)] backdrop-blur-md">
+            <span className="relative flex h-1.5 w-1.5">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-500"></span>
+            </span>
+            <span className="text-[9px] font-mono font-extrabold tracking-wider bg-gradient-to-r from-sky-400 via-cyan-300 to-emerald-400 bg-clip-text text-transparent uppercase">
+              HFT QUANT ENGINE
+            </span>
+          </div>
 
           <div className="h-4 w-px bg-[#22222e] hidden xs:block" />
 

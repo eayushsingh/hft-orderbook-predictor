@@ -29,12 +29,16 @@ export default function LalanSiteHeader() {
             alt="LALAN Logo"
             className="h-8 sm:h-9 w-auto object-contain transition-transform group-hover:scale-105"
           />
-          <div className="flex flex-col leading-none">
-            <div className="flex items-center gap-1.5">
-              <span className="text-base sm:text-lg font-black uppercase tracking-[0.18em] text-white">
-                LALAN
+          <div className="flex items-center gap-2">
+            <span className="text-base sm:text-lg font-black uppercase tracking-[0.18em] text-white">
+              LALAN
+            </span>
+            <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#090d16] border border-[#387ed1]/40 shadow-[0_0_12px_rgba(56,126,209,0.25)] backdrop-blur-md group-hover:border-[#387ed1]/70 group-hover:shadow-[0_0_16px_rgba(56,126,209,0.4)] transition-all duration-300">
+              <span className="relative flex h-1.5 w-1.5">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-500"></span>
               </span>
-              <span className="bg-[#387ed1]/20 text-[#387ed1] border border-[#387ed1]/40 text-[9px] font-mono font-bold px-1.5 py-0.2 rounded uppercase">
+              <span className="text-[10px] font-mono font-extrabold tracking-wider bg-gradient-to-r from-sky-400 via-cyan-300 to-emerald-400 bg-clip-text text-transparent uppercase">
                 HFT QUANT ENGINE
               </span>
             </div>
