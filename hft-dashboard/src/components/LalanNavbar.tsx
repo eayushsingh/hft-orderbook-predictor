@@ -170,12 +170,12 @@ export default function LalanNavbar({
             </span>
           </a>
 
-          <div className="hidden sm:inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-[#090d16] border border-[#387ed1]/40 shadow-[0_0_10px_rgba(56,126,209,0.2)] backdrop-blur-md">
-            <span className="relative flex h-1.5 w-1.5">
+          <div className="hidden sm:inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#387ed1]/15 border border-[#387ed1]/50 shadow-sm backdrop-blur-md shrink-0">
+            <span className="relative flex h-2 w-2">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-500"></span>
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
             </span>
-            <span className="text-[9px] font-mono font-extrabold tracking-wider bg-gradient-to-r from-sky-400 via-cyan-300 to-emerald-400 bg-clip-text text-transparent uppercase">
+            <span className="text-[9px] font-mono font-black tracking-wider text-[#1d4ed8] dark:text-[#60a5fa] uppercase">
               HFT QUANT ENGINE
             </span>
           </div>

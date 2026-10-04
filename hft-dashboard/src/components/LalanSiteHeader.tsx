@@ -19,7 +19,7 @@ export default function LalanSiteHeader() {
   ];
 
   return (
-    <header className="sticky top-0 z-50 bg-[#0a0a0e]/90 backdrop-blur-xl border-b border-[#1f1f2b] text-[#e0e0e0] font-sans transition-colors duration-200">
+    <header className="sticky top-0 z-50 bg-white/90 dark:bg-[#0a0a0e]/90 backdrop-blur-xl border-b border-zinc-200 dark:border-[#1f1f2b] text-slate-800 dark:text-[#e0e0e0] font-sans transition-colors duration-200">
       <div className="mx-auto flex h-16 max-w-[1300px] items-center justify-between px-4 sm:px-8">
         {/* Brand Logo */}
         <Link href="/" className="flex items-center space-x-2.5 group">
@@ -30,15 +30,15 @@ export default function LalanSiteHeader() {
             className="h-8 sm:h-9 w-auto object-contain transition-transform group-hover:scale-105"
           />
           <div className="flex items-center gap-2">
-            <span className="text-base sm:text-lg font-black uppercase tracking-[0.18em] text-white">
+            <span className="text-base sm:text-lg font-black uppercase tracking-[0.18em] text-slate-900 dark:text-white">
               LALAN
             </span>
-            <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#090d16] border border-[#387ed1]/40 shadow-[0_0_12px_rgba(56,126,209,0.25)] backdrop-blur-md group-hover:border-[#387ed1]/70 group-hover:shadow-[0_0_16px_rgba(56,126,209,0.4)] transition-all duration-300">
-              <span className="relative flex h-1.5 w-1.5">
+            <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#387ed1]/15 border border-[#387ed1]/50 shadow-sm backdrop-blur-md shrink-0">
+              <span className="relative flex h-2 w-2">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-500"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
               </span>
-              <span className="text-[10px] font-mono font-extrabold tracking-wider bg-gradient-to-r from-sky-400 via-cyan-300 to-emerald-400 bg-clip-text text-transparent uppercase">
+              <span className="text-[10px] font-mono font-black tracking-wider text-[#1d4ed8] dark:text-[#60a5fa] uppercase">
                 HFT QUANT ENGINE
               </span>
             </div>
