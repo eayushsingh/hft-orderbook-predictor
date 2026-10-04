@@ -71,18 +71,23 @@ export default function SupportPage() {
         </div>
 
         {/* Direct Contact Banner */}
-        <div className="p-8 rounded-2xl bg-[#0e0e14] border border-[#1f1f2c] text-center space-y-4">
-          <h3 className="text-xl font-bold text-white">Need custom HFT algorithm deployment?</h3>
-          <p className="text-xs text-[#8a8d9b] max-w-lg mx-auto">
-            Our quant infrastructure team provides 1-on-1 co-location server setup for prop trading firms in India.
+        <div className="p-8 sm:p-10 rounded-2xl bg-[#0e0e14] border border-[#1f1f2c] text-center space-y-4 shadow-xl">
+          <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-[#387ed1]/10 border border-[#387ed1]/20 text-[#387ed1] mb-2">
+            <Mail className="h-6 w-6" />
+          </div>
+          <h3 className="text-xl sm:text-2xl font-bold text-white">Need custom HFT algorithm deployment or support?</h3>
+          <p className="text-xs sm:text-sm text-[#8a8d9b] max-w-lg mx-auto">
+            Our quant infrastructure team provides 1-on-1 co-location server setup, API integration assistance, and priority support.
           </p>
-          <a
-            href="mailto:support@lalan-hft.internal"
-            className="inline-flex items-center space-x-2 bg-[#387ed1] text-white font-mono text-xs font-bold px-6 py-2.5 rounded-xl shadow"
-          >
-            <Mail className="h-4 w-4" />
-            <span>Contact Quant Support</span>
-          </a>
+          <div className="pt-3 flex flex-col sm:flex-row items-center justify-center gap-3">
+            <a
+              href="mailto:ayushsinghe07@gmail.com"
+              className="inline-flex items-center space-x-2.5 bg-[#387ed1] hover:bg-[#306ec0] text-white font-mono text-xs sm:text-sm font-bold px-7 py-3 rounded-xl shadow-lg shadow-[#387ed1]/25 transition-all border border-[#387ed1]/40"
+            >
+              <Mail className="h-4 w-4 text-white" />
+              <span>ayushsinghe07@gmail.com</span>
+            </a>
+          </div>
         </div>
       </main>
 

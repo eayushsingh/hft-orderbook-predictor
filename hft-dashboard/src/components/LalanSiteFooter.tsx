@@ -30,6 +30,7 @@ export default function LalanSiteFooter() {
               <li><Link href="/products" className="hover:text-white transition-colors">Ecosystem &amp; Products</Link></li>
               <li><Link href="/pricing" className="hover:text-white transition-colors">Brokerage &amp; Pricing</Link></li>
               <li><Link href="/support" className="hover:text-white transition-colors">Support &amp; FAQ</Link></li>
+              <li><a href="mailto:ayushsinghe07@gmail.com" className="text-[#387ed1] hover:underline transition-colors font-mono text-[11px]">ayushsinghe07@gmail.com</a></li>
             </ul>
           </div>
 
