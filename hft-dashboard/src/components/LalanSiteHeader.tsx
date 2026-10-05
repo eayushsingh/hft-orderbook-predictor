@@ -37,7 +37,7 @@ export default function LalanSiteHeader() {
             <span className="text-base sm:text-lg font-black uppercase tracking-[0.18em] text-slate-900 dark:text-white">
               LALAN
             </span>
-            <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#387ed1]/15 border border-[#387ed1]/50 shadow-sm backdrop-blur-md shrink-0">
+            <div className="hidden xs:inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#387ed1]/15 border border-[#387ed1]/50 shadow-sm backdrop-blur-md shrink-0">
               <span className="relative flex h-2 w-2">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
@@ -165,18 +165,18 @@ export default function LalanSiteHeader() {
           <button
             onClick={toggleTheme}
             aria-label="Toggle Dark/Light Mode"
-            className="p-2 rounded-lg border border-[#262634] bg-[#14141a] text-[#a0a3b0] hover:text-white"
+            className="p-2 rounded-lg border border-slate-300 dark:border-[#262634] bg-slate-100 dark:bg-[#14141a] text-slate-800 dark:text-[#a0a3b0] hover:text-slate-950 dark:hover:text-white"
           >
             {theme === "dark" ? (
               <Sun className="h-5 w-5 text-amber-400" />
             ) : (
-              <Moon className="h-5 w-5 text-indigo-400" />
+              <Moon className="h-5 w-5 text-indigo-500" />
             )}
           </button>
 
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="p-2 text-[#a0a3b0] hover:text-white"
+            className="p-2 text-slate-700 dark:text-[#a0a3b0] hover:text-slate-950 dark:hover:text-white"
           >
             {mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
           </button>
@@ -185,40 +185,68 @@ export default function LalanSiteHeader() {
 
       {/* Mobile Drawer Menu */}
       {mobileMenuOpen && (
-        <div className="md:hidden border-b border-[#1f1f2b] bg-[#0c0c10] px-4 py-4 space-y-3 font-medium text-sm">
+        <div className="md:hidden border-b border-slate-200 dark:border-[#1f1f2b] bg-white dark:bg-[#0c0c10] px-4 py-4 space-y-3 font-medium text-sm text-slate-900 dark:text-white shadow-2xl">
           {navLinks.map((link) => (
             <Link
               key={link.href}
               href={link.href}
               onClick={() => setMobileMenuOpen(false)}
-              className="block text-[#a0a3b0] hover:text-white py-1"
+              className="block text-slate-700 dark:text-[#a0a3b0] hover:text-[#387ed1] dark:hover:text-white py-1 font-semibold"
             >
               {link.label}
             </Link>
           ))}
-          <div className="pt-2 border-t border-[#1f1f2b] flex items-center justify-between">
-            <span className="text-xs text-[#a0a3b0] font-mono">Theme Mode</span>
-            <button
-              onClick={toggleTheme}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded bg-[#14141a] border border-[#262634] text-xs font-mono font-bold"
-            >
-              {theme === "dark" ? (
-                <>
-                  <Sun className="h-3.5 w-3.5 text-amber-400" />
-                  <span>Switch to Light</span>
-                </>
-              ) : (
-                <>
-                  <Moon className="h-3.5 w-3.5 text-indigo-400" />
-                  <span>Switch to Dark</span>
-                </>
-              )}
-            </button>
+          <div className="pt-2 border-t border-slate-200 dark:border-[#1f1f2b] space-y-2">
+            {isLoggedIn && user ? (
+              <div className="space-y-2">
+                <div className="text-xs font-mono font-bold text-slate-900 dark:text-white">
+                  Signed in as: <span className="text-[#387ed1]">{user.name}</span>
+                </div>
+                <Link
+                  href="/admin"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="block text-xs font-mono font-bold text-amber-600 dark:text-amber-400 py-1"
+                >
+                  ⚙️ Admin Telemetry Panel
+                </Link>
+              </div>
+            ) : (
+              <button
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                  openSignIn();
+                }}
+                className="flex items-center space-x-2 text-xs font-mono font-bold text-[#387ed1] py-1"
+              >
+                <LogIn className="w-4 h-4" />
+                <span>Sign In via Google OAuth</span>
+              </button>
+            )}
+
+            <div className="flex items-center justify-between pt-1">
+              <span className="text-xs text-slate-500 dark:text-[#a0a3b0] font-mono">Theme Mode</span>
+              <button
+                onClick={toggleTheme}
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded bg-slate-100 dark:bg-[#14141a] border border-slate-300 dark:border-[#262634] text-xs font-mono font-bold text-slate-900 dark:text-white"
+              >
+                {theme === "dark" ? (
+                  <>
+                    <Sun className="h-3.5 w-3.5 text-amber-400" />
+                    <span>Switch to Light</span>
+                  </>
+                ) : (
+                  <>
+                    <Moon className="h-3.5 w-3.5 text-indigo-500" />
+                    <span>Switch to Dark</span>
+                  </>
+                )}
+              </button>
+            </div>
           </div>
           <Link
             href="/dashboard"
             onClick={() => setMobileMenuOpen(false)}
-            className="block w-full text-center bg-[#387ed1] text-white font-bold py-2.5 rounded-lg mt-2"
+            className="block w-full text-center bg-[#387ed1] hover:bg-[#306ec0] text-white font-bold py-2.5 rounded-xl mt-3 shadow-md"
           >
             Open Live Terminal
           </Link>

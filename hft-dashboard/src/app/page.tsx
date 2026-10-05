@@ -203,7 +203,7 @@ export default function LandingPage() {
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
             >
-              <div className="text-5xl sm:text-7xl md:text-8xl font-black text-transparent bg-clip-text bg-gradient-to-b from-slate-900 via-slate-800 to-slate-600 dark:from-white dark:via-zinc-100 dark:to-zinc-500 leading-none tracking-tight font-mono">
+              <div className="text-3xl xs:text-5xl sm:text-7xl md:text-8xl font-black text-transparent bg-clip-text bg-gradient-to-b from-slate-900 via-slate-800 to-slate-600 dark:from-white dark:via-zinc-100 dark:to-zinc-500 leading-none tracking-tight font-mono max-w-full truncate px-2">
                 <CountUp start={1} end={liveOrderEvents} duration={2.5} separator="," preserveValue={true} />
               </div>
               <p className="text-slate-600 dark:text-zinc-400 text-sm sm:text-lg mt-4 sm:mt-6 max-w-md mx-auto leading-relaxed px-2 font-normal">
