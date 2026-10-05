@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Search,
@@ -160,23 +160,28 @@ export default function LalanWatchlist({
     return () => clearInterval(interval);
   }, [liveBtcPrice]);
 
-  const filteredWatchlist = watchlist.filter(
-    (stock) =>
-      stock.symbol.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      stock.name.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  // Zero-latency memoized filtered list
+  const filteredWatchlist = useMemo(() => {
+    const q = searchQuery.toLowerCase().trim();
+    if (!q) return watchlist;
+    return watchlist.filter(
+      (stock) =>
+        stock.symbol.toLowerCase().includes(q) ||
+        stock.name.toLowerCase().includes(q)
+    );
+  }, [watchlist, searchQuery]);
 
-  const togglePin = (e: React.MouseEvent, symbol: string) => {
+  const togglePin = useCallback((e: React.MouseEvent, symbol: string) => {
     e.stopPropagation();
     setWatchlist((prev) =>
       prev.map((item) => (item.symbol === symbol ? { ...item, pinned: !item.pinned } : item))
     );
-  };
+  }, []);
 
-  const removeStock = (e: React.MouseEvent, symbol: string) => {
+  const removeStock = useCallback((e: React.MouseEvent, symbol: string) => {
     e.stopPropagation();
     setWatchlist((prev) => prev.filter((item) => item.symbol !== symbol));
-  };
+  }, []);
 
   return (
     <div className="flex h-full flex-col border-r border-[#262630] bg-[#121216] text-[#e0e0e0] font-sans">

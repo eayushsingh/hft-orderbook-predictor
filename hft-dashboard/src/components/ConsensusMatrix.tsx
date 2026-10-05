@@ -99,7 +99,7 @@ export default function ConsensusMatrix() {
         });
       }
       setIsScanning(false);
-    }, 600);
+    }, 100);
   };
 
   const getSignalIcon = (signal: string) => {
