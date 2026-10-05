@@ -1,25 +1,43 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
-import { Activity, Zap, Cpu, Layers, ArrowUpRight, TrendingUp, TrendingDown, ShieldAlert, Sparkles } from "lucide-react";
+import React, { useState, memo, useMemo } from "react";
+import { Activity, Cpu, Layers, TrendingUp, Sparkles } from "lucide-react";
 
-export default function InteractiveAlphaEngineDemo() {
+function InteractiveAlphaEngineDemoComponent() {
   const [activeTab, setActiveTab] = useState<"obi" | "microprice" | "disruptor" | "matrix">("obi");
   
   // Interactive OBI State
   const [bidVolume, setBidVolume] = useState<number>(85000);
   const [askVolume, setAskVolume] = useState<number>(32000);
 
-  const totalVolume = bidVolume + askVolume;
-  const obiValue = totalVolume > 0 ? (bidVolume - askVolume) / totalVolume : 0;
-  const signalText = obiValue > 0.35 ? "STRONG BUY" : obiValue < -0.35 ? "STRONG SELL" : "NEUTRAL DRIFT";
-  const signalColor = obiValue > 0.35 ? "text-emerald-500 bg-emerald-500/10 border-emerald-500/30" : obiValue < -0.35 ? "text-rose-500 bg-rose-500/10 border-rose-500/30" : "text-amber-500 bg-amber-500/10 border-amber-500/30";
+  const { totalVolume, obiValue, signalText, signalColor, midPrice, microPrice } = useMemo(() => {
+    const total = bidVolume + askVolume;
+    const obi = total > 0 ? (bidVolume - askVolume) / total : 0;
+    const signal = obi > 0.35 ? "STRONG BUY" : obi < -0.35 ? "STRONG SELL" : "NEUTRAL DRIFT";
+    const color =
+      obi > 0.35
+        ? "text-emerald-500 bg-emerald-500/10 border-emerald-500/30"
+        : obi < -0.35
+        ? "text-rose-500 bg-rose-500/10 border-rose-500/30"
+        : "text-amber-500 bg-amber-500/10 border-amber-500/30";
 
-  // Micro-price calculation
+    const bBid = 24850.0;
+    const bAsk = 24850.5;
+    const mPrice = (bBid + bAsk) / 2;
+    const micro = total > 0 ? (bBid * askVolume + bAsk * bidVolume) / total : mPrice;
+
+    return {
+      totalVolume: total,
+      obiValue: obi,
+      signalText: signal,
+      signalColor: color,
+      midPrice: mPrice,
+      microPrice: micro,
+    };
+  }, [bidVolume, askVolume]);
+
   const bestBid = 24850.0;
   const bestAsk = 24850.5;
-  const midPrice = (bestBid + bestAsk) / 2;
-  const microPrice = totalVolume > 0 ? (bestBid * askVolume + bestAsk * bidVolume) / totalVolume : midPrice;
 
   return (
     <div className="my-16 font-sans">
@@ -240,3 +258,5 @@ export default function InteractiveAlphaEngineDemo() {
     </div>
   );
 }
+
+export default memo(InteractiveAlphaEngineDemoComponent);

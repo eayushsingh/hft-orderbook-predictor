@@ -1,14 +1,10 @@
 "use client";
 
-import React, { useState } from "react";
-import { Code2, Copy, Check, Terminal, Cpu, Zap, Activity } from "lucide-react";
+import React, { useState, memo, useCallback } from "react";
+import { Copy, Check, Terminal, Cpu, Zap, Activity } from "lucide-react";
 
-export default function QuantApiPlayground() {
-  const [activeTab, setActiveTab] = useState<"java" | "python" | "cpp">("java");
-  const [copied, setCopied] = useState(false);
-
-  const codeSnippets = {
-    java: `// LALAN LMAX Disruptor Ring Buffer Core (Java 17 Zero-GC)
+const CODE_SNIPPETS = {
+  java: `// LALAN LMAX Disruptor Ring Buffer Core (Java 17 Zero-GC)
 public final class OrderBookImbalanceHandler implements EventHandler<OrderEvent> {
     private static final long RING_BUFFER_SIZE = 1024L * 1024L; // 1,048,576 slots
     private double totalBidVolume = 0.0;
@@ -29,7 +25,7 @@ public final class OrderBookImbalanceHandler implements EventHandler<OrderEvent>
         }
     }
 }`,
-    python: `# LALAN Quantitative Python WebSocket API SDK
+  python: `# LALAN Quantitative Python WebSocket API SDK
 import asyncio
 from lalan_quant import LalanWebSocketClient, SignalFilter
 
@@ -52,7 +48,7 @@ async function stream_hft_alpha():
                 )
 
 asyncio.run(stream_hft_alpha())`,
-    cpp: `// LALAN Cache-Aligned Lock-Free Ring Buffer (C++20 Primitive)
+  cpp: `// LALAN Cache-Aligned Lock-Free Ring Buffer (C++20 Primitive)
 #include <atomic>
 #include <iostream>
 
@@ -74,13 +70,17 @@ public:
         return true; // Zero-allocation success
     }
 };`,
-  };
+};
 
-  const handleCopy = () => {
-    navigator.clipboard.writeText(codeSnippets[activeTab]);
+function QuantApiPlaygroundComponent() {
+  const [activeTab, setActiveTab] = useState<"java" | "python" | "cpp">("java");
+  const [copied, setCopied] = useState(false);
+
+  const handleCopy = useCallback(() => {
+    navigator.clipboard.writeText(CODE_SNIPPETS[activeTab]);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
-  };
+  }, [activeTab]);
 
   return (
     <div className="bg-[#0b0b10] dark:bg-[#0c0c12] border border-slate-200 dark:border-[#1f1f2e] rounded-2xl overflow-hidden shadow-2xl my-12">
@@ -141,7 +141,7 @@ public:
       {/* Code Display Area */}
       <div className="p-4 sm:p-6 bg-[#08080c] dark:bg-[#08080d] overflow-x-auto text-xs sm:text-sm font-mono leading-relaxed text-[#00f0ff] dark:text-[#569cd6]">
         <pre className="text-slate-100 dark:text-[#d4d4d4]">
-          <code>{codeSnippets[activeTab]}</code>
+          <code>{CODE_SNIPPETS[activeTab]}</code>
         </pre>
       </div>
 
@@ -163,3 +163,5 @@ public:
     </div>
   );
 }
+
+export default memo(QuantApiPlaygroundComponent);

@@ -1,48 +1,48 @@
 "use client";
 
-import React from "react";
-import { Check, X, ShieldCheck, Zap, Activity, Cpu } from "lucide-react";
+import React, { memo } from "react";
+import { Check, X } from "lucide-react";
 
-export default function InstitutionalComparisonMatrix() {
-  const comparisonItems = [
-    {
-      feature: "Order Book Latency",
-      traditional: "1,000ms - 2,000ms (Historical Candles)",
-      lalan: "0.68ms Sub-Millisecond Tick Stream",
-      lalanAdvantage: "3,000x Faster Execution",
-    },
-    {
-      feature: "Liquidity Insight",
-      traditional: "L1 Top Bid/Ask Only (Delayed)",
-      lalan: "L2 Depth (Top 5 Levels) + Aggregated OBI",
-      lalanAdvantage: "Institutional Sweep Exposure",
-    },
-    {
-      feature: "Micro-Price Calculation",
-      traditional: "Basic Mid-Price (P_bid + P_ask) / 2",
-      lalan: "Volume-Weighted Micro-Price Drift",
-      lalanAdvantage: "Predicts Next Tick Movement",
-    },
-    {
-      feature: "Memory Architecture",
-      traditional: "Standard Heap Allocation (Frequent GC Pauses)",
-      lalan: "LMAX Disruptor Ring Buffer (Zero-GC)",
-      lalanAdvantage: "Zero GC Stalls Under Volatility",
-    },
-    {
-      feature: "Multi-Source Intelligence",
-      traditional: "Manual Context Switching Across 10 Tabs",
-      lalan: "Screener.in + NSE Reg 30 + TradingView Hub",
-      lalanAdvantage: "Single Zero-Switch Dashboard",
-    },
-    {
-      feature: "Pricing & Equity Delivery",
-      traditional: "Variable Brokerage & High Commission Fees",
-      lalan: "100% Free Equity Delivery (₹0 Brokerage)",
-      lalanAdvantage: "Zero Hidden Costs",
-    },
-  ];
+const COMPARISON_ITEMS = [
+  {
+    feature: "Order Book Latency",
+    traditional: "1,000ms - 2,000ms (Historical Candles)",
+    lalan: "0.68ms Sub-Millisecond Tick Stream",
+    lalanAdvantage: "3,000x Faster Execution",
+  },
+  {
+    feature: "Liquidity Insight",
+    traditional: "L1 Top Bid/Ask Only (Delayed)",
+    lalan: "L2 Depth (Top 5 Levels) + Aggregated OBI",
+    lalanAdvantage: "Institutional Sweep Exposure",
+  },
+  {
+    feature: "Micro-Price Calculation",
+    traditional: "Basic Mid-Price (P_bid + P_ask) / 2",
+    lalan: "Volume-Weighted Micro-Price Drift",
+    lalanAdvantage: "Predicts Next Tick Movement",
+  },
+  {
+    feature: "Memory Architecture",
+    traditional: "Standard Heap Allocation (Frequent GC Pauses)",
+    lalan: "LMAX Disruptor Ring Buffer (Zero-GC)",
+    lalanAdvantage: "Zero GC Stalls Under Volatility",
+  },
+  {
+    feature: "Multi-Source Intelligence",
+    traditional: "Manual Context Switching Across 10 Tabs",
+    lalan: "Screener.in + NSE Reg 30 + TradingView Hub",
+    lalanAdvantage: "Single Zero-Switch Dashboard",
+  },
+  {
+    feature: "Pricing & Equity Delivery",
+    traditional: "Variable Brokerage & High Commission Fees",
+    lalan: "100% Free Equity Delivery (₹0 Brokerage)",
+    lalanAdvantage: "Zero Hidden Costs",
+  },
+];
 
+function InstitutionalComparisonMatrixComponent() {
   return (
     <div className="my-16 font-sans">
       <div className="text-center space-y-3 mb-10">
@@ -58,7 +58,7 @@ export default function InstitutionalComparisonMatrix() {
       </div>
 
       <div className="overflow-x-auto rounded-2xl border border-slate-200 dark:border-[#1f1f2e] bg-white dark:bg-[#0e0e14] shadow-2xl">
-        <table className="w-full text-left text-xs font-mono">
+        <table className="w-full min-w-[650px] text-left text-xs font-mono">
           <thead>
             <tr className="border-b border-slate-200 dark:border-[#1f1f2e] bg-slate-100 dark:bg-[#09090e] text-slate-700 dark:text-[#747888] text-[11px] uppercase">
               <th className="py-4 px-5">Capability / Metric</th>
@@ -70,7 +70,7 @@ export default function InstitutionalComparisonMatrix() {
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-200 dark:divide-[#181824]">
-            {comparisonItems.map((item, idx) => (
+            {COMPARISON_ITEMS.map((item, idx) => (
               <tr key={idx} className="hover:bg-slate-50 dark:hover:bg-[#12121c] transition-colors">
                 <td className="py-4 px-5 font-bold text-slate-900 dark:text-white text-xs sm:text-sm">
                   {item.feature}
@@ -98,3 +98,5 @@ export default function InstitutionalComparisonMatrix() {
     </div>
   );
 }
+
+export default memo(InstitutionalComparisonMatrixComponent);
