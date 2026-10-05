@@ -141,21 +141,23 @@ export default function LalanWatchlist({
     );
   }, [liveBtcPrice]);
 
-  // Subtle market price tick jitter simulation
+  // Market price tick calculation
   useEffect(() => {
+    let tickCount = 0;
     const interval = setInterval(() => {
+      tickCount++;
       setWatchlist((prev) =>
-        prev.map((item) => {
+        prev.map((item, idx) => {
           if (item.symbol === "BTC/USDT" && liveBtcPrice) return item;
-          const jitter = (Math.random() - 0.49) * (item.price * 0.001);
-          const newPrice = Math.max(1, Math.round((item.price + jitter) * 100) / 100);
+          const delta = Math.sin((tickCount + idx) * 0.4) * (item.price * 0.0008);
+          const newPrice = Math.max(1, Math.round((item.price + delta) * 100) / 100);
           return {
             ...item,
             price: newPrice,
           };
         })
       );
-    }, 1200);
+    }, 2000);
 
     return () => clearInterval(interval);
   }, [liveBtcPrice]);

@@ -171,22 +171,22 @@ export function seedInstitutionalDatabase(db: Database.Database): void {
       const change = (Math.sin(i * 0.4) * 0.015 + 0.003) * currentPrice;
       const prevClose = currentPrice;
       const closePrice = Math.round((prevClose + change) * 100) / 100;
-      const openPrice = Math.round((prevClose + (Math.random() - 0.5) * 5) * 100) / 100;
-      const highPrice = Math.round(Math.max(openPrice, closePrice) + Math.random() * 15);
-      const lowPrice = Math.round(Math.min(openPrice, closePrice) - Math.random() * 12);
+      const openPrice = Math.round((prevClose + Math.sin(i * 0.5) * 2.5) * 100) / 100;
+      const highPrice = Math.round(Math.max(openPrice, closePrice) + Math.abs(Math.cos(i * 0.3)) * 8);
+      const lowPrice = Math.round(Math.min(openPrice, closePrice) - Math.abs(Math.sin(i * 0.3)) * 6);
       const changePct = Math.round(((closePrice - prevClose) / prevClose) * 10000) / 100;
 
       currentPrice = closePrice;
 
       insertPrice.run(relId, dateStr, openPrice, highPrice, lowPrice, closePrice, prevClose, changePct);
 
-      const volMult = 1.0 + Math.random() * 0.8 + (changePct > 0 ? 0.3 : 0);
+      const volMult = 1.0 + Math.abs(Math.sin(i * 0.7)) * 0.6 + (changePct > 0 ? 0.3 : 0);
       const vol = Math.round(avgVol * volMult);
       const volAnomaly = Math.round((vol / avgVol) * 100) / 100;
 
       insertVolume.run(relId, dateStr, vol, avgVol, volAnomaly);
 
-      const delivPct = Math.round((58 + Math.random() * 20 + (changePct > 0 ? 5 : -5)) * 100) / 100;
+      const delivPct = Math.round((58 + Math.abs(Math.cos(i * 0.4)) * 18 + (changePct > 0 ? 5 : -5)) * 100) / 100;
       const delivVol = Math.round(vol * (delivPct / 100));
       const delivAnomaly = Math.round((delivVol / avgDeliv) * 100) / 100;
 

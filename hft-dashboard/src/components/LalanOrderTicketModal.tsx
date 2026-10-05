@@ -49,7 +49,7 @@ export default function LalanOrderTicketModal({
 
   const handleExecute = () => {
     const newOrder: ExecutedOrder = {
-      orderId: Math.floor(10000000 + Math.random() * 90000000).toString(),
+      orderId: `ORD-${Date.now().toString(36).toUpperCase()}`,
       timestamp: new Date().toLocaleTimeString("en-IN", { hour12: false }),
       symbol,
       type: orderType,

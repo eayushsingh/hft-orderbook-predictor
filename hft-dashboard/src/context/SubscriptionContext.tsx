@@ -55,7 +55,7 @@ const DEFAULT_STATE: SubscriptionState = {
   hasUsedTrial: true,
   paymentHistory: [
     {
-      id: "TRL-" + Math.floor(100000 + Math.random() * 900000),
+      id: "TRL-PRO-INIT-2026",
       date: new Date().toISOString(),
       planId: "pro",
       amount: 0,
@@ -134,7 +134,7 @@ export function SubscriptionProvider({ children }: { children: React.ReactNode }
     const endDate = new Date(Date.now() + durationDays * 24 * 60 * 60 * 1000);
 
     const trialRecord: PaymentRecord = {
-      id: "TRL-" + Math.floor(100000 + Math.random() * 900000),
+      id: "TRL-" + Date.now().toString(36).toUpperCase(),
       date: startDate.toISOString(),
       planId: planId,
       amount: 0,
@@ -187,7 +187,7 @@ export function SubscriptionProvider({ children }: { children: React.ReactNode }
     currency: string
   ): Promise<{ success: boolean; message: string }> => {
     const paymentRecord: PaymentRecord = {
-      id: "PAY-" + Math.floor(100000 + Math.random() * 900000),
+      id: "PAY-" + Date.now().toString(36).toUpperCase(),
       date: new Date().toISOString(),
       planId: planId,
       amount,

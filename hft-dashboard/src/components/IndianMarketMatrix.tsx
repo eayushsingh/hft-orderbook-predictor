@@ -142,14 +142,15 @@ export default function IndianMarketMatrix() {
   const [isScanning, setIsScanning] = useState<boolean>(false);
   const [stockData, setStockData] = useState<IndianStockData>(DEFAULT_INDIAN_STOCKS.RELIANCE);
 
-  // Live order flow tick simulator
+  // Live order flow tick simulator using deterministic calculations
   useEffect(() => {
+    let tickCount = 0;
     const interval = setInterval(() => {
+      tickCount++;
       setStockData((prev) => {
-        const jitter = (Math.random() - 0.5) * 0.4;
-        const newPrice = Math.max(1, Math.round((prev.currentPrice + jitter) * 100) / 100);
-        const buyDelta = Math.floor((Math.random() - 0.5) * 4);
-        const newBuy = Math.min(95, Math.max(5, prev.overallBuyRatio + buyDelta));
+        const deltaPrice = Math.sin(tickCount * 0.5) * 0.15;
+        const newPrice = Math.max(1, Math.round((prev.currentPrice + deltaPrice) * 100) / 100);
+        const newBuy = Math.min(95, Math.max(5, Math.round(prev.overallBuyRatio + Math.cos(tickCount * 0.4))));
         const newSell = 100 - newBuy;
         const newObi = Math.round(((newBuy - newSell) / 100) * 100) / 100;
 
@@ -159,9 +160,8 @@ export default function IndianMarketMatrix() {
           overallBuyRatio: newBuy,
           overallSellRatio: newSell,
           overallObi: newObi,
-          platforms: prev.platforms.map((p) => {
-            const pDelta = Math.floor((Math.random() - 0.5) * 6);
-            const pBuy = Math.min(95, Math.max(5, p.buyRatio + pDelta));
+          platforms: prev.platforms.map((p, idx) => {
+            const pBuy = Math.min(95, Math.max(5, Math.round(p.buyRatio + Math.sin(tickCount + idx))));
             const pSell = 100 - pBuy;
             return {
               ...p,
@@ -172,7 +172,7 @@ export default function IndianMarketMatrix() {
           }),
         };
       });
-    }, 400);
+    }, 1000);
 
     return () => clearInterval(interval);
   }, [selectedTicker]);
@@ -196,12 +196,16 @@ export default function IndianMarketMatrix() {
         setSelectedTicker(queryUpper);
         setStockData(DEFAULT_INDIAN_STOCKS[queryUpper]);
       } else {
+        const hash = queryUpper.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+        const priceFromHash = Math.round(((hash * 13) % 2500 + 180) * 100) / 100;
+        const changeFromHash = Math.round((((hash % 100) - 45) / 10) * 100) / 100;
+
         const customStock: IndianStockData = {
           ticker: queryUpper,
           companyName: `${queryUpper} Ltd. (NSE / BSE)`,
           exchange: "NSE",
-          currentPrice: Math.round((Math.random() * 2000 + 150) * 100) / 100,
-          changePct: Math.round((Math.random() * 6 - 3) * 100) / 100,
+          currentPrice: priceFromHash,
+          changePct: changeFromHash,
           overallObi: 0.35,
           overallBuyRatio: 68,
           overallSellRatio: 32,

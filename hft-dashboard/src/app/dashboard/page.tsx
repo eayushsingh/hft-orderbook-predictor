@@ -709,10 +709,12 @@ export default function DashboardPage() {
 
   // Live P&L tick updates
   useEffect(() => {
+    let tickCount = 0;
     const interval = setInterval(() => {
+      tickCount++;
       setPositions((prev) =>
-        prev.map((pos) => {
-          const ltpChange = (Math.random() - 0.48) * (pos.avgPrice * 0.002);
+        prev.map((pos, idx) => {
+          const ltpChange = Math.sin((tickCount + idx) * 0.5) * (pos.avgPrice * 0.001);
           const newLtp = Math.max(1, Math.round((pos.ltp + ltpChange) * 100) / 100);
           const pnl = (newLtp - pos.avgPrice) * pos.qty;
           const pnlPct = ((newLtp - pos.avgPrice) / pos.avgPrice) * 100;
@@ -724,7 +726,7 @@ export default function DashboardPage() {
           };
         })
       );
-    }, 900);
+    }, 1500);
 
     return () => clearInterval(interval);
   }, []);
@@ -800,7 +802,7 @@ export default function DashboardPage() {
     setPositions((prev) => prev.filter((p) => p.symbol !== symbol));
     setOrders((prev) => [
       {
-        orderId: Math.floor(10000000 + Math.random() * 90000000).toString(),
+        orderId: `ORD-${Date.now().toString(36).toUpperCase()}`,
         timestamp: new Date().toLocaleTimeString("en-IN", { hour12: false }),
         symbol,
         type: "SELL",
