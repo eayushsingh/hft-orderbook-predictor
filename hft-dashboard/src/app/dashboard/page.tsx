@@ -21,6 +21,7 @@ import LalanPositionsAndOrders, { ActivePosition } from "@/components/LalanPosit
 import LalanOrderBook from "@/components/LalanOrderBook";
 import SubscriptionPricingModal from "@/components/SubscriptionPricingModal";
 import AboutUsModal from "@/components/AboutUsModal";
+import OnboardingGuideModal from "@/components/OnboardingGuideModal";
 import ConsensusMatrix from "@/components/ConsensusMatrix";
 import IndianMarketMatrix from "@/components/IndianMarketMatrix";
 import MultiSourceIntelligenceHub from "@/components/MultiSourceIntelligenceHub";
@@ -644,6 +645,7 @@ export default function DashboardPage() {
   const [selectedStock, setSelectedStock] = useState<WatchlistStock>(INITIAL_WATCHLIST[0]);
   const [pricingModalOpen, setPricingModalOpen] = useState<boolean>(false);
   const [aboutModalOpen, setAboutModalOpen] = useState<boolean>(false);
+  const [guideModalOpen, setGuideModalOpen] = useState<boolean>(false);
   const [mobileWatchlistOpen, setMobileWatchlistOpen] = useState<boolean>(false);
 
 
@@ -841,6 +843,7 @@ export default function DashboardPage() {
         onOpenSellModal={handleOpenSellModal}
         onOpenPricingModal={() => setPricingModalOpen(true)}
         onOpenAboutModal={() => setAboutModalOpen(true)}
+        onOpenGuideModal={() => setGuideModalOpen(true)}
       />
 
       {/* ── MAIN WORKSPACE LAYOUT: Watchlist Sidebar + Main Panel ── */}
@@ -1107,6 +1110,12 @@ export default function DashboardPage() {
       <AboutUsModal
         isOpen={aboutModalOpen}
         onClose={() => setAboutModalOpen(false)}
+      />
+
+      {/* ── FIRST-TIME TRADER ONBOARDING GUIDE MODAL ── */}
+      <OnboardingGuideModal
+        isOpen={guideModalOpen}
+        onClose={() => setGuideModalOpen(false)}
       />
     </main>
   );

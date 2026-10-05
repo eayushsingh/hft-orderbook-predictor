@@ -26,6 +26,7 @@ import {
   LogOut,
   Globe,
   ShieldAlert,
+  Compass,
 } from "lucide-react";
 import { useTheme } from "@/context/ThemeContext";
 import { useSubscription } from "@/context/SubscriptionContext";
@@ -48,6 +49,7 @@ interface LalanNavbarProps {
   onOpenSellModal?: (ticker?: string) => void;
   onOpenPricingModal?: () => void;
   onOpenAboutModal?: () => void;
+  onOpenGuideModal?: () => void;
 }
 
 export default function LalanNavbar({
@@ -66,6 +68,7 @@ export default function LalanNavbar({
   onOpenSellModal,
   onOpenPricingModal,
   onOpenAboutModal,
+  onOpenGuideModal,
 }: LalanNavbarProps) {
   const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
   const [notificationsOpen, setNotificationsOpen] = useState(false);
@@ -83,6 +86,7 @@ export default function LalanNavbar({
     { id: "analytics", label: "AI Microstructure", icon: BarChart3 },
     { id: "pricing", label: "Pricing", icon: Crown },
     { id: "about", label: "Specs", icon: Info },
+    { id: "guide", label: "Guided Tour", icon: Compass },
   ];
 
   const planBadgeText = isTrialActive
@@ -272,6 +276,17 @@ export default function LalanNavbar({
             )}
           </button>
 
+          {/* Guided Tour Button */}
+          <button
+            onClick={() => onOpenGuideModal && onOpenGuideModal()}
+            aria-label="Guided Tour"
+            title="First-Time Trader Interactive Guide"
+            className="hidden sm:flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-[#161620] border border-[#262636] text-[#a0a3b0] hover:text-white hover:border-[#387ed1] transition-all text-xs font-mono font-semibold active:scale-95"
+          >
+            <Compass className="h-3.5 w-3.5 text-[#387ed1]" />
+            <span className="text-[11px] hidden md:inline">Guided Tour</span>
+          </button>
+
           {/* Notifications Bell */}
           <div className="relative hidden sm:block">
             <button
@@ -359,9 +374,19 @@ export default function LalanNavbar({
                       <button
                         onClick={() => {
                           setProfileDropdownOpen(false);
+                          onOpenGuideModal && onOpenGuideModal();
+                        }}
+                        className="w-full mt-2 py-1.5 bg-[#387ed1]/15 hover:bg-[#387ed1]/25 text-[#387ed1] border border-[#387ed1]/35 font-mono font-bold text-[11px] rounded-lg transition-all flex items-center justify-center gap-1.5"
+                      >
+                        <Compass className="w-3.5 h-3.5" />
+                        <span>First-Time Trader Guide</span>
+                      </button>
+                      <button
+                        onClick={() => {
+                          setProfileDropdownOpen(false);
                           onOpenAboutModal && onOpenAboutModal();
                         }}
-                        className="w-full mt-2 py-1.5 bg-[#181824] hover:bg-[#222230] text-white border border-[#282838] font-mono font-bold text-[11px] rounded-lg transition-all"
+                        className="w-full mt-1.5 py-1.5 bg-[#181824] hover:bg-[#222230] text-white border border-[#282838] font-mono font-bold text-[11px] rounded-lg transition-all"
                       >
                         About Specs &amp; Architecture
                       </button>
