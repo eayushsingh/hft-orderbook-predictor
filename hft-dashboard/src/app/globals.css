@@ -65,15 +65,27 @@ body {
 
 /* Light Theme Header & Navigation */
 html.light header {
-  background-color: rgba(255, 255, 255, 0.95) !important;
+  background-color: rgba(255, 255, 255, 0.96) !important;
   border-color: #cbd5e1 !important;
   color: #0f172a !important;
 }
 
-html.light header div.bg-\[\#0c0c0f\] {
+html.light header div.bg-\[\#0c0c0f\],
+html.light header div.bg-\[\#08080c\] {
   background-color: #f1f5f9 !important;
   border-color: #e2e8f0 !important;
   color: #334155 !important;
+}
+
+/* Light Theme Header Navigation Links */
+html.light nav a,
+html.light header nav button {
+  color: #334155 !important;
+}
+
+html.light nav a:hover,
+html.light header nav button:hover {
+  color: #0284c7 !important;
 }
 
 /* Light Theme Page Backgrounds */
@@ -88,6 +100,7 @@ html.light .bg-\[\#0a0a0f\],
 html.light .bg-\[\#0c0c0f\],
 html.light .bg-\[\#0c0c10\],
 html.light .bg-\[\#0d0d12\],
+html.light .bg-\[\#0d0d14\],
 html.light .bg-\[\#0e0e12\],
 html.light .bg-\[\#0e0e13\],
 html.light .bg-\[\#0e0e13\]\/90,
@@ -98,12 +111,22 @@ html.light .bg-\[\#0f0f16\] {
 }
 
 /* Light Theme Card & Container Overrides */
+html.light .bg-\[\#0e0e14\],
+html.light .bg-\[\#0e0e16\],
 html.light .bg-\[\#101016\],
+html.light .bg-\[\#101018\],
 html.light .bg-\[\#10101b\],
 html.light .bg-\[\#121216\],
+html.light .bg-\[\#12121c\],
 html.light .bg-\[\#14141a\],
+html.light .bg-\[\#14141c\],
+html.light .bg-\[\#141420\],
 html.light .bg-\[\#16161c\],
+html.light .bg-\[\#161620\],
+html.light .bg-\[\#161622\],
+html.light .bg-\[\#161624\],
 html.light .bg-\[\#181822\],
+html.light .bg-\[\#181824\],
 html.light .bg-\[\#1c1c24\],
 html.light aside {
   background-color: #ffffff !important;
@@ -113,6 +136,7 @@ html.light aside {
 
 /* Light Theme Sub-containers, Hover States & Inputs */
 html.light .bg-\[\#1f1f28\],
+html.light .bg-\[\#1f1f30\],
 html.light .bg-\[\#1a1a20\],
 html.light .bg-\[\#242432\],
 html.light .bg-\[\#181822\] {
@@ -123,11 +147,16 @@ html.light .bg-\[\#181822\] {
 html.light .border-\[\#181824\],
 html.light .border-\[\#1f1f26\],
 html.light .border-\[\#1f1f2b\],
+html.light .border-\[\#222230\],
+html.light .border-\[\#222234\],
 html.light .border-\[\#242432\],
+html.light .border-\[\#242436\],
 html.light .border-\[\#262630\],
 html.light .border-\[\#262634\],
+html.light .border-\[\#262638\],
 html.light .border-\[\#282834\],
 html.light .border-\[\#282838\],
+html.light .border-\[\#2a2a3f\],
 html.light .border-\[\#22222f\],
 html.light .border-white\/\[0\.06\],
 html.light .border-white\/\[0\.08\],
@@ -174,19 +203,30 @@ html.light .bg-clip-text {
 /* Solid Buttons & Badges: Preserve Crisp White Text in Light Mode */
 html.light button.bg-\[\#387ed1\],
 html.light button.bg-\[\#ff5722\],
-html.light button.bg-\[\#10b981\],
 html.light a.bg-\[\#387ed1\],
 html.light a.bg-\[\#ff5722\],
-html.light a.bg-\[\#10b981\],
-html.light .bg-\[\#387ed1\] span.text-white,
-html.light .bg-\[\#387ed1\] div,
-html.light .bg-\[\#387ed1\] {
+html.light .bg-\[\#387ed1\] span,
+html.light button.bg-\[\#387ed1\] span,
+html.light a.bg-\[\#387ed1\] span {
   color: #ffffff !important;
 }
 
 html.light button.bg-\[\#10b981\],
 html.light a.bg-\[\#10b981\] {
   color: #000000 !important;
+}
+
+/* Secondary Buttons & Sign-In buttons in Light Mode */
+html.light button.bg-\[\#161622\],
+html.light a.bg-\[\#161622\] {
+  background-color: #f1f5f9 !important;
+  color: #0f172a !important;
+  border-color: #cbd5e1 !important;
+}
+
+html.light button.bg-\[\#161622\] span,
+html.light a.bg-\[\#161622\] span {
+  color: #0f172a !important;
 }
 
 /* Form Inputs & Selects in Light Mode */
