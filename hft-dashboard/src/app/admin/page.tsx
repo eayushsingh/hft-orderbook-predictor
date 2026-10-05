@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import LalanSiteHeader from "@/components/LalanSiteHeader";
@@ -30,6 +30,15 @@ import {
   MoreVertical,
   CheckCircle2,
   ChevronDown,
+  Download,
+  Terminal,
+  Cpu,
+  Wifi,
+  Sliders,
+  Send,
+  Radio,
+  Eye,
+  X,
 } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 
@@ -45,6 +54,7 @@ export interface ManagedUser {
   ipAddress: string;
   createdAt: string;
   avatar?: string;
+  totalVolumeCr: number;
 }
 
 export interface ActivityLog {
@@ -69,6 +79,7 @@ const INITIAL_USERS: ManagedUser[] = [
     lastActive: "Just Now",
     ipAddress: "103.24.12.8",
     createdAt: "2026-01-15",
+    totalVolumeCr: 485.2,
   },
   {
     id: "usr_2",
@@ -81,6 +92,7 @@ const INITIAL_USERS: ManagedUser[] = [
     lastActive: "2 mins ago",
     ipAddress: "49.207.185.12",
     createdAt: "2026-02-01",
+    totalVolumeCr: 312.4,
   },
   {
     id: "usr_3",
@@ -93,6 +105,7 @@ const INITIAL_USERS: ManagedUser[] = [
     lastActive: "15 mins ago",
     ipAddress: "115.240.90.4",
     createdAt: "2026-02-18",
+    totalVolumeCr: 98.6,
   },
   {
     id: "usr_4",
@@ -105,6 +118,7 @@ const INITIAL_USERS: ManagedUser[] = [
     lastActive: "1 hour ago",
     ipAddress: "182.73.45.10",
     createdAt: "2026-03-05",
+    totalVolumeCr: 12.1,
   },
   {
     id: "usr_5",
@@ -117,6 +131,7 @@ const INITIAL_USERS: ManagedUser[] = [
     lastActive: "2 days ago",
     ipAddress: "14.97.234.61",
     createdAt: "2026-03-12",
+    totalVolumeCr: 3.4,
   },
 ];
 
@@ -178,29 +193,56 @@ export default function AdminPage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState<"ALL" | "ACTIVE" | "SUSPENDED">("ALL");
   const [selectedUser, setSelectedUser] = useState<ManagedUser | null>(null);
+  const [toastMessage, setToastMessage] = useState<string | null>(null);
+
+  // Live real-time sub-millisecond telemetry metrics simulation
+  const [telemetry, setTelemetry] = useState({
+    latencyMs: 0.72,
+    ringBufferFillPct: 14.8,
+    activeWsConnections: 142,
+    ordersPerSec: 14250,
+  });
 
   useEffect(() => {
-    // Automatically verify if logged in user is admin email
     if (user?.email === "ayushsinghe07@gmail.com") {
       setIsAdminAuthenticated(true);
     }
   }, [user]);
 
+  // Sub-millisecond ticking latency telemetry update
+  useEffect(() => {
+    if (!isAdminAuthenticated) return;
+    const interval = setInterval(() => {
+      setTelemetry({
+        latencyMs: parseFloat((0.65 + Math.random() * 0.18).toFixed(2)),
+        ringBufferFillPct: parseFloat((12.5 + Math.random() * 4.2).toFixed(1)),
+        activeWsConnections: 140 + Math.floor(Math.random() * 8),
+        ordersPerSec: 14000 + Math.floor(Math.random() * 800),
+      });
+    }, 1200);
+    return () => clearInterval(interval);
+  }, [isAdminAuthenticated]);
+
+  const showToast = (msg: string) => {
+    setToastMessage(msg);
+    setTimeout(() => setToastMessage(null), 3000);
+  };
+
   const handleAdminAuth = (e: React.FormEvent) => {
     e.preventDefault();
     if (adminPin === "8899" || adminPin === "admin123" || user?.email === "ayushsinghe07@gmail.com") {
       setIsAdminAuthenticated(true);
+      showToast("Admin access authorized cleanly.");
     } else {
       alert("Invalid Admin Security Key. (Hint: PIN is 8899)");
     }
   };
 
-  const handleToggleUserStatus = (userId: string) => {
+  const handleToggleUserStatus = useCallback((userId: string) => {
     setUsers((prev) =>
       prev.map((u) => {
         if (u.id === userId) {
           const newStatus = u.status === "ACTIVE" ? "SUSPENDED" : "ACTIVE";
-          // Add activity log entry
           const newLog: ActivityLog = {
             id: `log_${Date.now()}`,
             userName: u.name,
@@ -211,14 +253,15 @@ export default function AdminPage() {
             severity: newStatus === "SUSPENDED" ? "WARNING" : "SUCCESS",
           };
           setLogs((prevLogs) => [newLog, ...prevLogs]);
+          showToast(`Account status updated for ${u.name}`);
           return { ...u, status: newStatus };
         }
         return u;
       })
     );
-  };
+  }, []);
 
-  const handleChangePlan = (userId: string, newPlan: "FREE" | "PRO" | "INSTITUTIONAL") => {
+  const handleChangePlan = useCallback((userId: string, newPlan: "FREE" | "PRO" | "INSTITUTIONAL") => {
     setUsers((prev) =>
       prev.map((u) => {
         if (u.id === userId) {
@@ -232,48 +275,91 @@ export default function AdminPage() {
             severity: "SUCCESS",
           };
           setLogs((prevLogs) => [newLog, ...prevLogs]);
+          showToast(`Plan updated to ${newPlan} for ${u.name}`);
           return { ...u, plan: newPlan };
         }
         return u;
       })
     );
-  };
+  }, []);
 
-  const handleResetApiKey = (userId: string) => {
-    const targetUser = users.find((u) => u.id === userId);
-    if (!targetUser) return;
-    alert(`API Token reset for ${targetUser.name}. New secret generated.`);
-    const newLog: ActivityLog = {
-      id: `log_${Date.now()}`,
-      userName: targetUser.name,
-      userEmail: targetUser.email,
-      action: "API_KEY_RESET",
-      details: "Admin reset API Access Token & secret credentials",
-      timestamp: "Just Now",
-      severity: "WARNING",
-    };
-    setLogs((prevLogs) => [newLog, ...prevLogs]);
-  };
-
-  const filteredUsers = users.filter((u) => {
-    const matchesSearch =
-      u.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      u.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      u.ipAddress.includes(searchQuery);
-    const matchesStatus = statusFilter === "ALL" || u.status === statusFilter;
-    return matchesSearch && matchesStatus;
-  });
-
-  const filteredLogs = logs.filter(
-    (l) =>
-      l.userName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      l.userEmail.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      l.details.toLowerCase().includes(searchQuery.toLowerCase())
+  const handleResetApiKey = useCallback(
+    (userId: string) => {
+      const targetUser = users.find((u) => u.id === userId);
+      if (!targetUser) return;
+      showToast(`API secret key reset generated for ${targetUser.name}`);
+      const newLog: ActivityLog = {
+        id: `log_${Date.now()}`,
+        userName: targetUser.name,
+        userEmail: targetUser.email,
+        action: "API_KEY_RESET",
+        details: "Admin reset API Access Token & secret credentials",
+        timestamp: "Just Now",
+        severity: "WARNING",
+      };
+      setLogs((prevLogs) => [newLog, ...prevLogs]);
+    },
+    [users]
   );
+
+  const exportLogsCsv = () => {
+    const csvContent =
+      "data:text/csv;charset=utf-8," +
+      ["User,Email,Action,Details,Timestamp,Severity"]
+        .concat(
+          logs.map(
+            (l) => `"${l.userName}","${l.userEmail}","${l.action}","${l.details}","${l.timestamp}","${l.severity}"`
+          )
+        )
+        .join("\n");
+    const encodedUri = encodeURI(csvContent);
+    const link = document.createElement("a");
+    link.setAttribute("href", encodedUri);
+    link.setAttribute("download", `lalan_admin_audit_logs_${Date.now()}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    showToast("Audit logs exported to CSV successfully.");
+  };
+
+  const filteredUsers = useMemo(() => {
+    return users.filter((u) => {
+      const matchesSearch =
+        u.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        u.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        u.ipAddress.includes(searchQuery);
+      const matchesStatus = statusFilter === "ALL" || u.status === statusFilter;
+      return matchesSearch && matchesStatus;
+    });
+  }, [users, searchQuery, statusFilter]);
+
+  const filteredLogs = useMemo(() => {
+    return logs.filter(
+      (l) =>
+        l.userName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        l.userEmail.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        l.details.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+  }, [logs, searchQuery]);
 
   return (
     <div className="min-h-screen bg-[#060609] text-[#e0e0e0] font-sans selection:bg-[#387ed1] selection:text-white flex flex-col">
       <LalanSiteHeader />
+
+      {/* Toast Notification */}
+      <AnimatePresence>
+        {toastMessage && (
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            className="fixed top-20 right-6 z-50 px-4 py-2.5 rounded-xl bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 font-mono text-xs font-bold shadow-2xl backdrop-blur-md flex items-center gap-2"
+          >
+            <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+            <span>{toastMessage}</span>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       <main className="flex-1 py-10 px-4 sm:px-8 max-w-[1350px] mx-auto w-full space-y-8">
         {/* Admin Authentication Protection Gate */}
@@ -316,10 +402,13 @@ export default function AdminPage() {
           </div>
         ) : (
           <>
-            {/* ── TOP TELEMETRY CARDS ── */}
+            {/* ── TOP TELEMETRY CARDS (ULTRA-LOW LATENCY MONITOR) ── */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
               {/* Card 1 */}
-              <div className="p-5 rounded-2xl bg-[#0d0d14] border border-[#1f1f2e] space-y-2 shadow-xl">
+              <motion.div
+                whileHover={{ scale: 1.02 }}
+                className="p-5 rounded-2xl bg-[#0d0d14] border border-[#1f1f2e] space-y-2 shadow-xl"
+              >
                 <div className="flex items-center justify-between">
                   <span className="text-xs font-mono text-zinc-400 font-medium">Total Registered Traders</span>
                   <div className="p-2 rounded-xl bg-[#387ed1]/10 text-[#387ed1] border border-[#387ed1]/20">
@@ -331,49 +420,65 @@ export default function AdminPage() {
                   <TrendingUp className="w-3.5 h-3.5" />
                   <span>+18.4% this month</span>
                 </div>
-              </div>
+              </motion.div>
 
               {/* Card 2 */}
-              <div className="p-5 rounded-2xl bg-[#0d0d14] border border-[#1f1f2e] space-y-2 shadow-xl">
+              <motion.div
+                whileHover={{ scale: 1.02 }}
+                className="p-5 rounded-2xl bg-[#0d0d14] border border-[#1f1f2e] space-y-2 shadow-xl"
+              >
                 <div className="flex items-center justify-between">
-                  <span className="text-xs font-mono text-zinc-400 font-medium">Active Live Sessions</span>
+                  <span className="text-xs font-mono text-zinc-400 font-medium">Active WebSocket Sessions</span>
                   <div className="p-2 rounded-xl bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
-                    <Activity className="w-4 h-4" />
+                    <Activity className="w-4 h-4 animate-pulse" />
                   </div>
                 </div>
                 <div className="text-2xl font-black font-mono text-white flex items-center gap-2">
-                  <span>142</span>
+                  <span>{telemetry.activeWsConnections}</span>
                   <span className="relative flex h-2 w-2">
                     <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
                     <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
                   </span>
                 </div>
-                <div className="text-[11px] font-mono text-zinc-400">WebSocket Live Telemetry</div>
-              </div>
+                <div className="text-[11px] font-mono text-emerald-400 font-bold">
+                  {telemetry.ordersPerSec.toLocaleString()} Ticks/sec Stream
+                </div>
+              </motion.div>
 
               {/* Card 3 */}
-              <div className="p-5 rounded-2xl bg-[#0d0d14] border border-[#1f1f2e] space-y-2 shadow-xl">
+              <motion.div
+                whileHover={{ scale: 1.02 }}
+                className="p-5 rounded-2xl bg-[#0d0d14] border border-[#1f1f2e] space-y-2 shadow-xl"
+              >
                 <div className="flex items-center justify-between">
-                  <span className="text-xs font-mono text-zinc-400 font-medium">Order Volume Executed</span>
+                  <span className="text-xs font-mono text-zinc-400 font-medium">Executed Volume</span>
                   <div className="p-2 rounded-xl bg-cyan-500/10 text-cyan-400 border border-cyan-500/20">
                     <DollarSign className="w-4 h-4" />
                   </div>
                 </div>
-                <div className="text-2xl font-black font-mono text-white">₹1,842 Cr</div>
+                <div className="text-2xl font-black font-mono text-white">₹1,842.5 Cr</div>
                 <div className="text-[11px] font-mono text-cyan-400 font-bold">Sub-ms Disruptor Pipeline</div>
-              </div>
+              </motion.div>
 
               {/* Card 4 */}
-              <div className="p-5 rounded-2xl bg-[#0d0d14] border border-[#1f1f2e] space-y-2 shadow-xl">
+              <motion.div
+                whileHover={{ scale: 1.02 }}
+                className="p-5 rounded-2xl bg-[#0d0d14] border border-[#1f1f2e] space-y-2 shadow-xl"
+              >
                 <div className="flex items-center justify-between">
-                  <span className="text-xs font-mono text-zinc-400 font-medium">System Latency / GC</span>
+                  <span className="text-xs font-mono text-zinc-400 font-medium">Engine Latency / GC</span>
                   <div className="p-2 rounded-xl bg-purple-500/10 text-purple-400 border border-purple-500/20">
                     <Zap className="w-4 h-4" />
                   </div>
                 </div>
-                <div className="text-2xl font-black font-mono text-emerald-400">0.78 ms</div>
+                <div className="text-2xl font-black font-mono text-emerald-400 flex items-center gap-1.5">
+                  <span>{telemetry.latencyMs} ms</span>
+                  <span className="text-[10px] font-mono text-zinc-500 font-normal">
+                    (Fill: {telemetry.ringBufferFillPct}%)
+                  </span>
+                </div>
                 <div className="text-[11px] font-mono text-purple-400 font-bold">0 MB GC Pause Overhead</div>
-              </div>
+              </motion.div>
             </div>
 
             {/* ── ADMIN NAVIGATION & ACTION CONTROLS ── */}
@@ -388,8 +493,9 @@ export default function AdminPage() {
                   }`}
                 >
                   <Users className="w-4 h-4" />
-                  <span>User Management ({users.length})</span>
+                  <span>User Roster Matrix ({users.length})</span>
                 </button>
+
                 <button
                   onClick={() => setActiveTab("logs")}
                   className={`flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-mono font-bold transition-all ${
@@ -399,11 +505,23 @@ export default function AdminPage() {
                   }`}
                 >
                   <Activity className="w-4 h-4" />
-                  <span>Live Activity Audit Stream ({logs.length})</span>
+                  <span>Live Action Audit Stream ({logs.length})</span>
+                </button>
+
+                <button
+                  onClick={() => setActiveTab("telemetry")}
+                  className={`flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-mono font-bold transition-all ${
+                    activeTab === "telemetry"
+                      ? "bg-[#387ed1] text-white shadow-md"
+                      : "text-zinc-400 hover:text-white"
+                  }`}
+                >
+                  <Cpu className="w-4 h-4" />
+                  <span>Low-Latency Health Monitor</span>
                 </button>
               </div>
 
-              {/* Search & Status Filter */}
+              {/* Search & Export Buttons */}
               <div className="flex items-center gap-3 w-full sm:w-auto">
                 <div className="relative flex-1 sm:w-64">
                   <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-500" />
@@ -427,12 +545,25 @@ export default function AdminPage() {
                     <option value="SUSPENDED">Suspended Only</option>
                   </select>
                 )}
+
+                <button
+                  onClick={exportLogsCsv}
+                  title="Export Audit Logs to CSV"
+                  className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-[#161622] hover:bg-[#1f1f30] text-emerald-400 border border-emerald-500/30 text-xs font-mono font-bold transition-all shrink-0"
+                >
+                  <Download className="w-3.5 h-3.5" />
+                  <span className="hidden sm:inline">Export CSV</span>
+                </button>
               </div>
             </div>
 
             {/* ── TAB 1: USER MANAGEMENT TABLE & CONTROLS ── */}
             {activeTab === "users" && (
-              <div className="bg-[#0d0d14] border border-[#1f1f2e] rounded-2xl overflow-hidden shadow-2xl">
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="bg-[#0d0d14] border border-[#1f1f2e] rounded-2xl overflow-hidden shadow-2xl"
+              >
                 <div className="overflow-x-auto">
                   <table className="w-full text-left text-xs font-mono">
                     <thead className="bg-[#12121c] border-b border-[#1f1f2e] text-zinc-400 uppercase text-[10px] tracking-wider">
@@ -440,7 +571,7 @@ export default function AdminPage() {
                         <th className="py-3.5 px-4">User Info</th>
                         <th className="py-3.5 px-4">Role / Plan</th>
                         <th className="py-3.5 px-4">Status</th>
-                        <th className="py-3.5 px-4">Orders Executed</th>
+                        <th className="py-3.5 px-4">Orders / Volume</th>
                         <th className="py-3.5 px-4">Last IP &amp; Active</th>
                         <th className="py-3.5 px-4 text-right">Admin Actions</th>
                       </tr>
@@ -454,7 +585,16 @@ export default function AdminPage() {
                                 {u.name.charAt(0).toUpperCase()}
                               </div>
                               <div>
-                                <div className="font-bold text-white text-xs">{u.name}</div>
+                                <div className="font-bold text-white text-xs flex items-center gap-1.5">
+                                  <span>{u.name}</span>
+                                  <button
+                                    onClick={() => setSelectedUser(u)}
+                                    className="p-0.5 text-zinc-500 hover:text-white"
+                                    title="View Deep Dive Profile"
+                                  >
+                                    <Eye className="w-3 h-3" />
+                                  </button>
+                                </div>
                                 <div className="text-[11px] text-zinc-400">{u.email}</div>
                               </div>
                             </div>
@@ -498,7 +638,10 @@ export default function AdminPage() {
                             </span>
                           </td>
 
-                          <td className="py-3.5 px-4 font-bold text-white">{u.ordersCount.toLocaleString()}</td>
+                          <td className="py-3.5 px-4">
+                            <div className="font-bold text-white">{u.ordersCount.toLocaleString()} orders</div>
+                            <div className="text-[10px] text-cyan-400">₹{u.totalVolumeCr} Cr</div>
+                          </td>
 
                           <td className="py-3.5 px-4">
                             <div className="text-xs text-white">{u.ipAddress}</div>
@@ -546,12 +689,16 @@ export default function AdminPage() {
                     </tbody>
                   </table>
                 </div>
-              </div>
+              </motion.div>
             )}
 
             {/* ── TAB 2: LIVE USER ACTIVITY AUDIT STREAM ── */}
             {activeTab === "logs" && (
-              <div className="bg-[#0d0d14] border border-[#1f1f2e] rounded-2xl p-5 shadow-2xl space-y-4">
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="bg-[#0d0d14] border border-[#1f1f2e] rounded-2xl p-5 shadow-2xl space-y-4"
+              >
                 <div className="flex items-center justify-between border-b border-[#1f1f2e] pb-3">
                   <div className="flex items-center gap-2">
                     <Activity className="w-4 h-4 text-[#387ed1]" />
@@ -593,8 +740,140 @@ export default function AdminPage() {
                     </div>
                   ))}
                 </div>
-              </div>
+              </motion.div>
             )}
+
+            {/* ── TAB 3: LOW-LATENCY ENGINE HEALTH MONITOR ── */}
+            {activeTab === "telemetry" && (
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="grid grid-cols-1 md:grid-cols-2 gap-6 font-mono"
+              >
+                <div className="p-6 rounded-2xl bg-[#0d0d14] border border-emerald-500/30 space-y-4 shadow-2xl">
+                  <div className="flex items-center justify-between border-b border-zinc-800 pb-3">
+                    <div className="flex items-center gap-2">
+                      <Cpu className="w-5 h-5 text-emerald-400" />
+                      <h3 className="font-bold text-white text-sm">LMAX Disruptor Ring Buffer Health</h3>
+                    </div>
+                    <span className="px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 text-[10px] font-bold border border-emerald-500/20">
+                      0.72ms SUB-MS
+                    </span>
+                  </div>
+
+                  <div className="space-y-3 text-xs">
+                    <div className="flex justify-between text-zinc-400">
+                      <span>Ring Buffer Fill Ratio</span>
+                      <span className="font-bold text-emerald-400">{telemetry.ringBufferFillPct}%</span>
+                    </div>
+                    <div className="w-full h-2 rounded-full bg-zinc-800 overflow-hidden">
+                      <div
+                        className="h-full bg-emerald-400 transition-all duration-500"
+                        style={{ width: `${telemetry.ringBufferFillPct}%` }}
+                      />
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-3 pt-2 text-[11px]">
+                      <div className="p-3 rounded-xl bg-[#12121c] border border-zinc-800">
+                        <span className="text-zinc-500">Ring Capacity</span>
+                        <div className="font-bold text-white text-sm mt-0.5">1,048,576 Slots</div>
+                      </div>
+                      <div className="p-3 rounded-xl bg-[#12121c] border border-zinc-800">
+                        <span className="text-zinc-500">JVM GC Overhead</span>
+                        <div className="font-bold text-emerald-400 text-sm mt-0.5">0.00 MB (Zero-GC)</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="p-6 rounded-2xl bg-[#0d0d14] border border-[#387ed1]/30 space-y-4 shadow-2xl">
+                  <div className="flex items-center justify-between border-b border-zinc-800 pb-3">
+                    <div className="flex items-center gap-2">
+                      <Wifi className="w-5 h-5 text-[#387ed1]" />
+                      <h3 className="font-bold text-white text-sm">WebSocket Gateway Throughput</h3>
+                    </div>
+                    <span className="px-2 py-0.5 rounded bg-[#387ed1]/10 text-[#387ed1] text-[10px] font-bold border border-[#387ed1]/20">
+                      100ms TICK PULSE
+                    </span>
+                  </div>
+
+                  <div className="space-y-3 text-xs">
+                    <div className="flex justify-between text-zinc-400">
+                      <span>Active WebSocket Conns</span>
+                      <span className="font-bold text-sky-400">{telemetry.activeWsConnections} Live Sockets</span>
+                    </div>
+                    <div className="flex justify-between text-zinc-400">
+                      <span>Events Stream Rate</span>
+                      <span className="font-bold text-emerald-400">{telemetry.ordersPerSec.toLocaleString()} ticks/sec</span>
+                    </div>
+
+                    <div className="p-3 rounded-xl bg-[#12121c] border border-zinc-800 text-[11px] space-y-1">
+                      <span className="text-zinc-500">Broadcaster Node</span>
+                      <div className="font-bold text-white">lalan-telemetry-primary-mumbai.internal</div>
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
+            )}
+
+            {/* ── USER DEEP-DIVE DRAWER ── */}
+            <AnimatePresence>
+              {selectedUser && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md">
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.95 }}
+                    className="relative w-full max-w-lg bg-[#0e0e16] border border-[#262638] rounded-2xl p-6 space-y-4 shadow-2xl font-mono text-xs text-white"
+                  >
+                    <button
+                      onClick={() => setSelectedUser(null)}
+                      className="absolute top-4 right-4 p-1 text-zinc-400 hover:text-white"
+                    >
+                      <X className="w-5 h-5" />
+                    </button>
+
+                    <div className="flex items-center gap-3 border-b border-zinc-800 pb-3">
+                      <div className="w-10 h-10 rounded-full bg-[#387ed1] text-white flex items-center justify-center font-bold text-base">
+                        {selectedUser.name.charAt(0)}
+                      </div>
+                      <div>
+                        <h3 className="font-bold text-sm text-white">{selectedUser.name}</h3>
+                        <p className="text-zinc-400 text-[11px]">{selectedUser.email}</p>
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-3 text-[11px]">
+                      <div className="p-2.5 rounded-lg bg-[#141420] border border-zinc-800">
+                        <span className="text-zinc-500">User ID</span>
+                        <div className="font-bold text-white mt-0.5">{selectedUser.id}</div>
+                      </div>
+                      <div className="p-2.5 rounded-lg bg-[#141420] border border-zinc-800">
+                        <span className="text-zinc-500">Plan Tier</span>
+                        <div className="font-bold text-purple-400 mt-0.5">{selectedUser.plan}</div>
+                      </div>
+                      <div className="p-2.5 rounded-lg bg-[#141420] border border-zinc-800">
+                        <span className="text-zinc-500">Total Volume</span>
+                        <div className="font-bold text-cyan-400 mt-0.5">₹{selectedUser.totalVolumeCr} Cr</div>
+                      </div>
+                      <div className="p-2.5 rounded-lg bg-[#141420] border border-zinc-800">
+                        <span className="text-zinc-500">IP Location</span>
+                        <div className="font-bold text-white mt-0.5">{selectedUser.ipAddress}</div>
+                      </div>
+                    </div>
+
+                    <div className="pt-2 flex justify-end">
+                      <button
+                        onClick={() => setSelectedUser(null)}
+                        className="px-4 py-2 rounded-xl bg-[#387ed1] text-white font-bold text-xs"
+                      >
+                        Close Profile
+                      </button>
+                    </div>
+                  </motion.div>
+                </div>
+              )}
+            </AnimatePresence>
           </>
         )}
       </main>
