@@ -3,10 +3,14 @@
 import { motion } from "framer-motion";
 import CountUp from "react-countup";
 import Link from "next/link";
-import { Zap, ShieldCheck, Cpu, Layers, ArrowRight, Sparkles, Activity } from "lucide-react";
+import { Zap, ShieldCheck, Cpu, Layers, ArrowRight, Sparkles, Activity, Terminal, Shield, Award, CheckCircle2 } from "lucide-react";
 import LalanSiteHeader from "@/components/LalanSiteHeader";
 import LalanSiteFooter from "@/components/LalanSiteFooter";
 import FloatingMoney from "@/components/FloatingMoney";
+import StockTickerTape from "@/components/StockTickerTape";
+import InteractiveAlphaEngineDemo from "@/components/InteractiveAlphaEngineDemo";
+import QuantApiPlayground from "@/components/QuantApiPlayground";
+import InstitutionalComparisonMatrix from "@/components/InstitutionalComparisonMatrix";
 
 const featureCards = [
   {
@@ -41,8 +45,11 @@ const featureCards = [
 
 export default function LandingPage() {
   return (
-    <div className="font-sans bg-[#060608] text-zinc-100 min-h-screen selection:bg-[#387ed1] selection:text-white relative overflow-x-hidden flex flex-col transition-colors duration-200">
-      {/* Floating Money Background & Interactive Particle Stream */}
+    <div className="font-sans bg-slate-50 dark:bg-[#060608] text-slate-900 dark:text-zinc-100 min-h-screen selection:bg-[#387ed1] selection:text-white relative overflow-x-hidden flex flex-col transition-colors duration-200">
+      {/* Top Live Micro-Tick Stock Ticker Tape */}
+      <StockTickerTape />
+
+      {/* Floating Background Accent */}
       <FloatingMoney />
 
       <LalanSiteHeader />
@@ -69,23 +76,36 @@ export default function LandingPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
           >
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#387ed1]/10 border border-[#387ed1]/20 text-[#387ed1] text-[11px] sm:text-xs font-mono uppercase tracking-wider shadow-inner">
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#387ed1]/10 border border-[#387ed1]/30 text-[#387ed1] text-[11px] sm:text-xs font-mono font-bold uppercase tracking-wider shadow-inner">
               <Sparkles className="h-3.5 w-3.5 text-[#387ed1] animate-pulse" />
-              LALAN Enterprise HFT Order Book Engine
+              <span>LALAN Enterprise HFT Order Book Engine</span>
             </div>
 
             <h1 className="flex flex-col gap-2 sm:gap-4">
-              <span className="text-2xl sm:text-4xl font-medium tracking-tight text-zinc-600 dark:text-zinc-400">
+              <span className="text-2xl sm:text-4xl font-medium tracking-tight text-slate-600 dark:text-zinc-400">
                 Invest &amp; Trade in Everything
               </span>
-              <span className="text-3xl sm:text-6xl md:text-7xl font-black tracking-tighter leading-[1.05] sm:leading-[0.98] bg-gradient-to-b from-slate-900 via-slate-800 to-slate-600 dark:from-white dark:via-zinc-100 dark:to-zinc-400 bg-clip-text text-transparent">
+              <span className="text-3xl sm:text-6xl md:text-7xl font-black tracking-tighter leading-[1.05] sm:leading-[0.98] bg-gradient-to-b from-slate-950 via-slate-900 to-slate-700 dark:from-white dark:via-zinc-100 dark:to-zinc-400 bg-clip-text text-transparent">
                 We eliminate risk,<br className="hidden sm:inline" /> and alpha chases us.
               </span>
             </h1>
 
-            <p className="text-zinc-600 dark:text-zinc-400 text-sm sm:text-lg md:text-xl max-w-2xl mx-auto leading-relaxed font-normal">
+            <p className="text-slate-600 dark:text-zinc-400 text-sm sm:text-lg md:text-xl max-w-2xl mx-auto leading-relaxed font-normal">
               Institutional market microstructure analysis for retail &amp; options traders. Sub-millisecond latency. Live Order Book Imbalance (OBI).
             </p>
+
+            {/* Key Value Badges */}
+            <div className="flex flex-wrap items-center justify-center gap-3 pt-2 text-xs font-mono text-slate-700 dark:text-zinc-300">
+              <span className="inline-flex items-center gap-1 text-emerald-600 dark:text-emerald-400 font-bold bg-emerald-500/10 px-3 py-1 rounded-full border border-emerald-500/20">
+                <CheckCircle2 className="w-3.5 h-3.5" /> 100% Free Equity Delivery (₹0 Brokerage)
+              </span>
+              <span className="inline-flex items-center gap-1 text-[#387ed1] font-bold bg-[#387ed1]/10 px-3 py-1 rounded-full border border-[#387ed1]/20">
+                <Zap className="w-3.5 h-3.5" /> 0.68ms Sub-ms Execution
+              </span>
+              <span className="inline-flex items-center gap-1 text-purple-600 dark:text-purple-400 font-bold bg-purple-500/10 px-3 py-1 rounded-full border border-purple-500/20">
+                <Shield className="w-3.5 h-3.5" /> DhanHQ Direct Integration
+              </span>
+            </div>
 
             {/* CTA Buttons */}
             <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4">
@@ -98,6 +118,14 @@ export default function LandingPage() {
                   <Zap className="h-4 w-4 text-white fill-white" />
                 </Link>
               </motion.div>
+
+              <Link
+                href="/pricing"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-slate-200 hover:bg-slate-300 dark:bg-[#12121c] dark:hover:bg-[#1a1a28] text-slate-900 dark:text-white text-xs sm:text-sm font-mono font-bold px-7 py-3.5 rounded-xl border border-slate-300 dark:border-[#222234] transition-all"
+              >
+                <span>View Free 14-Day Trial Tiers</span>
+                <ArrowRight className="h-4 w-4 text-[#387ed1]" />
+              </Link>
             </div>
           </motion.div>
 
@@ -108,25 +136,25 @@ export default function LandingPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
           >
-            <div className="bg-[#0f0f13] border border-zinc-700/50 dark:border-white/[0.14] rounded-xl sm:rounded-2xl shadow-2xl backdrop-blur-xl overflow-hidden ring-1 ring-black/10 hover:border-[#387ed1]/40 transition-colors">
+            <div className="bg-white dark:bg-[#0f0f13] border border-slate-300 dark:border-white/[0.14] rounded-xl sm:rounded-2xl shadow-2xl backdrop-blur-xl overflow-hidden ring-1 ring-black/10 hover:border-[#387ed1]/40 transition-colors">
               {/* Window Header */}
-              <div className="flex items-center justify-between px-3.5 sm:px-4 py-2.5 bg-[#08080b] border-b border-zinc-800">
+              <div className="flex items-center justify-between px-3.5 sm:px-4 py-2.5 bg-slate-100 dark:bg-[#08080b] border-b border-slate-200 dark:border-zinc-800">
                 <div className="flex items-center space-x-2">
                   <div className="w-3 h-3 rounded-full bg-[#ff5f57] border border-red-600/40" />
                   <div className="w-3 h-3 rounded-full bg-[#febc2e] border border-amber-600/40" />
                   <div className="w-3 h-3 rounded-full bg-[#28c840] border border-emerald-600/40" />
                 </div>
-                <div className="bg-[#14141c] border border-zinc-800 rounded-md px-3 py-1 text-zinc-300 text-[10px] sm:text-xs font-mono text-center max-w-[220px] sm:max-w-xs truncate">
+                <div className="bg-slate-200 dark:bg-[#14141c] border border-slate-300 dark:border-zinc-800 rounded-md px-3 py-1 text-slate-800 dark:text-zinc-300 text-[10px] sm:text-xs font-mono text-center max-w-[220px] sm:max-w-xs truncate">
                   lalan-hft.internal/dashboard
                 </div>
-                <div className="flex items-center gap-1.5 text-[10px] font-mono text-emerald-400 font-bold hidden sm:flex">
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping" />
+                <div className="flex items-center gap-1.5 text-[10px] font-mono text-emerald-600 dark:text-emerald-400 font-bold hidden sm:flex">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-ping" />
                   LIVE LALAN HFT STREAM
                 </div>
               </div>
 
               {/* iFrame Stream Container */}
-              <div className="w-full h-[300px] xs:h-[360px] sm:h-[460px] md:h-[520px] overflow-hidden relative bg-[#08080a]">
+              <div className="w-full h-[320px] xs:h-[380px] sm:h-[480px] md:h-[540px] overflow-hidden relative bg-slate-50 dark:bg-[#08080a]">
                 <iframe
                   src="/dashboard"
                   className="w-full h-full border-0"
@@ -138,9 +166,16 @@ export default function LandingPage() {
         </section>
 
         {/* ════════════════════════════════════════════════
-            SECTION 2 — LOCK-FREE COUNTER STAT
+            SECTION 2 — INTERACTIVE ALPHA ENGINE SIMULATOR
             ════════════════════════════════════════════════ */}
-        <section className="bg-[#08080c]/90 py-16 sm:py-24 px-4 sm:px-6 border-t border-b border-zinc-200 dark:border-white/[0.06] backdrop-blur-xl">
+        <section className="max-w-6xl mx-auto px-4 sm:px-6">
+          <InteractiveAlphaEngineDemo />
+        </section>
+
+        {/* ════════════════════════════════════════════════
+            SECTION 3 — LOCK-FREE COUNTER STAT
+            ════════════════════════════════════════════════ */}
+        <section className="bg-slate-100 dark:bg-[#08080c]/90 py-16 sm:py-24 px-4 sm:px-6 border-t border-b border-slate-200 dark:border-white/[0.06] backdrop-blur-xl">
           <div className="max-w-4xl mx-auto text-center">
             <motion.div
               initial={{ opacity: 0, y: 16 }}
@@ -162,15 +197,48 @@ export default function LandingPage() {
               <div className="text-5xl sm:text-7xl md:text-8xl font-black text-transparent bg-clip-text bg-gradient-to-b from-slate-900 via-slate-800 to-slate-600 dark:from-white dark:via-zinc-100 dark:to-zinc-500 leading-none tracking-tight font-mono">
                 <CountUp start={985536} end={1000000} duration={2.5} separator="," />
               </div>
-              <p className="text-zinc-600 dark:text-zinc-400 text-sm sm:text-lg mt-4 sm:mt-6 max-w-md mx-auto leading-relaxed px-2 font-normal">
+              <p className="text-slate-600 dark:text-zinc-400 text-sm sm:text-lg mt-4 sm:mt-6 max-w-md mx-auto leading-relaxed px-2 font-normal">
                 Order events processed per second through our LMAX Disruptor ring buffer. Zero Garbage Collection pauses.
               </p>
             </motion.div>
+
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mt-12 max-w-3xl mx-auto font-mono text-xs">
+              <div className="p-4 rounded-xl bg-white dark:bg-[#0d0d14] border border-slate-200 dark:border-[#1f1f2e]">
+                <div className="text-slate-500 dark:text-zinc-500">Latency</div>
+                <div className="text-xl font-bold text-emerald-500 mt-1">0.68 ms</div>
+              </div>
+              <div className="p-4 rounded-xl bg-white dark:bg-[#0d0d14] border border-slate-200 dark:border-[#1f1f2e]">
+                <div className="text-slate-500 dark:text-zinc-500">Daily Liquidity</div>
+                <div className="text-xl font-bold text-[#387ed1] mt-1">₹500Cr+</div>
+              </div>
+              <div className="p-4 rounded-xl bg-white dark:bg-[#0d0d14] border border-slate-200 dark:border-[#1f1f2e]">
+                <div className="text-slate-500 dark:text-zinc-500">Equity Delivery</div>
+                <div className="text-xl font-bold text-emerald-500 mt-1">₹0 Free</div>
+              </div>
+              <div className="p-4 rounded-xl bg-white dark:bg-[#0d0d14] border border-slate-200 dark:border-[#1f1f2e]">
+                <div className="text-slate-500 dark:text-zinc-500">GC Stalls</div>
+                <div className="text-xl font-bold text-purple-500 mt-1">0 MB (Zero)</div>
+              </div>
+            </div>
           </div>
         </section>
 
         {/* ════════════════════════════════════════════════
-            SECTION 3 — FEATURE CARDS GRID
+            SECTION 4 — QUANT CODE PLAYGROUND
+            ════════════════════════════════════════════════ */}
+        <section className="max-w-5xl mx-auto px-4 sm:px-6">
+          <QuantApiPlayground />
+        </section>
+
+        {/* ════════════════════════════════════════════════
+            SECTION 5 — INSTITUTIONAL COMPARISON MATRIX
+            ════════════════════════════════════════════════ */}
+        <section className="max-w-6xl mx-auto px-4 sm:px-6">
+          <InstitutionalComparisonMatrix />
+        </section>
+
+        {/* ════════════════════════════════════════════════
+            SECTION 6 — FEATURE CARDS GRID
             ════════════════════════════════════════════════ */}
         <section className="py-16 sm:py-24 px-4 sm:px-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 max-w-5xl mx-auto">
@@ -179,7 +247,7 @@ export default function LandingPage() {
               return (
                 <motion.div
                   key={card.title}
-                  className="bg-[#0e0e13] border border-zinc-200 dark:border-white/[0.08] hover:border-[#387ed1]/40 rounded-2xl p-6 sm:p-8 transition-all shadow-xl group"
+                  className="bg-white dark:bg-[#0e0e13] border border-slate-200 dark:border-white/[0.08] hover:border-[#387ed1]/40 rounded-2xl p-6 sm:p-8 transition-all shadow-xl group"
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
