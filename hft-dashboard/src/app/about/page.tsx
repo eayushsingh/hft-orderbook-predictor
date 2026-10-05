@@ -5,7 +5,7 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import LalanSiteHeader from "@/components/LalanSiteHeader";
 import LalanSiteFooter from "@/components/LalanSiteFooter";
-import { Zap, Cpu, ShieldCheck, Activity, Users, ArrowRight, Award } from "lucide-react";
+import { Zap, Cpu, ShieldCheck, Activity, Users, ArrowRight, Award, Globe, Building2, BarChart3, Newspaper, PieChart, ExternalLink } from "lucide-react";
 
 export default function AboutPage() {
   return (
@@ -49,6 +49,59 @@ export default function AboutPage() {
               <p>
                 And yet, we stay true to our founding principle: providing clean, trustworthy, production-grade tools for retail investors and quant developers alike.
               </p>
+            </div>
+          </div>
+        </section>
+
+        {/* ── ALL-IN-ONE MULTI-SOURCE INTELLIGENCE HUB SECTION ── */}
+        <section className="py-16 sm:py-24 px-4 sm:px-8 bg-[#08080d] border-b border-[#181824]">
+          <div className="max-w-[1100px] mx-auto space-y-12">
+            <div className="text-center space-y-3 max-w-3xl mx-auto">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#387ed1]/10 border border-[#387ed1]/30 text-[#387ed1] text-xs font-mono font-bold uppercase">
+                <Globe className="w-3.5 h-3.5 animate-pulse" />
+                <span>All-In-One Unified Research Terminal</span>
+              </div>
+              <h2 className="text-2xl sm:text-4xl font-black text-white tracking-tight">
+                No More Switching Between 10 Different Websites
+              </h2>
+              <p className="text-xs sm:text-sm text-[#8a8d9b]">
+                Traders and quants check multiple sites before making an investment decision. LALAN aggregates Screener.in, NSE India, TradingView, Moneycontrol, and Trendlyne directly inside a single interface.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {/* Feature 1 */}
+              <div className="p-6 rounded-2xl bg-[#0f0f17] border border-[#1f1f2e] space-y-3 shadow-xl">
+                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400">
+                  <Building2 className="h-5 w-5" />
+                </div>
+                <h3 className="text-lg font-bold text-white">Screener.in Financials</h3>
+                <p className="text-xs text-[#8a8d9b] leading-relaxed">
+                  Instant Stock P/E, ROCE %, ROE %, FII &amp; DII quarterly shareholding patterns, and balance sheet metrics for any Indian stock.
+                </p>
+              </div>
+
+              {/* Feature 2 */}
+              <div className="p-6 rounded-2xl bg-[#0f0f17] border border-[#1f1f2e] space-y-3 shadow-xl">
+                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-cyan-500/10 border border-cyan-500/20 text-cyan-400">
+                  <ShieldCheck className="h-5 w-5" />
+                </div>
+                <h3 className="text-lg font-bold text-white">NSE Official Disclosures</h3>
+                <p className="text-xs text-[#8a8d9b] leading-relaxed">
+                  Real-time SEBI Regulation 30 corporate announcements, board meeting outcomes, bulk &amp; block deal streams, and derivative open interest (OI).
+                </p>
+              </div>
+
+              {/* Feature 3 */}
+              <div className="p-6 rounded-2xl bg-[#0f0f17] border border-[#1f1f2e] space-y-3 shadow-xl">
+                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-sky-500/10 border border-sky-500/20 text-sky-400">
+                  <BarChart3 className="h-5 w-5" />
+                </div>
+                <h3 className="text-lg font-bold text-white">TradingView Technicals</h3>
+                <p className="text-xs text-[#8a8d9b] leading-relaxed">
+                  Multi-indicator technical consensus ratings (RSI 14, MACD, 200 DMA, Pivots) alongside interactive TradingView charts.
+                </p>
+              </div>
             </div>
           </div>
         </section>

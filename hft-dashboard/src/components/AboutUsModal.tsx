@@ -18,6 +18,7 @@ import {
   Gauge,
   Workflow,
   CheckCircle2,
+  Globe,
 } from "lucide-react";
 
 interface AboutUsModalProps {
@@ -27,7 +28,7 @@ interface AboutUsModalProps {
 
 export default function AboutUsModal({ isOpen, onClose }: AboutUsModalProps) {
   const [activeSection, setActiveSection] = useState<
-    "overview" | "disruptor" | "microstructure" | "brokers" | "engineers"
+    "overview" | "disruptor" | "microstructure" | "multisource" | "brokers" | "engineers"
   >("overview");
 
   if (!isOpen) return null;
@@ -72,6 +73,7 @@ export default function AboutUsModal({ isOpen, onClose }: AboutUsModalProps) {
           <div className="flex items-center space-x-1 border-b border-[#262634] bg-[#0d0d12] px-4 py-2 overflow-x-auto no-scrollbar shrink-0">
             {[
               { id: "overview", label: "Overview & Mission", icon: Activity },
+              { id: "multisource", label: "Screener & NSE Hub", icon: Globe },
               { id: "disruptor", label: "Zero-GC LMAX Disruptor", icon: Cpu },
               { id: "microstructure", label: "Market Microstructure", icon: Gauge },
               { id: "brokers", label: "Indian Multi-Broker Feed", icon: Building2 },
@@ -140,6 +142,51 @@ export default function AboutUsModal({ isOpen, onClose }: AboutUsModalProps) {
                     <h4 className="font-bold text-white font-mono text-xs">LALAN &amp; Multi-Broker Feeds</h4>
                     <p className="text-[11px] text-[#747888] mt-1">
                       Aggregated buying/selling liquidity matrix across LALAN Engine, DhanHQ, Groww, and Upstox.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* ── SECTION: MULTI-SOURCE INTELLIGENCE HUB ── */}
+            {activeSection === "multisource" && (
+              <div className="space-y-4">
+                <div className="p-4 rounded-xl bg-[#0e0e13] border border-emerald-500/20">
+                  <h3 className="text-base font-bold font-mono text-white mb-2 flex items-center gap-2">
+                    <Globe className="h-4 w-4 text-emerald-400" />
+                    All-In-One Multi-Source Intelligence Hub
+                  </h3>
+                  <p className="text-xs text-[#9e9ea8]">
+                    LALAN integrates trusted financial portals — Screener.in, NSE India, TradingView, Moneycontrol, and Trendlyne — into a single unified terminal so quants and option traders never have to leave the application.
+                  </p>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 font-mono text-xs">
+                  <div className="p-3.5 rounded-xl bg-[#101016] border border-[#242432] space-y-1">
+                    <div className="font-bold text-emerald-400">Screener.in Financials</div>
+                    <p className="text-[11px] text-[#747888]">
+                      P/E, ROCE %, ROE %, promoter/FII/DII shareholding patterns &amp; balance sheets.
+                    </p>
+                  </div>
+
+                  <div className="p-3.5 rounded-xl bg-[#101016] border border-[#242432] space-y-1">
+                    <div className="font-bold text-cyan-400">NSE Official Disclosures</div>
+                    <p className="text-[11px] text-[#747888]">
+                      SEBI Regulation 30 filings, corporate announcements, bulk/block deal streams, and OI.
+                    </p>
+                  </div>
+
+                  <div className="p-3.5 rounded-xl bg-[#101016] border border-[#242432] space-y-1">
+                    <div className="font-bold text-sky-400">TradingView Technicals</div>
+                    <p className="text-[11px] text-[#747888]">
+                      RSI 14, MACD, Moving Averages 200 DMA, Pivots &amp; combined technical gauge rating.
+                    </p>
+                  </div>
+
+                  <div className="p-3.5 rounded-xl bg-[#101016] border border-[#242432] space-y-1">
+                    <div className="font-bold text-amber-400">Moneycontrol &amp; Trendlyne</div>
+                    <p className="text-[11px] text-[#747888]">
+                      Breaking market news, FII/DII net daily cash flows (₹ Cr), &amp; delivery volume %.
                     </p>
                   </div>
                 </div>
