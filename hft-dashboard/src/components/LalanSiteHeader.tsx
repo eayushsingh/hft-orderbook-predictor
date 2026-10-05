@@ -57,10 +57,10 @@ export default function LalanSiteHeader() {
               <Link
                 key={link.href}
                 href={link.href}
-                className={`transition-colors ${
+                className={`transition-colors font-semibold ${
                   isActive
                     ? "text-[#387ed1] font-bold"
-                    : "text-[#a0a3b0] hover:text-white"
+                    : "text-slate-700 dark:text-[#a0a3b0] hover:text-[#387ed1] dark:hover:text-white"
                 }`}
               >
                 {link.label}
@@ -76,17 +76,17 @@ export default function LalanSiteHeader() {
             onClick={toggleTheme}
             aria-label="Toggle Dark/Light Mode"
             title={`Switch to ${theme === "dark" ? "Light" : "Dark"} Mode`}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-[#262634] bg-[#14141a] hover:bg-[#1f1f28] text-xs font-semibold font-mono text-[#a0a3b0] hover:text-white transition-all shadow-sm active:scale-95"
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-slate-300 dark:border-[#262634] bg-slate-100 hover:bg-slate-200 dark:bg-[#14141a] dark:hover:bg-[#1f1f28] text-xs font-semibold font-mono text-slate-800 dark:text-[#a0a3b0] hover:text-slate-950 dark:hover:text-white transition-all shadow-sm active:scale-95"
           >
             {theme === "dark" ? (
               <>
                 <Sun className="h-4 w-4 text-amber-400" />
-                <span>Light</span>
+                <span className="text-slate-800 dark:text-[#a0a3b0]">Light</span>
               </>
             ) : (
               <>
-                <Moon className="h-4 w-4 text-indigo-400" />
-                <span>Dark</span>
+                <Moon className="h-4 w-4 text-indigo-500" />
+                <span className="text-slate-900 font-bold">Dark</span>
               </>
             )}
           </button>
@@ -96,25 +96,25 @@ export default function LalanSiteHeader() {
             <div className="relative">
               <button
                 onClick={() => setUserDropdownOpen(!userDropdownOpen)}
-                className="flex items-center space-x-2 bg-[#161622] hover:bg-[#1f1f30] border border-[#262638] px-3 py-1.5 rounded-xl text-xs font-mono transition-all"
+                className="flex items-center space-x-2 bg-slate-100 hover:bg-slate-200 dark:bg-[#161622] dark:hover:bg-[#1f1f30] border border-slate-300 dark:border-[#262638] px-3 py-1.5 rounded-xl text-xs font-mono transition-all"
               >
                 <div className="w-5 h-5 rounded-full bg-[#387ed1] text-white flex items-center justify-center font-bold text-[10px]">
                   {user.name.charAt(0).toUpperCase()}
                 </div>
-                <span className="font-bold text-white max-w-[100px] truncate">{user.name}</span>
-                <ChevronDown className="w-3.5 h-3.5 text-zinc-400" />
+                <span className="font-bold text-slate-900 dark:text-white max-w-[100px] truncate">{user.name}</span>
+                <ChevronDown className="w-3.5 h-3.5 text-slate-600 dark:text-zinc-400" />
               </button>
 
               {userDropdownOpen && (
-                <div className="absolute right-0 mt-2 w-48 bg-[#0e0e16] border border-[#222234] rounded-xl shadow-2xl py-2 z-50 text-xs font-mono">
-                  <div className="px-3 py-2 border-b border-[#1f1f2e]">
-                    <div className="font-bold text-white truncate">{user.name}</div>
-                    <div className="text-[10px] text-zinc-400 truncate">{user.email}</div>
+                <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-[#0e0e16] border border-slate-200 dark:border-[#222234] rounded-xl shadow-2xl py-2 z-50 text-xs font-mono">
+                  <div className="px-3 py-2 border-b border-slate-200 dark:border-[#1f1f2e]">
+                    <div className="font-bold text-slate-900 dark:text-white truncate">{user.name}</div>
+                    <div className="text-[10px] text-slate-500 dark:text-zinc-400 truncate">{user.email}</div>
                   </div>
                   <Link
                     href="/dashboard"
                     onClick={() => setUserDropdownOpen(false)}
-                    className="flex items-center gap-2 px-3 py-2 text-zinc-300 hover:text-white hover:bg-[#161624] transition-colors"
+                    className="flex items-center gap-2 px-3 py-2 text-slate-800 dark:text-zinc-300 hover:text-[#387ed1] dark:hover:text-white hover:bg-slate-100 dark:hover:bg-[#161624] transition-colors"
                   >
                     <Zap className="w-3.5 h-3.5 text-[#387ed1]" />
                     <span>HFT Terminal</span>
@@ -122,7 +122,7 @@ export default function LalanSiteHeader() {
                   <Link
                     href="/admin"
                     onClick={() => setUserDropdownOpen(false)}
-                    className="flex items-center gap-2 px-3 py-2 text-amber-400 hover:bg-[#161624] transition-colors font-bold"
+                    className="flex items-center gap-2 px-3 py-2 text-amber-600 dark:text-amber-400 hover:bg-slate-100 dark:hover:bg-[#161624] transition-colors font-bold"
                   >
                     <ShieldAlert className="w-3.5 h-3.5" />
                     <span>Admin Panel</span>
@@ -132,7 +132,7 @@ export default function LalanSiteHeader() {
                       logout();
                       setUserDropdownOpen(false);
                     }}
-                    className="w-full text-left flex items-center gap-2 px-3 py-2 text-red-400 hover:bg-[#161624] transition-colors"
+                    className="w-full text-left flex items-center gap-2 px-3 py-2 text-red-600 dark:text-red-400 hover:bg-slate-100 dark:hover:bg-[#161624] transition-colors"
                   >
                     <LogOut className="w-3.5 h-3.5" />
                     <span>Sign Out</span>
@@ -143,10 +143,10 @@ export default function LalanSiteHeader() {
           ) : (
             <button
               onClick={openSignIn}
-              className="flex items-center space-x-1.5 bg-[#161622] hover:bg-[#1f1f30] border border-[#2a2a3f] text-white font-mono text-xs font-bold px-3.5 py-1.5 rounded-xl transition-all shadow-sm active:scale-95"
+              className="flex items-center space-x-1.5 bg-slate-100 hover:bg-slate-200 dark:bg-[#161622] dark:hover:bg-[#1f1f30] border border-slate-300 dark:border-[#2a2a3f] text-slate-900 dark:text-white font-mono text-xs font-bold px-3.5 py-1.5 rounded-xl transition-all shadow-sm active:scale-95"
             >
               <LogIn className="h-3.5 w-3.5 text-[#387ed1]" />
-              <span>Sign In</span>
+              <span className="text-slate-900 dark:text-white font-bold">Sign In</span>
             </button>
           )}
 
@@ -155,7 +155,7 @@ export default function LalanSiteHeader() {
             className="inline-flex items-center space-x-1.5 bg-[#387ed1] hover:bg-[#306ec0] text-white font-bold text-xs px-4 py-2 rounded-lg transition-all shadow-md shadow-[#387ed1]/20 active:scale-95"
           >
             <Zap className="h-3.5 w-3.5" />
-            <span>Open Terminal</span>
+            <span className="text-white font-bold">Open Terminal</span>
           </Link>
         </nav>
 
