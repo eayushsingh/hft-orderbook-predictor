@@ -25,6 +25,7 @@ import {
   LogIn,
   LogOut,
   Globe,
+  ShieldAlert,
 } from "lucide-react";
 import { useTheme } from "@/context/ThemeContext";
 import { useSubscription } from "@/context/SubscriptionContext";
@@ -361,15 +362,14 @@ export default function LalanNavbar({
                       >
                         About Specs &amp; Architecture
                       </button>
-                      <button
-                        onClick={() => {
-                          setProfileDropdownOpen(false);
-                          onOpenPricingModal && onOpenPricingModal();
-                        }}
-                        className="w-full mt-1 py-1.5 bg-[#10b981] hover:bg-[#0da673] text-black font-mono font-bold text-[11px] rounded-lg transition-all"
+                      <a
+                        href="/admin"
+                        onClick={() => setProfileDropdownOpen(false)}
+                        className="w-full mt-1 py-1.5 bg-[#387ed1]/15 hover:bg-[#387ed1]/25 text-[#387ed1] border border-[#387ed1]/35 font-mono font-bold text-[11px] rounded-lg transition-all flex items-center justify-center gap-1.5"
                       >
-                        Manage 14-Day Free Trial
-                      </button>
+                        <ShieldAlert className="w-3.5 h-3.5" />
+                        <span>Admin Telemetry Panel</span>
+                      </a>
 
                       <button
                         onClick={() => {

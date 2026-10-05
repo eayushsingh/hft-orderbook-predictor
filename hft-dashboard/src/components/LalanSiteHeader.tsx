@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Menu, X, Zap, Sun, Moon, LogIn, User as UserIcon, LogOut, ChevronDown } from "lucide-react";
+import { Menu, X, Zap, Sun, Moon, LogIn, User as UserIcon, LogOut, ChevronDown, ShieldAlert } from "lucide-react";
 import { useTheme } from "@/context/ThemeContext";
 import { useAuth } from "@/context/AuthContext";
 
@@ -114,6 +114,14 @@ export default function LalanSiteHeader() {
                   >
                     <Zap className="w-3.5 h-3.5 text-[#387ed1]" />
                     <span>HFT Terminal</span>
+                  </Link>
+                  <Link
+                    href="/admin"
+                    onClick={() => setUserDropdownOpen(false)}
+                    className="flex items-center gap-2 px-3 py-2 text-amber-400 hover:bg-[#161624] transition-colors font-bold"
+                  >
+                    <ShieldAlert className="w-3.5 h-3.5" />
+                    <span>Admin Panel</span>
                   </Link>
                   <button
                     onClick={() => {
