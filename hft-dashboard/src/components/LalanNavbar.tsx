@@ -22,9 +22,12 @@ import {
   Menu,
   X,
   Activity,
+  LogIn,
+  LogOut,
 } from "lucide-react";
 import { useTheme } from "@/context/ThemeContext";
 import { useSubscription } from "@/context/SubscriptionContext";
+import { useAuth } from "@/context/AuthContext";
 
 interface LalanNavbarProps {
   activeTab: string;
@@ -66,6 +69,7 @@ export default function LalanNavbar({
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { theme, toggleTheme } = useTheme();
   const { activePlanId, isTrialActive, daysRemainingInTrial } = useSubscription();
+  const { user, isLoggedIn, openSignIn, logout } = useAuth();
 
   const navItems = [
     { id: "terminal", label: "Terminal", icon: Zap },
@@ -297,77 +301,98 @@ export default function LalanNavbar({
             </AnimatePresence>
           </div>
 
-          {/* User Profile Badge */}
-          <div className="relative">
-            <button
-              onClick={() => setProfileDropdownOpen((v) => !v)}
-              className="flex items-center space-x-1.5 rounded-lg bg-[#161620] border border-[#262636] px-2.5 py-1 hover:border-[#387ed1] transition-all"
-            >
-              <div className="flex h-5 w-5 items-center justify-center rounded-full bg-[#387ed1]/20 text-[#387ed1] font-bold text-[10px]">
-                AY
-              </div>
-              <span className="font-mono text-xs font-bold text-white hidden sm:inline">
-                AY8899
-              </span>
-              <ChevronDown className="h-3 w-3 text-[#747888]" />
-            </button>
+          {/* User Profile / Auth Button */}
+          {isLoggedIn && user ? (
+            <div className="relative">
+              <button
+                onClick={() => setProfileDropdownOpen((v) => !v)}
+                className="flex items-center space-x-1.5 rounded-lg bg-[#161620] border border-[#262636] px-2.5 py-1 hover:border-[#387ed1] transition-all"
+              >
+                <div className="flex h-5 w-5 items-center justify-center rounded-full bg-[#387ed1] text-white font-bold text-[10px]">
+                  {user.name.charAt(0).toUpperCase()}
+                </div>
+                <span className="font-mono text-xs font-bold text-white hidden sm:inline max-w-[110px] truncate">
+                  {user.name}
+                </span>
+                <ChevronDown className="h-3 w-3 text-[#747888]" />
+              </button>
 
-            <AnimatePresence>
-              {profileDropdownOpen && (
-                <motion.div
-                  initial={{ opacity: 0, y: 8, scale: 0.95 }}
-                  animate={{ opacity: 1, y: 0, scale: 1 }}
-                  exit={{ opacity: 0, y: 8, scale: 0.95 }}
-                  className="absolute right-0 mt-2 w-64 rounded-xl border border-[#262636] bg-[#14141c] p-3 text-xs shadow-2xl z-50"
-                >
-                  <div className="border-b border-[#222230] pb-2.5 mb-2.5">
-                    <p className="font-bold text-white">Ayush Singh</p>
-                    <p className="font-mono text-[11px] text-[#747888]">AY8899 · LALAN Direct API</p>
-                  </div>
-                  <div className="space-y-1.5 text-[#b0b3c0]">
-                    <div className="flex justify-between py-1 items-center">
-                      <span>Display Theme</span>
+              <AnimatePresence>
+                {profileDropdownOpen && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 8, scale: 0.95 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: 8, scale: 0.95 }}
+                    className="absolute right-0 mt-2 w-64 rounded-xl border border-[#262636] bg-[#14141c] p-3 text-xs shadow-2xl z-50"
+                  >
+                    <div className="border-b border-[#222230] pb-2.5 mb-2.5">
+                      <p className="font-bold text-white truncate">{user.name}</p>
+                      <p className="font-mono text-[11px] text-[#747888] truncate">{user.email}</p>
+                    </div>
+                    <div className="space-y-1.5 text-[#b0b3c0]">
+                      <div className="flex justify-between py-1 items-center">
+                        <span>Display Theme</span>
+                        <button
+                          onClick={toggleTheme}
+                          className="flex items-center gap-1 text-xs font-mono font-bold text-[#387ed1] hover:underline"
+                        >
+                          {theme === "dark" ? <Sun className="h-3 w-3 text-amber-400" /> : <Moon className="h-3 w-3 text-indigo-400" />}
+                          <span>{theme === "dark" ? "Light" : "Dark"}</span>
+                        </button>
+                      </div>
+                      <div className="flex justify-between py-1">
+                        <span>Active Plan</span>
+                        <span className="font-mono font-bold text-[#10b981]">{planBadgeText}</span>
+                      </div>
+                      <div className="flex justify-between py-1">
+                        <span>Available Funds</span>
+                        <span className="font-mono font-bold text-white">
+                          ₹{availableFunds.toLocaleString("en-IN")}
+                        </span>
+                      </div>
                       <button
-                        onClick={toggleTheme}
-                        className="flex items-center gap-1 text-xs font-mono font-bold text-[#387ed1] hover:underline"
+                        onClick={() => {
+                          setProfileDropdownOpen(false);
+                          onOpenAboutModal && onOpenAboutModal();
+                        }}
+                        className="w-full mt-2 py-1.5 bg-[#181824] hover:bg-[#222230] text-white border border-[#282838] font-mono font-bold text-[11px] rounded-lg transition-all"
                       >
-                        {theme === "dark" ? <Sun className="h-3 w-3 text-amber-400" /> : <Moon className="h-3 w-3 text-indigo-400" />}
-                        <span>{theme === "dark" ? "Light" : "Dark"}</span>
+                        About Specs &amp; Architecture
+                      </button>
+                      <button
+                        onClick={() => {
+                          setProfileDropdownOpen(false);
+                          onOpenPricingModal && onOpenPricingModal();
+                        }}
+                        className="w-full mt-1 py-1.5 bg-[#10b981] hover:bg-[#0da673] text-black font-mono font-bold text-[11px] rounded-lg transition-all"
+                      >
+                        Manage 14-Day Free Trial
+                      </button>
+
+                      <button
+                        onClick={() => {
+                          logout();
+                          setProfileDropdownOpen(false);
+                        }}
+                        className="w-full mt-2 py-1.5 bg-red-500/10 hover:bg-red-500/20 text-red-400 border border-red-500/30 font-mono font-bold text-[11px] rounded-lg transition-all flex items-center justify-center gap-1.5"
+                      >
+                        <LogOut className="w-3.5 h-3.5" />
+                        <span>Sign Out</span>
                       </button>
                     </div>
-                    <div className="flex justify-between py-1">
-                      <span>Active Plan</span>
-                      <span className="font-mono font-bold text-[#10b981]">{planBadgeText}</span>
-                    </div>
-                    <div className="flex justify-between py-1">
-                      <span>Available Funds</span>
-                      <span className="font-mono font-bold text-white">
-                        ₹{availableFunds.toLocaleString("en-IN")}
-                      </span>
-                    </div>
-                    <button
-                      onClick={() => {
-                        setProfileDropdownOpen(false);
-                        onOpenAboutModal && onOpenAboutModal();
-                      }}
-                      className="w-full mt-2 py-1.5 bg-[#181824] hover:bg-[#222230] text-white border border-[#282838] font-mono font-bold text-[11px] rounded-lg transition-all"
-                    >
-                      About Specs &amp; Architecture
-                    </button>
-                    <button
-                      onClick={() => {
-                        setProfileDropdownOpen(false);
-                        onOpenPricingModal && onOpenPricingModal();
-                      }}
-                      className="w-full mt-1 py-1.5 bg-[#10b981] hover:bg-[#0da673] text-black font-mono font-bold text-[11px] rounded-lg transition-all"
-                    >
-                      Manage 14-Day Free Trial
-                    </button>
-                  </div>
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+          ) : (
+            <button
+              onClick={openSignIn}
+              className="flex items-center space-x-1.5 rounded-lg bg-[#387ed1] hover:bg-[#306ec0] text-white px-3 py-1 font-mono text-xs font-bold transition-all shadow-md active:scale-95"
+            >
+              <LogIn className="h-3.5 w-3.5" />
+              <span>Sign In</span>
+            </button>
+          )}
 
           {/* Mobile Drawer Menu Toggle */}
           <button

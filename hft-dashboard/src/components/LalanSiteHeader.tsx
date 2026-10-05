@@ -3,13 +3,16 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Menu, X, Zap, Sun, Moon } from "lucide-react";
+import { Menu, X, Zap, Sun, Moon, LogIn, User as UserIcon, LogOut, ChevronDown } from "lucide-react";
 import { useTheme } from "@/context/ThemeContext";
+import { useAuth } from "@/context/AuthContext";
 
 export default function LalanSiteHeader() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [userDropdownOpen, setUserDropdownOpen] = useState(false);
   const pathname = usePathname();
   const { theme, toggleTheme } = useTheme();
+  const { user, isLoggedIn, openSignIn, logout } = useAuth();
 
   const navLinks = [
     { href: "/about", label: "About" },
@@ -46,7 +49,7 @@ export default function LalanSiteHeader() {
         </Link>
 
         {/* Navigation Links - Desktop */}
-        <nav className="hidden md:flex items-center space-x-6 text-sm font-medium">
+        <nav className="hidden md:flex items-center space-x-5 text-sm font-medium">
           {navLinks.map((link) => {
             const isActive = pathname === link.href;
             return (
@@ -83,6 +86,57 @@ export default function LalanSiteHeader() {
               </>
             )}
           </button>
+
+          {/* Sign In / User Profile Button */}
+          {isLoggedIn && user ? (
+            <div className="relative">
+              <button
+                onClick={() => setUserDropdownOpen(!userDropdownOpen)}
+                className="flex items-center space-x-2 bg-[#161622] hover:bg-[#1f1f30] border border-[#262638] px-3 py-1.5 rounded-xl text-xs font-mono transition-all"
+              >
+                <div className="w-5 h-5 rounded-full bg-[#387ed1] text-white flex items-center justify-center font-bold text-[10px]">
+                  {user.name.charAt(0).toUpperCase()}
+                </div>
+                <span className="font-bold text-white max-w-[100px] truncate">{user.name}</span>
+                <ChevronDown className="w-3.5 h-3.5 text-zinc-400" />
+              </button>
+
+              {userDropdownOpen && (
+                <div className="absolute right-0 mt-2 w-48 bg-[#0e0e16] border border-[#222234] rounded-xl shadow-2xl py-2 z-50 text-xs font-mono">
+                  <div className="px-3 py-2 border-b border-[#1f1f2e]">
+                    <div className="font-bold text-white truncate">{user.name}</div>
+                    <div className="text-[10px] text-zinc-400 truncate">{user.email}</div>
+                  </div>
+                  <Link
+                    href="/dashboard"
+                    onClick={() => setUserDropdownOpen(false)}
+                    className="flex items-center gap-2 px-3 py-2 text-zinc-300 hover:text-white hover:bg-[#161624] transition-colors"
+                  >
+                    <Zap className="w-3.5 h-3.5 text-[#387ed1]" />
+                    <span>HFT Terminal</span>
+                  </Link>
+                  <button
+                    onClick={() => {
+                      logout();
+                      setUserDropdownOpen(false);
+                    }}
+                    className="w-full text-left flex items-center gap-2 px-3 py-2 text-red-400 hover:bg-[#161624] transition-colors"
+                  >
+                    <LogOut className="w-3.5 h-3.5" />
+                    <span>Sign Out</span>
+                  </button>
+                </div>
+              )}
+            </div>
+          ) : (
+            <button
+              onClick={openSignIn}
+              className="flex items-center space-x-1.5 bg-[#161622] hover:bg-[#1f1f30] border border-[#2a2a3f] text-white font-mono text-xs font-bold px-3.5 py-1.5 rounded-xl transition-all shadow-sm active:scale-95"
+            >
+              <LogIn className="h-3.5 w-3.5 text-[#387ed1]" />
+              <span>Sign In</span>
+            </button>
+          )}
 
           <Link
             href="/dashboard"

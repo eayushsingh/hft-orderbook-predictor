@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { ThemeProvider } from "@/context/ThemeContext";
 import { SubscriptionProvider } from "@/context/SubscriptionContext";
+import { AuthProvider } from "@/context/AuthContext";
+import AuthModal from "@/components/AuthModal";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -27,9 +29,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     >
       <body className="min-h-full flex flex-col bg-[var(--background)] text-[var(--foreground)] transition-colors duration-300">
         <ThemeProvider>
-          <SubscriptionProvider>
-            {children}
-          </SubscriptionProvider>
+          <AuthProvider>
+            <SubscriptionProvider>
+              {children}
+              <AuthModal />
+            </SubscriptionProvider>
+          </AuthProvider>
         </ThemeProvider>
       </body>
     </html>
