@@ -23,6 +23,7 @@ import SubscriptionPricingModal from "@/components/SubscriptionPricingModal";
 import AboutUsModal from "@/components/AboutUsModal";
 import ConsensusMatrix from "@/components/ConsensusMatrix";
 import IndianMarketMatrix from "@/components/IndianMarketMatrix";
+import MultiSourceIntelligenceHub from "@/components/MultiSourceIntelligenceHub";
 import { useSubscription } from "@/context/SubscriptionContext";
 
 
@@ -977,12 +978,16 @@ export default function DashboardPage() {
             />
           )}
 
-          {/* ── TAB 4: MULTI-BROKER LIQUIDITY MATRIX ── */}
+          {/* ── TAB 4: MULTI-SOURCE INTELLIGENCE HUB (Screener, NSE, TradingView) ── */}
+          {activeTab === "allinone" && <MultiSourceIntelligenceHub />}
+
+          {/* ── TAB 5: MULTI-BROKER LIQUIDITY MATRIX ── */}
           {activeTab === "multibroker" && <IndianMarketMatrix />}
 
-          {/* ── TAB 5: AI MICROSTRUCTURE ANALYTICS ── */}
+          {/* ── TAB 6: AI MICROSTRUCTURE ANALYTICS & HUB ── */}
           {activeTab === "analytics" && (
-            <div className="space-y-4">
+            <div className="space-y-6">
+              <MultiSourceIntelligenceHub />
               <ConsensusMatrix />
               <IndianMarketMatrix />
             </div>

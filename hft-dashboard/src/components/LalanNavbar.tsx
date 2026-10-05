@@ -24,6 +24,7 @@ import {
   Activity,
   LogIn,
   LogOut,
+  Globe,
 } from "lucide-react";
 import { useTheme } from "@/context/ThemeContext";
 import { useSubscription } from "@/context/SubscriptionContext";
@@ -73,6 +74,7 @@ export default function LalanNavbar({
 
   const navItems = [
     { id: "terminal", label: "Terminal", icon: Zap },
+    { id: "allinone", label: "Screener & NSE Hub", icon: Globe },
     { id: "orders", label: "Orders", icon: BookOpen },
     { id: "positions", label: "Positions", icon: Briefcase },
     { id: "multibroker", label: "Multi-Broker", icon: Layers },
