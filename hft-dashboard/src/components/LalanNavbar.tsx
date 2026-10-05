@@ -30,6 +30,7 @@ import {
 import { useTheme } from "@/context/ThemeContext";
 import { useSubscription } from "@/context/SubscriptionContext";
 import { useAuth } from "@/context/AuthContext";
+import WorldMarketClock from "@/components/WorldMarketClock";
 
 interface LalanNavbarProps {
   activeTab: string;
@@ -144,17 +145,19 @@ export default function LalanNavbar({
           </div>
         </div>
 
-        {/* Real-Time Telemetry Status */}
+        {/* Real-Time Telemetry Status & World Market Clock */}
         <div className="flex items-center space-x-3 shrink-0">
+          <WorldMarketClock compact />
+
           <div className="flex items-center space-x-1.5">
             <span className="relative flex h-2 w-2">
               <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#10b981] opacity-75" />
               <span className="relative inline-flex h-2 w-2 rounded-full bg-[#10b981]" />
             </span>
-            <span className="text-[#10b981] font-bold hidden md:inline">LALAN STREAM</span>
+            <span className="text-[#10b981] font-bold hidden lg:inline">LALAN STREAM</span>
           </div>
 
-          <div className="flex items-center space-x-1 text-[#8a8d9b]">
+          <div className="hidden xs:flex items-center space-x-1 text-[#8a8d9b]">
             <Wifi className="h-3 w-3 text-[#10b981]" />
             <span>{latencyMs.toFixed(1)} ms</span>
           </div>

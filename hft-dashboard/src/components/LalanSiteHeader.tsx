@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import { Menu, X, Zap, Sun, Moon, LogIn, User as UserIcon, LogOut, ChevronDown, ShieldAlert } from "lucide-react";
 import { useTheme } from "@/context/ThemeContext";
 import { useAuth } from "@/context/AuthContext";
+import WorldMarketClock from "@/components/WorldMarketClock";
 
 export default function LalanSiteHeader() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -49,7 +50,7 @@ export default function LalanSiteHeader() {
         </Link>
 
         {/* Navigation Links - Desktop */}
-        <nav className="hidden md:flex items-center space-x-5 text-sm font-medium">
+        <nav className="hidden md:flex items-center space-x-4 text-sm font-medium">
           {navLinks.map((link) => {
             const isActive = pathname === link.href;
             return (
@@ -66,6 +67,9 @@ export default function LalanSiteHeader() {
               </Link>
             );
           })}
+
+          {/* Real-Time World Market Clock & Country Selector */}
+          <WorldMarketClock />
 
           {/* Theme Toggle Button */}
           <button
