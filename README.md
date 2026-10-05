@@ -2,7 +2,7 @@
 
   # ⚡ LALAN HFT Predictor & Market Microstructure Engine
 
-  **Ultra-Low Latency L2 Order Book Forecasting, Lock-Free Concurrency & Institutional Liquidity Intelligence**
+  **Ultra-Low Latency L2 Order Book Forecasting, Multi-Source Market Intelligence Hub & Institutional Liquidity Telemetry**
 
   [![Next.js](https://img.shields.io/badge/Next.js-16.3-black?style=for-the-badge&logo=next.js)](https://nextjs.org/)
   [![React](https://img.shields.io/badge/React-19.0-61DAFB?style=for-the-badge&logo=react)](https://reactjs.org/)
@@ -17,25 +17,35 @@
 
 ## 🌟 Executive Overview
 
-**LALAN** is a state-of-the-art **High-Frequency Trading (HFT) Market Microstructure Terminal & Predictive Order Flow Engine**. Engineered for retail quants, options traders, and institutional trading desks in India and global crypto markets.
+**LALAN** is a state-of-the-art **High-Frequency Trading (HFT) Market Microstructure Terminal, Multi-Source Intelligence Hub & Predictive Order Flow Engine**. Engineered for retail quants, options traders, and institutional trading desks in India and global crypto markets.
 
 While traditional charting tools display lagging price action (what *already* occurred), LALAN connects directly to exchange WebSocket Level-2 depth feeds. By processing raw order book updates through a **Zero-Allocation LMAX Disruptor Ring Buffer**, LALAN computes **Order Book Imbalance (OBI)**, **VWAP Micro-Price Drift**, and **VPIN Toxicity** in sub-millisecond real time — revealing institutional intent before market sweeps physically move price.
 
 > [!IMPORTANT]
 > **Core Value Proposition:**
-> Traditional technical indicators show *historical output*. LALAN exposes *liquidity input*, enabling options traders to catch directional sweeps, spot spoofed walls, and mitigate slippage with O(1) execution precision.
+> Traditional technical indicators show *historical output*. LALAN exposes *liquidity input*, enabling options traders to catch directional sweeps, spot spoofed walls, and mitigate slippage with $O(1)$ execution precision.
 
 ---
 
 ## 🚀 Key Features & Capabilities
 
-- ⚡ **Sub-Millisecond Execution Telemetry**: Real-time tick stream processing with < 0.8ms average latency.
+- 🌐 **All-In-One Multi-Source Intelligence Hub (`Screener & NSE Hub`)**:
+  - Aggregates **Screener.in** (Stock P/E, ROCE %, ROE %, promoter/FII/DII shareholding), **NSE India** (SEBI Regulation 30 corporate disclosures & bulk/block deal stream), **TradingView** (technical rating consensus & interactive charts), **Moneycontrol** (daily FII/DII net flows & news), and **Trendlyne** (delivery volume % metrics) in a single window without leaving the site.
+- 🔐 **Google OAuth 2.0 & Authentication System**:
+  - Production-grade `AuthModal.tsx` & `AuthContext.tsx` supporting **1-Click Google Sign-In**, email authentication, user session persistence, and profile dropdown controls.
+- 🛡️ **Admin Telemetry & User Audit Control Panel (`/admin`)**:
+  - Real-time **User Activity Audit Stream** tracking logins, order executions, ticker searches, plan upgrades, and security alerts.
+  - User Management Table with instant **Subscription Tier Upgrade/Downgrade** (`FREE`, `PRO`, `INSTITUTIONAL`), **Ban / Suspend Access Toggle**, and **API Key Reset** controls.
+  - System Telemetry monitoring active sessions, total executed volume (₹ Cr), engine latency, and zero-GC health.
+- 🧠 **Institutional Scoring Engine & AI Explanation Generator**:
+  - 7-module granular quantitative accumulation scoring backed by SQLite repository (`institutional_engine.db`) and AI explanation summary engine.
+- ⚡ **Sub-Millisecond Execution Telemetry**: Real-time tick stream processing with $< 0.8\text{ms}$ average latency.
 - 🔄 **Zero-GC Memory Layout**: Lock-free Java 17 primitives and primitive array ring-buffers eliminate JVM garbage collection pauses.
 - 📊 **Order Book Imbalance (OBI) Signals**: Live signal generation (`STRONG BUY`, `STRONG SELL`, `NEUTRAL`) based on top 5-level liquidity weight.
 - 🎯 **VWAP Micro-Price Forecasting**: Real-time volume-weighted price drift calculations indicating immediate quote movement.
 - 🇮🇳 **Indian Market Multi-Broker Matrix**: Aggregated order flow across **NIFTY 50**, **NIFTY BANK**, **RELIANCE**, **HDFCBANK**, **TATAMOTORS**, and **INFY** across DhanHQ, Groww, Angel One, and Upstox.
-- ☀️/🌙 **Dark & Light Mode Trading Terminal**: Seamless high-contrast Zerodha-grade light mode and sleek Bloomberg dark mode with instant persistence.
-- 📱 **100% Mobile Responsive UI**: Dynamic bottom navigation bar, touch-optimized L2 depth ladders, drawer menus, and mobile order tickets for smartphones & tablets.
+- ☀️/🌙 **Dark & Light Mode Trading Terminal**: Theme-aware header badges (`HFT QUANT ENGINE`), high-contrast Zerodha-grade light mode and sleek Bloomberg dark mode with instant persistence.
+- 📩 **Official Support & Quant Co-Location Portal**: Direct support channel (`ayushsinghe07@gmail.com`) for 1-on-1 co-location server setup & API integration.
 
 ---
 
@@ -57,10 +67,10 @@ While traditional charting tools display lagging price action (what *already* oc
                |  +----------------------+----------------------+  |
                |                         |                         |
                |  +----------------------v----------------------+  |
-               |  | Microstructure Analytics Suite              |  |
+               |  | Microstructure Analytics & Institutional    |  |
                |  | - Order Book Imbalance (OBI)                |  |
                |  | - VWAP Micro-Price Drift                    |  |
-               |  | - VPIN Toxicity & Iceberg Detector          |  |
+               |  | - Institutional Accumulation Scoring        |  |
                |  +----------------------+----------------------+  |
                +-------------------------+-------------------------+
                                          |
@@ -71,10 +81,11 @@ While traditional charting tools display lagging price action (what *already* oc
                                          v
                +---------------------------------------------------+
                |  LALAN Next.js 16 Terminal UI (React 19 / TS)     |
+               |  - Screener & NSE Multi-Source Intelligence Hub   |
+               |  - Google OAuth & Auth System (AuthModal)         |
+               |  - Admin Telemetry & User Audit Control (/admin)   |
                |  - Real-Time L2 Depth Ladder & Sparklines         |
-               |  - Multi-Broker Liquidity Matrix                  |
                |  - Instant Dark / Light Mode Switcher             |
-               |  - Fully Responsive Mobile Trading Bar            |
                +---------------------------------------------------+
 ```
 
@@ -104,7 +115,9 @@ Predicts the geometric mid-price direction based on bid vs. ask depth density.
 | :--- | :--- | :--- |
 | **Frontend Framework** | **Next.js 16.3 (Turbopack)** | Server/Client Components, App Router, Static Optimization |
 | **UI Library** | **React 19.2** | Concurrent rendering, Hooks state management |
-| **Styling & Themes** | **Tailwind CSS v4 & Vanilla CSS** | Theme Context, Dark/Light Mode Variables, Glassmorphism |
+| **Styling & Themes** | **Tailwind CSS v4 & Vanilla CSS** | Theme Context, High-Contrast Dark/Light Modes, Glassmorphism |
+| **Authentication** | **Google OAuth 2.0 & AuthContext** | Google Identity Services, JWT decoding, LocalStorage session persistence |
+| **Database & Analytics** | **SQLite (`better-sqlite3`)** | Institutional repository, 7-module scoring engine, AI explanations |
 | **Icons & Motion** | **Framer Motion & Lucide React** | Micro-animations, responsive layout transitions |
 | **Backend Core** | **Java 17+, LMAX Disruptor** | Lock-free ring buffer, $O(1)$ matching, Zero-GC primitives |
 | **Networking** | **WebSockets & JSON Stream** | Sub-millisecond throttled telemetry (100ms updates) |
@@ -128,13 +141,19 @@ cd hft-orderbook-predictor/hft-dashboard
 npm install
 ```
 
-### 3. Run Development Server
+### 3. Configure Google OAuth (Optional)
+Create `.env.local` in `hft-dashboard/`:
+```env
+NEXT_PUBLIC_GOOGLE_CLIENT_ID="YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com"
+```
+
+### 4. Run Development Server
 ```bash
 npm run dev
 ```
 Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-### 4. Build Production Bundle
+### 5. Build Production Bundle
 ```bash
 npm run build
 npm start
@@ -153,30 +172,37 @@ hft-orderbook-predictor/
     ├── public/                    # Assets & Logo Branding
     ├── src/
     │   ├── app/                   # Next.js App Router Pages
-    │   │   ├── about/             # Story, Engine Metrics & Founders
-    │   │   ├── dashboard/         # Live HFT Terminal & L2 Depth
+    │   │   ├── about/             # Story, Engine Metrics, Founders & Multi-Source Showcase
+    │   │   ├── admin/             # Admin Telemetry & User Activity Control Panel
+    │   │   ├── api/               # API Routes (admin, institutional, subscription)
+    │   │   ├── dashboard/         # Live HFT Terminal, L2 Depth & Screener/NSE Hub
     │   │   ├── pricing/           # Subscription Tiers & Brokerage
     │   │   ├── products/          # Ecosystem Products Overview
-    │   │   ├── support/           # Developer Knowledge Base & FAQs
+    │   │   ├── support/           # Developer Knowledge Base & FAQs (ayushsinghe07@gmail.com)
     │   │   ├── globals.css        # Theme Variables & Overrides
-    │   │   ├── layout.tsx         # Root Layout & ThemeProvider
-    │   │   └── page.tsx           # Landing Page & Terminal Mockup
+    │   │   ├── layout.tsx         # Root Layout, ThemeProvider & AuthProvider
+    │   │   └── page.tsx           # Landing Page & Live Terminal Frame
     │   ├── components/            # Reusable Modular UI Components
-    │   │   ├── LalanSiteHeader.tsx
-    │   │   ├── LalanNavbar.tsx
+    │   │   ├── AuthModal.tsx                     # Google OAuth & Email Sign-In Modal
+    │   │   ├── MultiSourceIntelligenceHub.tsx    # Screener.in, NSE, TradingView & Trendlyne Hub
+    │   │   ├── LalanSiteHeader.tsx               # Site Header with Theme-Aware HFT Badge
+    │   │   ├── LalanNavbar.tsx                   # Dashboard Navbar & Profile Dropdown
     │   │   ├── LalanWatchlist.tsx
     │   │   ├── LalanPositionsAndOrders.tsx
     │   │   ├── LalanOrderTicketModal.tsx
     │   │   ├── LalanSiteFooter.tsx
     │   │   ├── IndianMarketMatrix.tsx
     │   │   └── ConsensusMatrix.tsx
-    │   └── context/
-    │       └── ThemeContext.tsx   # Global Dark/Light Theme Provider
+    │   ├── context/
+    │   │   ├── AuthContext.tsx           # Global Auth State & Google OAuth Provider
+    │   │   ├── SubscriptionContext.tsx   # Subscription Plan Provider
+    │   │   └── ThemeContext.tsx          # Global Dark/Light Theme Provider
+    │   └── lib/                          # Institutional Scoring & Repository Engine
 ```
 
 ---
 
-## 📄 License & Attribution
+## 📄 License & Contact
 
-Distributed under the MIT License. Designed and developed with ❤️ by **Ayush**.
-
+Distributed under the MIT License. Designed and developed with ❤️ by **Ayush**.  
+For 1-on-1 co-location server setup & API support, email **ayushsinghe07@gmail.com**.
