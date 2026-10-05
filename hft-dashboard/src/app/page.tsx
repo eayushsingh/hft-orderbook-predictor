@@ -1,5 +1,6 @@
 "use client";
 
+import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import CountUp from "react-countup";
 import Link from "next/link";
@@ -44,6 +45,14 @@ const featureCards = [
 ];
 
 export default function LandingPage() {
+  const [liveOrderEvents, setLiveOrderEvents] = useState<number>(1000000);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setLiveOrderEvents((prev) => prev + Math.floor(Math.random() * 45 + 12));
+    }, 150);
+    return () => clearInterval(interval);
+  }, []);
   return (
     <div className="font-sans bg-slate-50 dark:bg-[#060608] text-slate-900 dark:text-zinc-100 min-h-screen selection:bg-[#387ed1] selection:text-white relative overflow-x-hidden flex flex-col transition-colors duration-200">
       {/* Top Live Micro-Tick Stock Ticker Tape */}
@@ -195,7 +204,7 @@ export default function LandingPage() {
               transition={{ duration: 0.6 }}
             >
               <div className="text-5xl sm:text-7xl md:text-8xl font-black text-transparent bg-clip-text bg-gradient-to-b from-slate-900 via-slate-800 to-slate-600 dark:from-white dark:via-zinc-100 dark:to-zinc-500 leading-none tracking-tight font-mono">
-                <CountUp start={985536} end={1000000} duration={2.5} separator="," />
+                <CountUp start={1} end={liveOrderEvents} duration={2.5} separator="," preserveValue={true} />
               </div>
               <p className="text-slate-600 dark:text-zinc-400 text-sm sm:text-lg mt-4 sm:mt-6 max-w-md mx-auto leading-relaxed px-2 font-normal">
                 Order events processed per second through our LMAX Disruptor ring buffer. Zero Garbage Collection pauses.
