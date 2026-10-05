@@ -195,8 +195,8 @@ export default function SupportPage() {
               onClick={() => setSelectedCategory(cat.id)}
               className={`px-3.5 py-2 rounded-xl text-xs font-mono font-bold whitespace-nowrap transition-all ${
                 selectedCategory === cat.id
-                  ? "bg-[#387ed1] text-white shadow-md"
-                  : "bg-slate-100 dark:bg-[#0e0e14] text-slate-700 dark:text-[#8a8d9b] hover:text-slate-950 dark:hover:text-white border border-slate-200 dark:border-[#1f1f2c]"
+                  ? "bg-[#387ed1] text-white shadow-md font-extrabold"
+                  : "bg-slate-200 dark:bg-[#0e0e14] text-slate-800 dark:text-[#8a8d9b] hover:bg-slate-300 dark:hover:bg-[#161622] hover:text-slate-950 dark:hover:text-white border border-slate-300 dark:border-[#1f1f2c]"
               }`}
             >
               {cat.label}
@@ -224,8 +224,8 @@ export default function SupportPage() {
                     key={faq.id}
                     className={`rounded-2xl border transition-all overflow-hidden ${
                       isExpanded
-                        ? "bg-white dark:bg-[#0e0e16] border-[#387ed1] shadow-lg"
-                        : "bg-white dark:bg-[#0e0e14] border-slate-200 dark:border-[#1f1f2c] hover:border-[#387ed1]/50"
+                        ? "bg-slate-50 dark:bg-[#0e0e16] border-[#387ed1] shadow-lg"
+                        : "bg-white dark:bg-[#0e0e14] border-slate-200 dark:border-[#1f1f2c] hover:border-[#387ed1]/50 shadow-sm"
                     }`}
                   >
                     <button
@@ -236,7 +236,7 @@ export default function SupportPage() {
                       <div className="flex items-start gap-3">
                         <HelpCircle className={`h-5 w-5 shrink-0 mt-0.5 ${isExpanded ? "text-[#387ed1]" : "text-slate-400 dark:text-[#747888]"}`} />
                         <div>
-                          <span className="text-[10px] font-mono font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-slate-100 dark:bg-[#161622] text-[#387ed1] mb-1.5 inline-block">
+                          <span className="text-[10px] font-mono font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-slate-200 dark:bg-[#161622] text-[#0284c7] dark:text-[#387ed1] mb-1.5 inline-block">
                             {faq.categoryLabel}
                           </span>
                           <h3 className="text-sm sm:text-base font-bold text-slate-900 dark:text-white leading-snug">
@@ -252,8 +252,8 @@ export default function SupportPage() {
                     </button>
 
                     {isExpanded && (
-                      <div className="px-5 pb-5 pt-0 border-t border-slate-100 dark:border-[#1f1f2e] mt-1">
-                        <p className="text-xs sm:text-sm text-slate-700 dark:text-[#a0a3b0] leading-relaxed pt-3 pl-8">
+                      <div className="px-5 pb-5 pt-0 border-t border-slate-200 dark:border-[#1f1f2e] mt-1">
+                        <p className="text-xs sm:text-sm text-slate-700 dark:text-[#a0a3b0] leading-relaxed pt-3 pl-8 font-medium">
                           {faq.a}
                         </p>
                       </div>

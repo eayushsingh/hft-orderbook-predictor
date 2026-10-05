@@ -88,116 +88,45 @@ html.light header nav button:hover {
   color: #0284c7 !important;
 }
 
-/* Light Theme Page Backgrounds */
-html.light main,
-html.light .bg-\[\#060608\],
-html.light .bg-\[\#060609\],
-html.light .bg-\[\#08080a\],
-html.light .bg-\[\#08080c\],
-html.light .bg-\[\#08080c\]\/90,
-html.light .bg-\[\#0a0a0e\],
-html.light .bg-\[\#0a0a0f\],
-html.light .bg-\[\#0c0c0f\],
-html.light .bg-\[\#0c0c10\],
-html.light .bg-\[\#0d0d12\],
-html.light .bg-\[\#0d0d14\],
-html.light .bg-\[\#0e0e12\],
-html.light .bg-\[\#0e0e13\],
-html.light .bg-\[\#0e0e13\]\/90,
-html.light .bg-\[\#0f0f13\],
-html.light .bg-\[\#0f0f13\]\/90,
-html.light .bg-\[\#0f0f16\] {
+/* Light Theme Page & Root Section Backgrounds */
+html.light main {
   background-color: #f8fafc !important;
-}
-
-/* Light Theme Card & Container Overrides */
-html.light .bg-\[\#0e0e14\],
-html.light .bg-\[\#0e0e16\],
-html.light .bg-\[\#101014\],
-html.light .bg-\[\#101016\],
-html.light .bg-\[\#101018\],
-html.light .bg-\[\#10101b\],
-html.light .bg-\[\#121216\],
-html.light .bg-\[\#121218\],
-html.light .bg-\[\#12121a\],
-html.light .bg-\[\#12121c\],
-html.light .bg-\[\#14141a\],
-html.light .bg-\[\#14141c\],
-html.light .bg-\[\#14141f\],
-html.light .bg-\[\#141420\],
-html.light .bg-\[\#16161c\],
-html.light .bg-\[\#16161e\],
-html.light .bg-\[\#161620\],
-html.light .bg-\[\#161622\],
-html.light .bg-\[\#161624\],
-html.light .bg-\[\#181820\],
-html.light .bg-\[\#181822\],
-html.light .bg-\[\#181824\],
-html.light .bg-\[\#1a1a22\],
-html.light .bg-\[\#1a1a24\],
-html.light .bg-\[\#1c1c24\],
-html.light .bg-\[\#1c1c26\],
-html.light .bg-\[\#1e1e2a\],
-html.light aside {
-  background-color: #ffffff !important;
-  color: #0f172a !important;
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.08), 0 1px 2px -1px rgba(0, 0, 0, 0.04) !important;
-}
-
-/* Light Theme Sub-containers, Hover States & Inputs */
-html.light .bg-\[\#1f1f28\],
-html.light .bg-\[\#1f1f30\],
-html.light .bg-\[\#1a1a20\],
-html.light .bg-\[\#242432\],
-html.light .bg-\[\#181822\] {
-  background-color: #f1f5f9 !important;
-}
-
-/* Light Theme Border Color Overrides */
-html.light .border-\[\#181824\],
-html.light .border-\[\#1f1f26\],
-html.light .border-\[\#1f1f2b\],
-html.light .border-\[\#222230\],
-html.light .border-\[\#222234\],
-html.light .border-\[\#242432\],
-html.light .border-\[\#242436\],
-html.light .border-\[\#262630\],
-html.light .border-\[\#262634\],
-html.light .border-\[\#262638\],
-html.light .border-\[\#282834\],
-html.light .border-\[\#282838\],
-html.light .border-\[\#2a2a3f\],
-html.light .border-\[\#22222f\],
-html.light .border-white\/\[0\.06\],
-html.light .border-white\/\[0\.08\],
-html.light .border-white\/\[0\.14\] {
-  border-color: #cbd5e1 !important;
-}
-
-/* Light Theme High-Contrast Text Overrides */
-html.light h1,
-html.light h2,
-html.light h3,
-html.light h4,
-html.light .text-white,
-html.light .text-zinc-100,
-html.light .text-zinc-200 {
   color: #0f172a !important;
 }
 
-html.light .text-zinc-400,
-html.light .text-zinc-300,
-html.light .text-\[\#e0e0e0\],
-html.light .text-\[\#dedede\],
-html.light .text-\[\#b0b3c0\] {
-  color: #1e293b !important;
+/* Ensure headings and text on white containers are dark slate in Light Mode */
+html.light main h1,
+html.light main h2,
+html.light main h3,
+html.light main h4 {
+  color: #0f172a;
 }
 
-html.light .text-\[\#a0a3b0\],
-html.light .text-\[\#9e9ea8\],
-html.light .text-\[\#8a8d9b\],
-html.light .text-\[\#747888\] {
-  color: #475569 !important;
+/* Solid Colored Action Buttons: Always preserve white text in Light Mode */
+html.light button.bg-\[\#387ed1\],
+html.light a.bg-\[\#387ed1\],
+html.light .bg-\[\#387ed1\],
+html.light button.bg-indigo-600,
+html.light a.bg-indigo-600,
+html.light .bg-indigo-600,
+html.light button.bg-\[\#ff5722\],
+html.light a.bg-\[\#ff5722\],
+html.light .bg-\[\#ff5722\] {
+  color: #ffffff !important;
+}
+
+html.light button.bg-\[\#387ed1\] *,
+html.light a.bg-\[\#387ed1\] *,
+html.light .bg-\[\#387ed1\] *,
+html.light button.bg-indigo-600 *,
+html.light a.bg-indigo-600 * {
+  color: #ffffff !important;
+}
+
+html.light button.bg-\[\#10b981\],
+html.light a.bg-\[\#10b981\],
+html.light .bg-\[\#10b981\] {
+  color: #000000 !important;
 }
 
 /* Gradient Text In Light Mode (Converts white gradient to deep slate/black gradient) */
@@ -208,35 +137,6 @@ html.light .bg-clip-text {
   color: transparent !important;
   filter: none !important;
   drop-shadow: none !important;
-}
-
-/* Solid Buttons & Badges: Preserve Crisp White Text in Light Mode */
-html.light button.bg-\[\#387ed1\],
-html.light button.bg-\[\#ff5722\],
-html.light a.bg-\[\#387ed1\],
-html.light a.bg-\[\#ff5722\],
-html.light .bg-\[\#387ed1\] span,
-html.light button.bg-\[\#387ed1\] span,
-html.light a.bg-\[\#387ed1\] span {
-  color: #ffffff !important;
-}
-
-html.light button.bg-\[\#10b981\],
-html.light a.bg-\[\#10b981\] {
-  color: #000000 !important;
-}
-
-/* Secondary Buttons & Sign-In buttons in Light Mode */
-html.light button.bg-\[\#161622\],
-html.light a.bg-\[\#161622\] {
-  background-color: #f1f5f9 !important;
-  color: #0f172a !important;
-  border-color: #cbd5e1 !important;
-}
-
-html.light button.bg-\[\#161622\] span,
-html.light a.bg-\[\#161622\] span {
-  color: #0f172a !important;
 }
 
 /* Form Inputs & Selects in Light Mode */
@@ -269,8 +169,7 @@ html.light table tr:hover {
 
 /* Modals & Dialog Windows in Light Mode */
 html.light .modal-container,
-html.light [role="dialog"],
-html.light div.fixed.inset-0 > div > div {
+html.light [role="dialog"] {
   background-color: #ffffff !important;
   color: #0f172a !important;
   border-color: #cbd5e1 !important;
