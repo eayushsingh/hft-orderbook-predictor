@@ -44,7 +44,8 @@ While traditional charting tools display lagging price action (what *already* oc
 - 📊 **Order Book Imbalance (OBI) Signals**: Live signal generation (`STRONG BUY`, `STRONG SELL`, `NEUTRAL`) based on top 5-level liquidity weight.
 - 🎯 **VWAP Micro-Price Forecasting**: Real-time volume-weighted price drift calculations indicating immediate quote movement.
 - 🇮🇳 **Indian Market Multi-Broker Matrix**: Aggregated order flow across **NIFTY 50**, **NIFTY BANK**, **RELIANCE**, **HDFCBANK**, **TATAMOTORS**, and **INFY** across DhanHQ, Groww, Angel One, and Upstox.
-- ☀️/🌙 **Dark & Light Mode Trading Terminal**: Theme-aware header badges (`HFT QUANT ENGINE`), high-contrast Zerodha-grade light mode and sleek Bloomberg dark mode with instant persistence.
+- ☀️/🌙 **Dual-Theme High-Contrast Legibility & Zerodha-Grade Polish**:
+  - Theme-aware header badges (`HFT QUANT ENGINE`), high-contrast Zerodha-grade light mode, and sleek Bloomberg dark mode. All buttons (including `Sign In`, theme toggles, and user menus) feature explicit background and text contrast guarantees to ensure 100% legibility in both Light and Dark themes permanently.
 - 📩 **Official Support & Quant Co-Location Portal**: Direct support channel (`ayushsinghe07@gmail.com`) for 1-on-1 co-location server setup & API integration.
 
 ---
