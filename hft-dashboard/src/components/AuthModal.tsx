@@ -22,11 +22,9 @@ export default function AuthModal() {
   const [name, setName] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
-
-  if (!isAuthModalOpen) return null;
-
   // Initialize Google Identity Services script when Client ID is configured
   useEffect(() => {
+    if (!isAuthModalOpen) return;
     const clientId = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID;
     if (!clientId || clientId.includes("YOUR_GOOGLE_CLIENT_ID")) return;
 
@@ -61,7 +59,9 @@ export default function AuthModal() {
         },
       });
     }
-  }, [loginWithGoogle]);
+  }, [isAuthModalOpen, loginWithGoogle]);
+
+  if (!isAuthModalOpen) return null;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
