@@ -864,22 +864,22 @@ export default function DashboardPage() {
           {activeTab === "terminal" && (
             <>
               {/* Backpack-Style Pair Header Bar */}
-              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between bg-[#121218] border border-[#222230] p-3.5 sm:p-4 rounded-xl shadow-lg gap-3">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between bg-white dark:bg-[#121218] border border-slate-200 dark:border-[#222230] p-3.5 sm:p-4 rounded-xl shadow-md gap-3">
                 <div className="flex items-center space-x-3">
                   <span className="px-2.5 py-0.5 rounded-md bg-[#387ed1]/20 text-[#387ed1] border border-[#387ed1]/40 font-mono font-extrabold text-[11px] uppercase">
                     {selectedStock.exchange}
                   </span>
                   <div>
-                    <h1 className="text-lg sm:text-2xl font-black font-mono text-white tracking-tight flex items-center gap-2">
+                    <h1 className="text-lg sm:text-2xl font-black font-mono text-slate-900 dark:text-white tracking-tight flex items-center gap-2">
                       {selectedStock.symbol}
                     </h1>
-                    <p className="text-[11px] text-[#747888] font-mono">{selectedStock.name}</p>
+                    <p className="text-[11px] text-slate-600 dark:text-[#747888] font-mono font-semibold">{selectedStock.name}</p>
                   </div>
                 </div>
 
                 <div className="flex items-center space-x-4">
                   <div className="flex flex-col text-right font-mono">
-                    <span className="text-lg sm:text-2xl font-black text-white">
+                    <span className="text-lg sm:text-2xl font-black text-slate-900 dark:text-white">
                       {selectedStock.exchange === "BINANCE"
                         ? `$${metrics.bestBid.price ? metrics.bestBid.price.toLocaleString("en-US", { minimumFractionDigits: 2 }) : selectedStock.price.toFixed(2)}`
                         : `₹${selectedStock.price.toLocaleString("en-IN", { minimumFractionDigits: 2 })}`}

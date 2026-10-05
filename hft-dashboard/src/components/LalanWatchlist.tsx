@@ -241,8 +241,8 @@ export default function LalanWatchlist({
                 onMouseLeave={() => setHoveredSymbol(null)}
                 className={`relative flex items-center justify-between p-3 cursor-pointer transition-all ${
                   isSelected
-                    ? "bg-[#1c1c26] border-l-2 border-[#387ed1]"
-                    : "hover:bg-[#16161e]"
+                    ? "bg-slate-100 dark:bg-[#1c1c26] border-l-2 border-[#387ed1]"
+                    : "hover:bg-slate-100 dark:hover:bg-[#16161e]"
                 }`}
               >
                 {/* Symbol & Exchange Name */}
@@ -250,17 +250,17 @@ export default function LalanWatchlist({
                   <div className="flex items-center space-x-1.5">
                     <span
                       className={`font-mono text-xs font-bold truncate ${
-                        isSelected ? "text-[#387ed1]" : "text-white"
+                        isSelected ? "text-[#387ed1] font-extrabold" : "text-slate-900 dark:text-white"
                       }`}
                     >
                       {stock.symbol}
                     </span>
-                    <span className="text-[9px] font-mono font-semibold px-1 rounded bg-[#1c1c24] text-[#747888]">
+                    <span className="text-[9px] font-mono font-semibold px-1 rounded bg-slate-200 dark:bg-[#1c1c24] text-slate-700 dark:text-[#747888]">
                       {stock.exchange}
                     </span>
                     {stock.pinned && <Pin className="h-2.5 w-2.5 text-[#387ed1] fill-[#387ed1]" />}
                   </div>
-                  <span className="text-[10px] text-[#747888] truncate max-w-[140px]">
+                  <span className="text-[10px] text-slate-600 dark:text-[#747888] font-medium truncate max-w-[140px]">
                     {stock.name}
                   </span>
                 </div>
