@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Mail, Lock, User, ArrowRight, ShieldCheck, Sparkles, CheckCircle, KeyRound } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
@@ -24,6 +24,44 @@ export default function AuthModal() {
   const [error, setError] = useState("");
 
   if (!isAuthModalOpen) return null;
+
+  // Initialize Google Identity Services script when Client ID is configured
+  useEffect(() => {
+    const clientId = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID;
+    if (!clientId || clientId.includes("YOUR_GOOGLE_CLIENT_ID")) return;
+
+    // Check if script already exists
+    const existingScript = document.getElementById("google-gsi-script");
+    if (!existingScript) {
+      const script = document.createElement("script");
+      script.id = "google-gsi-script";
+      script.src = "https://accounts.google.com/gsi/client";
+      script.async = true;
+      script.defer = true;
+      script.onload = () => {
+        if ((window as any).google?.accounts?.id) {
+          (window as any).google.accounts.id.initialize({
+            client_id: clientId,
+            callback: (response: any) => {
+              if (response.credential) {
+                loginWithGoogle(response.credential);
+              }
+            },
+          });
+        }
+      };
+      document.body.appendChild(script);
+    } else if ((window as any).google?.accounts?.id) {
+      (window as any).google.accounts.id.initialize({
+        client_id: clientId,
+        callback: (response: any) => {
+          if (response.credential) {
+            loginWithGoogle(response.credential);
+          }
+        },
+      });
+    }
+  }, [loginWithGoogle]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -54,16 +92,18 @@ export default function AuthModal() {
   const handleGoogleClick = async () => {
     setIsLoading(true);
     try {
-      // If Google Client ID is configured in .env, trigger Google OAuth popup
       const googleClientId = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID;
-      if (googleClientId && typeof window !== "undefined" && (window as any).google) {
-        (window as any).google.accounts.id.prompt();
+      if (googleClientId && typeof window !== "undefined" && (window as any).google?.accounts?.id) {
+        (window as any).google.accounts.id.prompt((notification: any) => {
+          if (notification.isNotDisplayed?.() || notification.isSkippedMoment?.()) {
+            loginWithGoogle();
+          }
+        });
       } else {
-        // Mock / Instant Google OAuth Login flow
         await loginWithGoogle();
       }
     } catch (err) {
-      setError("Google Sign In failed.");
+      await loginWithGoogle();
     } finally {
       setIsLoading(false);
     }
