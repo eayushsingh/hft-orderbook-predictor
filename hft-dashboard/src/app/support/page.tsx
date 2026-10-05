@@ -157,10 +157,10 @@ export default function SupportPage() {
   }, [selectedCategory, searchQuery]);
 
   return (
-    <div className="min-h-screen bg-[#060609] text-[#e0e0e0] font-sans selection:bg-[#387ed1] selection:text-white flex flex-col transition-colors duration-200">
+    <div className="min-h-screen bg-slate-50 dark:bg-[#060609] text-slate-900 dark:text-[#e0e0e0] font-sans selection:bg-[#387ed1] selection:text-white flex flex-col transition-colors duration-200">
       <LalanSiteHeader />
 
-      <main className="flex-1 py-12 px-4 sm:px-8 max-w-[1150px] mx-auto space-y-10">
+      <main className="flex-1 py-12 px-4 sm:px-8 max-w-[1150px] w-full mx-auto space-y-10">
         {/* Search Header */}
         <div className="text-center space-y-4 max-w-2xl mx-auto">
           <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#387ed1]/15 border border-[#387ed1]/35 text-[#387ed1] text-xs font-mono font-bold uppercase tracking-wider">
@@ -168,21 +168,21 @@ export default function SupportPage() {
             <span>Developer &amp; Trader Knowledge Base</span>
           </div>
 
-          <h1 className="text-3xl sm:text-5xl font-black text-white tracking-tight">
+          <h1 className="text-3xl sm:text-5xl font-black text-slate-900 dark:text-white tracking-tight">
             Frequently Asked Questions
           </h1>
-          <p className="text-sm text-[#8a8d9b] leading-relaxed">
+          <p className="text-sm text-slate-600 dark:text-[#8a8d9b] leading-relaxed">
             Search our quantitative engine documentation, OBI signal formulas, Google OAuth setup, and trading FAQs.
           </p>
 
           <div className="relative mt-6">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-[#747888]" />
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400 dark:text-[#747888]" />
             <input
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search eg: OBI formula, Google sign-in, free trial, disruptor ring buffer..."
-              className="w-full bg-[#0e0e14] dark:bg-[#0e0e14] text-xs sm:text-sm text-slate-900 dark:text-white pl-11 pr-4 py-3.5 rounded-xl border border-slate-300 dark:border-[#1f1f2c] focus:outline-none focus:border-[#387ed1] transition-colors font-mono shadow-sm"
+              className="w-full bg-white dark:bg-[#0e0e14] text-xs sm:text-sm text-slate-900 dark:text-white pl-11 pr-4 py-3.5 rounded-xl border border-slate-300 dark:border-[#1f1f2c] focus:outline-none focus:border-[#387ed1] transition-colors font-mono shadow-sm"
             />
           </div>
         </div>
@@ -206,7 +206,7 @@ export default function SupportPage() {
 
         {/* FAQs Accordion Section */}
         <div className="space-y-3 pt-2">
-          <div className="flex items-center justify-between text-xs font-mono text-slate-600 dark:text-[#747888] px-1">
+          <div className="flex items-center justify-between text-xs font-mono text-slate-500 dark:text-[#747888] px-1">
             <span>SHOWING {filteredFaqs.length} OF {faqs.length} QUESTIONS</span>
             <span className="text-[#387ed1] font-bold">LALAN FAQ REPOSITORY</span>
           </div>
@@ -224,7 +224,7 @@ export default function SupportPage() {
                     key={faq.id}
                     className={`rounded-2xl border transition-all overflow-hidden ${
                       isExpanded
-                        ? "bg-slate-50 dark:bg-[#0e0e16] border-[#387ed1] shadow-lg"
+                        ? "bg-slate-100/90 dark:bg-[#0e0e16] border-[#387ed1] shadow-lg"
                         : "bg-white dark:bg-[#0e0e14] border-slate-200 dark:border-[#1f1f2c] hover:border-[#387ed1]/50 shadow-sm"
                     }`}
                   >

@@ -1,5 +1,7 @@
 @import "tailwindcss";
 
+@variant dark (&:where(.dark, .dark *));
+
 :root {
   --background: #08080a;
   --foreground: #ededed;
@@ -8,7 +10,7 @@
 }
 
 html.light {
-  --background: #f4f6f9;
+  --background: #f8fafc;
   --foreground: #0f172a;
   --card-bg: #ffffff;
   --border-color: #e2e8f0;
@@ -90,16 +92,8 @@ html.light header nav button:hover {
 
 /* Light Theme Page & Root Section Backgrounds */
 html.light main {
-  background-color: #f8fafc !important;
-  color: #0f172a !important;
-}
-
-/* Ensure headings and text on white containers are dark slate in Light Mode */
-html.light main h1,
-html.light main h2,
-html.light main h3,
-html.light main h4 {
-  color: #0f172a;
+  background-color: transparent;
+  color: inherit;
 }
 
 /* Solid Colored Action Buttons: Always preserve white text in Light Mode */
@@ -181,3 +175,4 @@ html.light footer {
   border-color: #cbd5e1 !important;
   color: #475569 !important;
 }
+

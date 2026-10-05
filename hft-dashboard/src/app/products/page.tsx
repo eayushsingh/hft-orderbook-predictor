@@ -43,15 +43,15 @@ export default function ProductsPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-[#060609] text-[#e0e0e0] font-sans selection:bg-[#387ed1] selection:text-white flex flex-col">
+    <div className="min-h-screen bg-slate-50 dark:bg-[#060609] text-slate-900 dark:text-[#e0e0e0] font-sans selection:bg-[#387ed1] selection:text-white flex flex-col transition-colors duration-200">
       <LalanSiteHeader />
 
-      <main className="flex-1 py-16 sm:py-20 px-4 sm:px-8 max-w-[1200px] mx-auto space-y-16">
+      <main className="flex-1 py-16 sm:py-20 px-4 sm:px-8 max-w-[1200px] w-full mx-auto space-y-16">
         <div className="text-center space-y-4 max-w-3xl mx-auto">
-          <h1 className="text-3xl sm:text-5xl font-black text-white tracking-tight">
+          <h1 className="text-3xl sm:text-5xl font-black text-slate-900 dark:text-white tracking-tight">
             LALAN HFT Quantitative Ecosystem
           </h1>
-          <p className="text-sm sm:text-lg text-[#8a8d9b]">
+          <p className="text-sm sm:text-lg text-slate-600 dark:text-[#8a8d9b]">
             Sleek, modern, ultra-fast trading platforms and quantitative infrastructure for Indian quants.
           </p>
         </div>
@@ -60,18 +60,18 @@ export default function ProductsPage() {
           {products.map((p) => {
             const Icon = p.icon;
             return (
-              <div key={p.title} className="p-8 rounded-2xl bg-[#0e0e14] border border-[#1f1f2c] hover:border-[#387ed1]/40 transition-all space-y-4 shadow-xl">
+              <div key={p.title} className="p-8 rounded-2xl bg-white dark:bg-[#0e0e14] border border-slate-200 dark:border-[#1f1f2c] hover:border-[#387ed1]/40 transition-all space-y-4 shadow-xl">
                 <div className="flex justify-between items-start">
-                  <div className={`p-3 rounded-xl bg-[#141420] border border-[#222232] ${p.color}`}>
+                  <div className={`p-3 rounded-xl bg-slate-100 dark:bg-[#141420] border border-slate-200 dark:border-[#222232] ${p.color}`}>
                     <Icon className="h-6 w-6" />
                   </div>
-                  <span className="text-[10px] font-mono font-bold uppercase tracking-wider px-2.5 py-0.5 rounded bg-[#181824] text-[#8a8d9b] border border-[#262636]">
+                  <span className="text-[10px] font-mono font-bold uppercase tracking-wider px-2.5 py-0.5 rounded bg-slate-200 dark:bg-[#181824] text-slate-700 dark:text-[#8a8d9b] border border-slate-300 dark:border-[#262636]">
                     {p.badge}
                   </span>
                 </div>
 
-                <h2 className="text-2xl font-bold text-white tracking-tight">{p.title}</h2>
-                <p className="text-xs sm:text-sm text-[#8a8d9b] leading-relaxed">{p.desc}</p>
+                <h2 className="text-2xl font-bold text-slate-900 dark:text-white tracking-tight">{p.title}</h2>
+                <p className="text-xs sm:text-sm text-slate-600 dark:text-[#8a8d9b] leading-relaxed">{p.desc}</p>
 
                 <Link
                   href={p.href}

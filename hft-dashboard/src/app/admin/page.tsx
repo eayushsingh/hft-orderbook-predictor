@@ -347,7 +347,7 @@ export default function AdminPage() {
   }, [logs, searchQuery]);
 
   return (
-    <div className="min-h-screen bg-[#060609] text-[#e0e0e0] font-sans selection:bg-[#387ed1] selection:text-white flex flex-col">
+    <div className="min-h-screen bg-slate-50 dark:bg-[#060609] text-slate-900 dark:text-[#e0e0e0] font-sans selection:bg-[#387ed1] selection:text-white flex flex-col transition-colors duration-200">
       <LalanSiteHeader />
 
       {/* Toast Notification */}
