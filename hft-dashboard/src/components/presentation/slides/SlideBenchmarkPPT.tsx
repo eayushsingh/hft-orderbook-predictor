@@ -1,18 +1,25 @@
 'use client';
 
 import React from 'react';
-import { Award, CheckCircle2, XCircle, Minus } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { Award, CheckCircle2, XCircle, Minus, Sparkles } from 'lucide-react';
 
 export const SlideBenchmarkPPT: React.FC = () => {
   return (
-    <div className="space-y-8 p-2">
+    <motion.div
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.3 }}
+      className="space-y-6 p-2"
+    >
       {/* Slide Header */}
       <div className="space-y-2">
         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-mono font-bold uppercase">
-          <Award className="w-3.5 h-3.5" /> Slide 06 • Institutional Benchmark Comparison
+          <Award className="w-3.5 h-3.5" /> Slide 06 &bull; Institutional Benchmark Comparison
         </div>
-        <h2 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
+        <h2 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight flex items-center gap-3">
           LALAN Engine vs Institutional Terminals &amp; Retail Platforms
+          <Sparkles className="w-5 h-5 text-emerald-400 animate-pulse hidden sm:inline-block" />
         </h2>
         <p className="text-slate-400 text-xs sm:text-sm">
           Comparative feature evaluation across latency, market depth prediction, portfolio automation, and cost efficiency.
@@ -20,10 +27,10 @@ export const SlideBenchmarkPPT: React.FC = () => {
       </div>
 
       {/* Benchmark Matrix Table */}
-      <div className="overflow-x-auto bg-slate-950 border border-slate-800 rounded-2xl">
+      <div className="overflow-x-auto bg-slate-950 border border-slate-800 rounded-2xl shadow-xl">
         <table className="w-full text-left text-xs">
           <thead>
-            <tr className="border-b border-slate-800 bg-slate-900/60 text-slate-400">
+            <tr className="border-b border-slate-800 bg-slate-900/60 text-slate-400 font-mono">
               <th className="p-3.5 font-bold">Feature / Metric</th>
               <th className="p-3.5 font-bold text-emerald-400">LALAN HFT Platform</th>
               <th className="p-3.5 font-bold text-slate-300">Bloomberg Terminal</th>
@@ -48,8 +55,8 @@ export const SlideBenchmarkPPT: React.FC = () => {
             </tr>
             <tr>
               <td className="p-3.5 font-semibold text-white">Micro-Price Drift AI</td>
-              <td className="p-3.5 text-emerald-400 font-bold flex items-center gap-1">
-                <CheckCircle2 className="w-4 h-4" /> Native Real-Time
+              <td className="p-3.5 text-emerald-400 font-bold flex items-center gap-1 font-mono">
+                <CheckCircle2 className="w-4 h-4 text-emerald-400" /> Native Real-Time
               </td>
               <td className="p-3.5 text-slate-400 flex items-center gap-1">
                 <Minus className="w-4 h-4" /> Custom Add-on
@@ -63,8 +70,8 @@ export const SlideBenchmarkPPT: React.FC = () => {
             </tr>
             <tr>
               <td className="p-3.5 font-semibold text-white">Autonomous Robo-Advisor</td>
-              <td className="p-3.5 text-emerald-400 font-bold flex items-center gap-1">
-                <CheckCircle2 className="w-4 h-4" /> Black-Litterman
+              <td className="p-3.5 text-emerald-400 font-bold flex items-center gap-1 font-mono">
+                <CheckCircle2 className="w-4 h-4 text-emerald-400" /> Black-Litterman
               </td>
               <td className="p-3.5 text-slate-400 flex items-center gap-1">
                 <Minus className="w-4 h-4" /> API Integration
@@ -78,8 +85,8 @@ export const SlideBenchmarkPPT: React.FC = () => {
             </tr>
             <tr>
               <td className="p-3.5 font-semibold text-white">Tax-Loss Harvesting (TLH)</td>
-              <td className="p-3.5 text-emerald-400 font-bold flex items-center gap-1">
-                <CheckCircle2 className="w-4 h-4" /> 30-Day Wash Guard
+              <td className="p-3.5 text-emerald-400 font-bold flex items-center gap-1 font-mono">
+                <CheckCircle2 className="w-4 h-4 text-emerald-400" /> 30-Day Wash Guard
               </td>
               <td className="p-3.5 text-rose-400 flex items-center gap-1">
                 <XCircle className="w-4 h-4" /> Manual Setup
@@ -101,6 +108,6 @@ export const SlideBenchmarkPPT: React.FC = () => {
           </tbody>
         </table>
       </div>
-    </div>
+    </motion.div>
   );
 };
