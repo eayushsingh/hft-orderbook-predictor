@@ -260,7 +260,7 @@ export default function IndianMarketMatrix() {
               Live Order Flow
             </span>
           </h2>
-          <p className="text-xs text-zinc-400 mt-1 max-w-2xl">
+          <p className="text-xs text-zinc-300 mt-1 max-w-2xl">
             Buying vs. selling volume ratio, order book imbalance (OBI), and micro-price drift aggregated across DhanHQ, LALAN Engine, Groww, Angel One, and Upstox.
           </p>
         </div>
@@ -277,7 +277,7 @@ export default function IndianMarketMatrix() {
                 className={`px-3 py-1.5 rounded-xl text-xs font-mono font-bold transition-all border whitespace-nowrap active:scale-95 ${
                   selectedTicker === tkr
                     ? "bg-indigo-600 text-white border-indigo-400 shadow-md shadow-indigo-600/30"
-                    : "bg-white/[0.03] text-zinc-400 border-white/[0.06] hover:bg-white/[0.08] hover:text-white"
+                    : "bg-white/[0.06] text-slate-200 border-white/[0.12] hover:bg-white/[0.12] hover:text-white"
                 }`}
               >
                 {tkr}
