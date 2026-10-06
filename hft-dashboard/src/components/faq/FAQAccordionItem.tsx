@@ -26,7 +26,13 @@ export const FAQAccordionItem: React.FC<FAQAccordionItemProps> = ({
           : 'bg-white dark:bg-[#0e0e14] border-slate-200 dark:border-[#1f1f2c] hover:border-[#387ed1]/50 shadow-sm'
       }`}
     >
-      <div className="w-full p-5 flex items-start justify-between gap-4 font-sans cursor-pointer" onClick={onToggle}>
+      <button
+        type="button"
+        aria-expanded={isExpanded}
+        aria-controls={`faq-answer-${faq.id}`}
+        onClick={onToggle}
+        className="w-full p-5 flex items-start justify-between gap-4 font-sans text-left focus:outline-none focus:ring-2 focus:ring-[#387ed1]/40 rounded-2xl"
+      >
         <div className="flex items-start gap-3 flex-1">
           <HelpCircle
             className={`h-5 w-5 shrink-0 mt-0.5 transition-colors ${
@@ -59,11 +65,12 @@ export const FAQAccordionItem: React.FC<FAQAccordionItemProps> = ({
             }`}
           />
         </div>
-      </div>
+      </button>
 
       <AnimatePresence initial={false}>
         {isExpanded && (
           <motion.div
+            id={`faq-answer-${faq.id}`}
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: 'auto', opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
