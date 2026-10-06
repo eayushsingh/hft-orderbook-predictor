@@ -431,7 +431,7 @@ export default function AdminPage() {
               {/* Card 2 */}
               <motion.div
                 whileHover={{ scale: 1.02 }}
-                className="p-5 rounded-2xl bg-[#0d0d14] border border-[#1f1f2e] space-y-2 shadow-xl"
+                className="p-5 rounded-2xl bg-[#0d0d14] border border-[#1f1f2e] space-y-2 shadow-xl transition-all duration-300 transform-gpu"
               >
                 <div className="flex items-center justify-between">
                   <span className="text-xs font-mono text-zinc-400 font-medium">Active WebSocket Sessions</span>
@@ -454,7 +454,7 @@ export default function AdminPage() {
               {/* Card 3 */}
               <motion.div
                 whileHover={{ scale: 1.02 }}
-                className="p-5 rounded-2xl bg-[#0d0d14] border border-[#1f1f2e] space-y-2 shadow-xl"
+                className="p-5 rounded-2xl bg-[#0d0d14] border border-[#1f1f2e] space-y-2 shadow-xl transition-all duration-300 transform-gpu"
               >
                 <div className="flex items-center justify-between">
                   <span className="text-xs font-mono text-zinc-400 font-medium">Executed Volume</span>
@@ -469,7 +469,7 @@ export default function AdminPage() {
               {/* Card 4 */}
               <motion.div
                 whileHover={{ scale: 1.02 }}
-                className="p-5 rounded-2xl bg-[#0d0d14] border border-[#1f1f2e] space-y-2 shadow-xl"
+                className="p-5 rounded-2xl bg-[#0d0d14] border border-[#1f1f2e] space-y-2 shadow-xl transition-all duration-300 transform-gpu"
               >
                 <div className="flex items-center justify-between">
                   <span className="text-xs font-mono text-zinc-400 font-medium">Engine Latency / GC</span>
