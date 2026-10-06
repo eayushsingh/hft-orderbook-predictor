@@ -1,53 +1,60 @@
-# Institutional PPT Presentation Deck Architecture & User Guide
+# LALAN Institutional PPT Presentation Deck Documentation & User Guide
 
-## 1. Executive Overview
+## Overview
 
-The **Interactive PPT Presentation Deck** is a production-grade, full-screen slide deck system integrated directly into the LALAN Quantitative Platform at `/about` and within the `AboutUsModal.tsx` modal.
+The **LALAN Institutional PPT Presentation Deck** is an interactive, animated presentation engine built directly into the `/about` route of the LALAN Quantitative Monorepo.
 
-Key features include:
-- **Interactive Slide Navigation**: Keyboard arrow navigation (`ArrowLeft` / `ArrowRight`), slide counter, and quick progress bar.
-- **Auto-Play Slideshow Engine**: Configurable slideshow timer with Play/Pause controls.
-- **Presenter Speaker Notes Drawer**: Toggleable notes overlay providing detailed talking points for each slide.
-- **Slide Grid Overview Modal**: Jump to any of the 8 slides instantly.
-- **Summary Exporter**: One-click export of presentation briefing summaries to downloadable Markdown files.
-- **Embedded Interactive Widgets**: Live interactive sliders for Order Book Imbalance (OBI), Micro-Price, Disruptor throughput, and Robo-Advisor risk models directly inside slides.
+Designed for executive briefings, institutional investor demos, and quant team onboarding, the deck combines PowerPoint-style slide navigation with real-time interactive trading simulators and Framer Motion micro-animations.
 
 ---
 
-## 2. Slide Index & Topics
+## Slide Registry Breakdown (11 Slides)
 
-| Slide # | Title | Category | Interactive Widget | Key Takeaway |
-| :--- | :--- | :--- | :--- | :--- |
-| **Slide 01** | Platform Vision & Institutional Advantage | OVERVIEW | Comparison Matrix | Sub-microsecond co-located edge |
-| **Slide 02** | HFT Engine & LMAX Disruptor Architecture | ARCHITECTURE | Live Disruptor Load Simulator | Zero-GC lock-free ring buffer |
-| **Slide 03** | Quantitative Order Book Microstructure Engine | MICROSTRUCTURE | Live OBI & Micro-Price Calculator | OBI & Micro-Price equations |
-| **Slide 04** | Autonomous Robo-Advisor & Portfolio Model | ROBO_ADVISOR | Live Risk Score Slider | Black-Litterman & Tax Loss Harvesting |
-| **Slide 05** | Multi-Broker Low-Latency API Bridge | MULTI_BROKER | Gateway Matrix | Zerodha, DhanHQ, Upstox, AngelOne, Groww |
-| **Slide 06** | Institutional Benchmark Comparison Matrix | BENCHMARK | Feature Table | LALAN vs Bloomberg ($2,400/mo) |
-| **Slide 07** | High-Performance Tech Stack | TECH_STACK | Stack Breakdown | Java 21, Next.js 16, SQLite WAL |
-| **Slide 08** | Strategic Enterprise Roadmap (2026-2027) | ROADMAP | Timeline Grid | Delta hedging & FIX 5.0 bridge |
+1. **Slide 01 — Platform Vision & Institutional Advantage**
+   - Highlighting 0.42µs co-located binary feed processing vs 250ms+ retail REST polling.
+2. **Slide 02 — High-Frequency System Architecture**
+   - Zero-GC Java 21 LMAX Disruptor ring buffer load simulator with real-time buffer utilization ring.
+3. **Slide 03 — Quantitative Order Book Microstructure Engine**
+   - Live Order Book Imbalance (OBI) & Micro-Price drift calculator with interactive depth sliders.
+4. **Slide 04 — Autonomous Robo-Advisor Engine**
+   - Black-Litterman MPT target allocation engine with dynamic risk profile slider.
+5. **Slide 05 — Multi-Broker Integration Bridge**
+   - Unified low-latency API gateway across Zerodha Kite, DhanHQ, Upstox, AngelOne, and Groww.
+6. **Slide 06 — Institutional Benchmark Comparison Matrix**
+   - Feature parity evaluation matrix comparing LALAN vs Bloomberg Terminal ($2,400/mo) and Refinitiv Eikon.
+7. **Slide 07 — High-Performance Technology Stack**
+   - Full-stack technical breakdown across Java 21 LTS, Next.js 16 Turbopack, and SQLite WAL.
+8. **Slide 08 — Quantitative Microstructure Alpha Signals**
+   - Self-exciting Hawkes Process equations, OBI delta metrics, and 2D ConvLSTM LOB deep-net hit ratio.
+9. **Slide 09 — Risk Engineering & Regulatory Compliance**
+   - Sub-microsecond FPGA pre-trade circuit breakers, SEBI circular compliance, and PTP audit trail.
+10. **Slide 10 — Interactive Order Execution Sandbox**
+    - Embedded sub-microsecond order burst generator testing colocation tick-to-trade throughput.
+11. **Slide 11 — Strategic Enterprise Roadmap (2026–2027)**
+    - Strategic milestones including Option Greeks Delta Radar, Crypto Perpetuals basis arb, and FIX 5.0 bridge.
 
 ---
 
-## 3. Directory Structure
+## Key Presenter Features & Shortcut Keys
 
-```
-hft-dashboard/src/components/presentation/
-├── types.ts                                # Slide domain models & deck state interface
-├── WhatWeDoOverview.tsx                    # Executive "What We Do" summary & platform metrics
-├── PresentationNavbarControls.tsx          # Navigation bar, auto-play & fullscreen buttons
-├── SlideGridModal.tsx                      # 8-Slide overview thumbnail grid modal
-├── SpeakerNotesDrawer.tsx                  # Presenter speaker notes overlay drawer
-├── usePresentationKeyboardNav.ts           # Keyboard shortcuts (Arrows, Space, F, Esc)
-├── presentationExporter.ts                 # Markdown presentation deck summary exporter
-├── InteractivePresentationDeck.tsx         # Master deck container & slide registry
-└── slides/                                 # Production Slide Components
-    ├── SlideVisionAndMission.tsx           # Slide 1
-    ├── SlideArchitecturePPT.tsx            # Slide 2 (with Disruptor Load Simulator)
-    ├── SlideOrderBookTheoryPPT.tsx         # Slide 3 (with OBI Calculator)
-    ├── SlideRoboAdvisorPPT.tsx             # Slide 4 (with Risk Slider)
-    ├── SlideMultiBrokerPPT.tsx             # Slide 5
-    ├── SlideBenchmarkPPT.tsx               # Slide 6
-    ├── SlideTechStackPPT.tsx               # Slide 7
-    └── SlideRoadmapPPT.tsx                 # Slide 8
-```
+| Key / Control | Action Description |
+|---|---|
+| `Right Arrow / Space / N` | Advance to Next Slide |
+| `Left Arrow / P` | Go back to Previous Slide |
+| `F` | Toggle Full-Screen Presentation Mode |
+| `G` | Open Slide Thumbnail Grid Index |
+| `S` | Toggle Presenter Speaker Notes Drawer |
+| `L` | Toggle Presenter Laser Pointer Canvas Tool |
+| `M` | Toggle Slide Transition Audio Feedback |
+| `A` | Toggle Auto-Advance Slideshow Timer |
+| `?` | Display Keyboard Shortcuts Help Overlay |
+| `Esc` | Close Modals / Exit Fullscreen |
+
+---
+
+## Technical Stack & Testing
+
+- **UI & Animations**: React 19, Next.js 16 Turbopack, Framer Motion, Tailwind CSS v4.
+- **Audio Feedback**: Web Audio API (Synthesized native click & chime audio without external MP3 assets).
+- **Unit Test Suite**: Vitest (`npm run test`) verifying registry integrity and 11 slide categories.
+- **E2E Test Suite**: Playwright (`npm run test:e2e`) validating navigation, shortcuts, and grid modal.
