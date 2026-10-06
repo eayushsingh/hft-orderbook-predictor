@@ -60,6 +60,13 @@ body {
   -webkit-tap-highlight-color: transparent;
 }
 
+/* GPU Hardware Acceleration for smooth 60fps animations */
+.transform-gpu {
+  transform: translate3d(0, 0, 0);
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+}
+
 /* ═══════════════════════════════════════════════════════════════
    PRODUCTION-GRADE DUAL THEME OVERRIDES (LIGHT & DARK MODE)
    Ensures 100% text visibility, high contrast, & Zerodha Kite polish.
