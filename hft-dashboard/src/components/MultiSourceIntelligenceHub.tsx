@@ -461,7 +461,7 @@ export default function MultiSourceIntelligenceHub() {
                 <span className="font-bold text-sky-400">{stock.fiiHoldingPct}%</span>
               </div>
               <div className="w-full h-1.5 rounded-full bg-zinc-800 overflow-hidden">
-                <div className="h-full bg-sky-500" style={{ width: `${stock.fiiHoldingPct}%` }} />
+                <div className="h-full bg-sky-500 transition-all duration-500 ease-out transform-gpu" style={{ width: `${stock.fiiHoldingPct}%` }} />
               </div>
 
               <div className="flex justify-between text-zinc-400 text-[11px] pt-1">
@@ -469,7 +469,7 @@ export default function MultiSourceIntelligenceHub() {
                 <span className="font-bold text-emerald-400">{stock.diiHoldingPct}%</span>
               </div>
               <div className="w-full h-1.5 rounded-full bg-zinc-800 overflow-hidden">
-                <div className="h-full bg-emerald-500" style={{ width: `${stock.diiHoldingPct}%` }} />
+                <div className="h-full bg-emerald-500 transition-all duration-500 ease-out transform-gpu" style={{ width: `${stock.diiHoldingPct}%` }} />
               </div>
 
               <div className="flex justify-between text-zinc-400 text-[11px] pt-1">
