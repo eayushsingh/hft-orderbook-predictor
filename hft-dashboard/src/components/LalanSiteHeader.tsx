@@ -57,10 +57,10 @@ export default function LalanSiteHeader() {
               <Link
                 key={link.href}
                 href={link.href}
-                className={`transition-colors font-semibold ${
+                className={`transition-colors font-bold ${
                   isActive
-                    ? "text-[#387ed1] font-bold"
-                    : "text-slate-700 dark:text-[#a0a3b0] hover:text-[#387ed1] dark:hover:text-white"
+                    ? "text-emerald-600 dark:text-emerald-400 font-extrabold"
+                    : "text-slate-900 dark:text-slate-200 hover:text-emerald-600 dark:hover:text-emerald-400"
                 }`}
               >
                 {link.label}
