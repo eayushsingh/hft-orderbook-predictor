@@ -5,14 +5,18 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import LalanSiteHeader from "@/components/LalanSiteHeader";
 import LalanSiteFooter from "@/components/LalanSiteFooter";
-import { Zap, Cpu, ShieldCheck, Activity, Users, ArrowRight, Award, Globe, Building2, BarChart3, Newspaper, PieChart, ExternalLink } from "lucide-react";
+import { ArchitectureDiagram } from "@/components/presentation/ArchitectureDiagram";
+import { BenchmarkTable } from "@/components/presentation/BenchmarkTable";
+import { MathFoundations } from "@/components/presentation/MathFoundations";
+import { InstitutionalTechStack } from "@/components/presentation/InstitutionalTechStack";
+import { Zap, Cpu, ShieldCheck, Activity, Users, ArrowRight, Award, Globe, Building2, BarChart3, Newspaper, PieChart, ExternalLink, Sparkles } from "lucide-react";
 
 export default function AboutPage() {
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-[#060609] text-slate-900 dark:text-[#e0e0e0] font-sans selection:bg-[#387ed1] selection:text-white flex flex-col transition-colors duration-200">
       <LalanSiteHeader />
 
-      <main className="flex-1">
+      <main className="flex-1 space-y-16 py-8">
         {/* ── HERO BANNER ── */}
         <section className="py-20 px-4 sm:px-8 border-b border-slate-200 dark:border-[#181824] bg-gradient-to-b from-slate-100 via-slate-50 to-slate-100 dark:from-[#0a0a0f] dark:via-[#08080c] dark:to-[#060609]">
           <div className="max-w-4xl mx-auto text-center space-y-6">
@@ -21,6 +25,10 @@ export default function AboutPage() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
             >
+              <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-mono font-bold uppercase mb-4">
+                <Sparkles className="w-3.5 h-3.5" />
+                <span>Institutional Market Microstructure Engine</span>
+              </div>
               <h1 className="text-3xl sm:text-5xl font-black text-slate-900 dark:text-white tracking-tight leading-tight">
                 We pioneered high-frequency market microstructure &amp; order book forecasting in India.
               </h1>
@@ -31,18 +39,40 @@ export default function AboutPage() {
           </div>
         </section>
 
+        {/* ── PRESENTATION 1: ARCHITECTURE DIAGRAM ── */}
+        <section className="max-w-[1200px] mx-auto px-4 sm:px-8">
+          <ArchitectureDiagram />
+        </section>
+
+        {/* ── PRESENTATION 2: BENCHMARK TABLE ── */}
+        <section className="max-w-[1200px] mx-auto px-4 sm:px-8">
+          <BenchmarkTable />
+        </section>
+
+        {/* ── PRESENTATION 3: MATH FOUNDATIONS ── */}
+        <section className="max-w-[1200px] mx-auto px-4 sm:px-8">
+          <MathFoundations />
+        </section>
+
+        {/* ── PRESENTATION 4: INSTITUTIONAL TECH STACK ── */}
+        <section className="max-w-[1200px] mx-auto px-4 sm:px-8">
+          <InstitutionalTechStack />
+        </section>
+
         {/* ── TWO-COLUMN STORY SECTION ── */}
-        <section className="py-16 sm:py-24 px-4 sm:px-8 max-w-[1100px] mx-auto border-b border-slate-200 dark:border-[#181824]">
+        <section className="py-16 sm:py-20 px-4 sm:px-8 max-w-[1100px] mx-auto border-t border-slate-200 dark:border-[#181824]">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 text-sm sm:text-base leading-relaxed text-slate-700 dark:text-[#b0b3c0]">
             <div className="space-y-4">
+              <h3 className="text-xl font-bold text-slate-900 dark:text-white">Engineered for Micro-Second Advantage</h3>
               <p>
                 We set out in 2024 to create a zero-allocation, lock-free matching engine capable of streaming live L2 depth across LALAN Engine, DhanHQ, Groww, and Upstox with sub-millisecond precision.
               </p>
               <p>
-                Today, our LMAX Disruptor ring-buffer pipeline processes over <strong className="text-slate-900 dark:text-white font-bold">1,000,000 order events per second</strong> without single JVM garbage collection pause.
+                Today, our LMAX Disruptor ring-buffer pipeline processes over <strong className="text-slate-900 dark:text-white font-bold">1,000,000 order events per second</strong> without a single JVM garbage collection pause.
               </p>
             </div>
             <div className="space-y-4">
+              <h3 className="text-xl font-bold text-slate-900 dark:text-white">Quantitative Transparency</h3>
               <p>
                 Over <strong className="text-slate-900 dark:text-white font-bold">₹500+ Cr of daily liquidity</strong> is analyzed through our Order Book Imbalance (OBI) and VWAP Micro-Price drift models, giving retail traders unfair institutional alpha.
               </p>
@@ -54,7 +84,7 @@ export default function AboutPage() {
         </section>
 
         {/* ── ALL-IN-ONE MULTI-SOURCE INTELLIGENCE HUB SECTION ── */}
-        <section className="py-16 sm:py-24 px-4 sm:px-8 bg-slate-100/70 dark:bg-[#08080d] border-b border-slate-200 dark:border-[#181824]">
+        <section className="py-16 sm:py-20 px-4 sm:px-8 bg-slate-100/70 dark:bg-[#08080d] border-y border-slate-200 dark:border-[#181824]">
           <div className="max-w-[1100px] mx-auto space-y-12">
             <div className="text-center space-y-3 max-w-3xl mx-auto">
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#387ed1]/10 border border-[#387ed1]/30 text-[#387ed1] text-xs font-mono font-bold uppercase">
@@ -114,8 +144,8 @@ export default function AboutPage() {
               <p className="text-xs text-slate-500 dark:text-[#747888] uppercase tracking-wider mt-2">Ticks / Sec</p>
             </div>
             <div>
-              <p className="text-3xl sm:text-5xl font-black text-[#10b981]">0.8 ms</p>
-              <p className="text-xs text-slate-500 dark:text-[#747888] uppercase tracking-wider mt-2">Engine Latency</p>
+              <p className="text-3xl sm:text-5xl font-black text-[#10b981]">0.42 µs</p>
+              <p className="text-xs text-slate-500 dark:text-[#747888] uppercase tracking-wider mt-2">p50 Engine Latency</p>
             </div>
             <div>
               <p className="text-3xl sm:text-5xl font-black text-[#ff5722]">₹500Cr+</p>
@@ -200,3 +230,4 @@ export default function AboutPage() {
     </div>
   );
 }
+

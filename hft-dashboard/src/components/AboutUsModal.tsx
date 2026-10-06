@@ -316,16 +316,26 @@ export default function AboutUsModal({ isOpen, onClose }: AboutUsModalProps) {
           </div>
 
           {/* ── FOOTER ── */}
-          <div className="p-4 border-t border-[#262634] bg-[#0f0f14] flex justify-between items-center shrink-0">
+          <div className="p-4 border-t border-[#262634] bg-[#0f0f14] flex flex-wrap justify-between items-center gap-3 shrink-0">
             <span className="text-[11px] font-mono text-[#747888]">
               LALAN HFT Microstructure Engine v1.0
             </span>
-            <button
-              onClick={onClose}
-              className="bg-[#387ed1] hover:bg-[#306ec0] text-white text-xs font-mono font-bold px-5 py-2 rounded-xl transition-all shadow"
-            >
-              Close Guide
-            </button>
+            <div className="flex items-center gap-2">
+              <a
+                href="/about"
+                onClick={onClose}
+                className="bg-emerald-600/20 hover:bg-emerald-600/30 text-emerald-400 border border-emerald-500/30 text-xs font-mono font-bold px-4 py-2 rounded-xl transition-all flex items-center gap-1.5"
+              >
+                <span>Full Interactive Spec (/about)</span>
+                <ArrowRight className="h-3.5 w-3.5" />
+              </a>
+              <button
+                onClick={onClose}
+                className="bg-[#387ed1] hover:bg-[#306ec0] text-white text-xs font-mono font-bold px-5 py-2 rounded-xl transition-all shadow"
+              >
+                Close Guide
+              </button>
+            </div>
           </div>
 
         </motion.div>
