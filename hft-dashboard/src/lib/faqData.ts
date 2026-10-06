@@ -163,6 +163,30 @@ export const TERMINAL_FAQS: FAQItem[] = [
     unhelpfulCount: 2,
     lastUpdated: '2026-10-06',
   },
+  {
+    id: 'faq-term-6',
+    category: 'terminal',
+    categoryLabel: 'L2 Terminal Engine',
+    question: 'How is SABR Implied Volatility Surface fitting computed in options terminal?',
+    answer:
+      'SABR model parameters (Alpha, Beta, Rho, Nu) are fitted to NIFTY/BANKNIFTY option strike chains using Levenberg-Marquardt non-linear least squares optimization to prevent arbitrage along volatility smile curves.',
+    tags: ['sabr-model', 'iv-surface', 'volatility-smile', 'options-greeks'],
+    helpfulCount: 395,
+    unhelpfulCount: 1,
+    lastUpdated: '2026-10-06',
+  },
+  {
+    id: 'faq-term-7',
+    category: 'terminal',
+    categoryLabel: 'L2 Terminal Engine',
+    question: 'What second-order Greeks (Vanna, Volga, Charm) are monitored for tail-risk?',
+    answer:
+      'Vanna (dDelta/dVol) tracks option delta sensitivity to volatility shifts, Volga (dVega/dVol) monitors vega convexity during vol expansion, and Charm (dDelta/dTime) measures delta decay as expiry approaches.',
+    tags: ['second-order-greeks', 'vanna', 'volga', 'charm', 'tail-risk'],
+    helpfulCount: 420,
+    unhelpfulCount: 0,
+    lastUpdated: '2026-10-06',
+  },
 ];
 
 export const ROBO_FAQS: FAQItem[] = [
