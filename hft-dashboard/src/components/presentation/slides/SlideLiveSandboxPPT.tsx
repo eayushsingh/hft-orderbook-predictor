@@ -1,7 +1,7 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import React, { useState } from 'react';
+import { motion } from 'framer-motion';
 import { Play, RotateCcw, Zap, Sparkles, CheckCircle2, Server, ArrowRight, ShieldCheck } from 'lucide-react';
 
 interface SimulationPacket {
@@ -18,7 +18,6 @@ export const SlideLiveSandboxPPT: React.FC = () => {
   const [packets, setPackets] = useState<SimulationPacket[]>([]);
   const [isSimulating, setIsSimulating] = useState(false);
   const [totalExecuted, setTotalExecuted] = useState(142050);
-  const [avgLatency, setAvgLatency] = useState(420);
 
   const runSimulation = () => {
     setIsSimulating(true);
@@ -179,7 +178,7 @@ export const SlideLiveSandboxPPT: React.FC = () => {
 
               <div className="p-3 rounded-xl bg-slate-950 border border-slate-800 flex justify-between items-center">
                 <span className="text-xs text-slate-400">Tick-to-Trade Latency</span>
-                <span className="text-sm font-bold text-teal-400">{avgLatency} ns</span>
+                <span className="text-sm font-bold text-teal-400">420 ns</span>
               </div>
 
               <div className="p-3 rounded-xl bg-slate-950 border border-slate-800 flex justify-between items-center">

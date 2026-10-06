@@ -1,8 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { motion } from 'framer-motion';
-import { ShieldCheck, Lock, AlertTriangle, CheckCircle2, FileText, Cpu, Activity, ShieldAlert } from 'lucide-react';
+import { ShieldCheck, Lock, CheckCircle2, FileText, Activity, ShieldAlert } from 'lucide-react';
 
 export const SlideCompliancePPT: React.FC = () => {
   const [killSwitchState, setKillSwitchState] = useState<'ARMED' | 'DISARMED'>('ARMED');

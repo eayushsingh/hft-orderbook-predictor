@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Cpu, Sliders, Sparkles, Zap, Server, Activity } from 'lucide-react';
+import { Cpu, Sliders, Sparkles } from 'lucide-react';
 
 export const SlideArchitecturePPT: React.FC = () => {
   const [eventRate, setEventRate] = useState(1000000);

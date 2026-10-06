@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Cpu, TrendingUp, Zap, Sparkles, Activity, Calculator } from 'lucide-react';
+import { TrendingUp, Sparkles, Activity, Calculator } from 'lucide-react';
 
 export const SlideQuantAlphaPPT: React.FC = () => {
   const [activeModel, setActiveModel] = useState<'OBI' | 'HAWKES' | 'LOB_LSTM'>('OBI');
@@ -14,7 +14,7 @@ export const SlideQuantAlphaPPT: React.FC = () => {
         <div>
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-mono font-bold uppercase mb-2">
             <Calculator className="w-3.5 h-3.5" />
-            <span>Slide 09 &bull; Quantitative Alpha Engine</span>
+            <span>Slide 08 &bull; Quantitative Alpha Engine</span>
           </div>
           <h2 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
             Microstructure Alpha Signals &amp; Stochastic Physics
@@ -63,19 +63,19 @@ export const SlideQuantAlphaPPT: React.FC = () => {
                 <div className="space-y-2">
                   <div className="text-slate-400 text-[11px] font-sans">Continuous OBI Formulation:</div>
                   <div className="text-center py-2 text-white font-bold">
-                    OBI_t = \frac{V_t^b - V_t^a}{V_t^b + V_t^a} \cdot \exp(-\lambda \Delta t)
+                    {'OBI_t = (V_t^b - V_t^a) / (V_t^b + V_t^a) * exp(-\\lambda * \\Delta t)'}
                   </div>
                   <div className="text-[11px] text-slate-400 font-sans">
-                    Measures volume pressure asymmetry at best bid \(V^b\) vs best ask \(V^a\) with exponential latency decay factor \(\lambda\).
+                    Measures volume pressure asymmetry at best bid V_b vs best ask V_a with exponential decay factor.
                   </div>
                 </div>
               )}
 
               {activeModel === 'HAWKES' && (
                 <div className="space-y-2">
-                  <div className="text-slate-400 text-[11px] font-sans">Hawkes Intensity Function \(\lambda(t)\):</div>
+                  <div className="text-slate-400 text-[11px] font-sans">Hawkes Intensity Function &lambda;(t):</div>
                   <div className="text-center py-2 text-white font-bold">
-                    \lambda(t) = \mu + \sum_{t_i < t} \alpha \, e^{-\beta (t - t_i)}
+                    {'\\lambda(t) = \\mu + \\sum_{t_i < t} \\alpha * exp(-\\beta * (t - t_i))'}
                   </div>
                   <div className="text-[11px] text-slate-400 font-sans">
                     Models order arrival clustering where past trade events trigger self-exciting cascading buy/sell waves.
@@ -87,7 +87,7 @@ export const SlideQuantAlphaPPT: React.FC = () => {
                 <div className="space-y-2">
                   <div className="text-slate-400 text-[11px] font-sans">LOB Spatial-Temporal State Mapping:</div>
                   <div className="text-center py-2 text-white font-bold">
-                    \hat{y}_{t+k} = \mathrm{Softmax}\Big(W_o \cdot \mathrm{LSTM}\big(\mathrm{Conv2D}(LOB_{t-n:t})\big)\Big)
+                    {'y_hat_{t+k} = Softmax(W_o * LSTM(Conv2D(LOB_{t-n:t})))'}
                   </div>
                   <div className="text-[11px] text-slate-400 font-sans">
                     2D Convolutions extract spatial order book depth profile, passing temporal hidden state into 10-tick price movement classifier.
