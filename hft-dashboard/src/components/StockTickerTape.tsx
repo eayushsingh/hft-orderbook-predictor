@@ -26,11 +26,11 @@ const INITIAL_TICKERS: TickerItem[] = [
 const TickerPill = memo(function TickerPill({ t }: { t: TickerItem }) {
   const isPos = t.changePct >= 0;
   return (
-    <div className="inline-flex items-center space-x-2 shrink-0">
+    <div className="inline-flex items-center space-x-2 shrink-0 transition-all duration-300 ease-out transform-gpu hover:scale-105">
       <span className="font-bold text-slate-800 dark:text-zinc-200">{t.symbol}</span>
-      <span className="text-slate-900 dark:text-white font-bold">₹{t.price.toLocaleString("en-IN")}</span>
+      <span className="text-slate-900 dark:text-white font-bold transition-colors duration-200">₹{t.price.toLocaleString("en-IN")}</span>
       <span
-        className={`inline-flex items-center gap-0.5 font-bold text-[11px] ${
+        className={`inline-flex items-center gap-0.5 font-bold text-[11px] transition-colors duration-200 ${
           isPos ? "text-emerald-500" : "text-rose-500"
         }`}
       >
@@ -38,7 +38,7 @@ const TickerPill = memo(function TickerPill({ t }: { t: TickerItem }) {
         <span>{isPos ? `+${t.changePct}%` : `${t.changePct}%`}</span>
       </span>
       <span
-        className={`text-[9px] font-bold px-1.5 py-0.2 rounded border ${
+        className={`text-[9px] font-bold px-1.5 py-0.2 rounded border transition-all duration-300 ${
           t.signal === "BUY"
             ? "bg-emerald-500/10 text-emerald-500 border-emerald-500/30"
             : t.signal === "SELL"
