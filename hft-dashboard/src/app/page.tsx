@@ -12,6 +12,7 @@ import StockTickerTape from "@/components/StockTickerTape";
 import InteractiveAlphaEngineDemo from "@/components/InteractiveAlphaEngineDemo";
 import QuantApiPlayground from "@/components/QuantApiPlayground";
 import InstitutionalComparisonMatrix from "@/components/InstitutionalComparisonMatrix";
+import SmoothPageWrapper from "@/components/SmoothPageWrapper";
 
 const featureCards = [
   {
@@ -54,7 +55,7 @@ export default function LandingPage() {
     return () => clearInterval(interval);
   }, []);
   return (
-    <div className="font-sans bg-slate-50 dark:bg-[#060608] text-slate-900 dark:text-zinc-100 min-h-screen selection:bg-[#387ed1] selection:text-white relative overflow-x-hidden flex flex-col transition-colors duration-200">
+    <SmoothPageWrapper className="font-sans bg-slate-50 dark:bg-[#060608] text-slate-900 dark:text-zinc-100 min-h-screen selection:bg-[#387ed1] selection:text-white relative overflow-x-hidden flex flex-col transition-colors duration-200">
       {/* Top Live Micro-Tick Stock Ticker Tape */}
       <StockTickerTape />
 
@@ -279,6 +280,6 @@ export default function LandingPage() {
       </main>
 
       <LalanSiteFooter />
-    </div>
+    </SmoothPageWrapper>
   );
 }
