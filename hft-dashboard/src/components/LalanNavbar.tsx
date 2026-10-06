@@ -94,16 +94,16 @@ export default function LalanNavbar({
   return (
     <header className="sticky top-0 z-40 border-b border-[#22222e] dark:border-[#22222e] bg-[#0c0c10] text-[#e0e0e0] font-sans transition-colors duration-200">
       {/* ── TOP BACKPACK-STYLE TICKER & STATUS BAR ── */}
-      <div className="flex h-7 items-center justify-between border-b border-[#181822] bg-[#08080c] px-3 text-[11px] font-mono text-[#8a8d9b]">
+      <div className="flex h-7 items-center justify-between border-b border-[#1f1f2e] bg-[#09090e] px-3 text-[11px] font-mono text-slate-200">
         {/* Indices Ticker */}
         <div className="flex items-center space-x-4 overflow-x-auto no-scrollbar py-0.5">
           <div className="flex items-center space-x-1.5 shrink-0">
-            <span className="font-bold text-[#a0a3b0]">NIFTY 50</span>
-            <span className="font-semibold text-white">
+            <span className="font-extrabold text-cyan-300">NIFTY 50</span>
+            <span className="font-black text-white">
               {niftyPrice.toLocaleString("en-IN", { minimumFractionDigits: 2 })}
             </span>
             <span
-              className={`flex items-center text-[10px] font-bold ${niftyChange >= 0 ? "text-[#10b981]" : "text-[#f43f5e]"
+              className={`flex items-center text-[10px] font-extrabold ${niftyChange >= 0 ? "text-emerald-400" : "text-rose-400"
                 }`}
             >
               {niftyChange >= 0 ? "+" : ""}
@@ -111,15 +111,15 @@ export default function LalanNavbar({
             </span>
           </div>
 
-          <div className="h-3 w-px bg-[#22222e] shrink-0" />
+          <div className="h-3 w-px bg-[#262638] shrink-0" />
 
           <div className="flex items-center space-x-1.5 shrink-0">
-            <span className="font-bold text-[#a0a3b0]">BANK NIFTY</span>
-            <span className="font-semibold text-white">
+            <span className="font-extrabold text-cyan-300">BANK NIFTY</span>
+            <span className="font-black text-white">
               {bankNiftyPrice.toLocaleString("en-IN", { minimumFractionDigits: 2 })}
             </span>
             <span
-              className={`flex items-center text-[10px] font-bold ${bankNiftyChange >= 0 ? "text-[#10b981]" : "text-[#f43f5e]"
+              className={`flex items-center text-[10px] font-extrabold ${bankNiftyChange >= 0 ? "text-emerald-400" : "text-rose-400"
                 }`}
             >
               {bankNiftyChange >= 0 ? "+" : ""}
@@ -127,15 +127,15 @@ export default function LalanNavbar({
             </span>
           </div>
 
-          <div className="h-3 w-px bg-[#22222e] shrink-0 hidden sm:block" />
+          <div className="h-3 w-px bg-[#262638] shrink-0 hidden sm:block" />
 
           <div className="hidden sm:flex items-center space-x-1.5 shrink-0">
-            <span className="font-bold text-[#a0a3b0]">BTC/USDT</span>
-            <span className="font-semibold text-white">
+            <span className="font-extrabold text-cyan-300">BTC/USDT</span>
+            <span className="font-black text-white">
               ${btcPrice.toLocaleString("en-US", { minimumFractionDigits: 2 })}
             </span>
             <span
-              className={`flex items-center text-[10px] font-bold ${btcChange >= 0 ? "text-[#10b981]" : "text-[#f43f5e]"
+              className={`flex items-center text-[10px] font-extrabold ${btcChange >= 0 ? "text-emerald-400" : "text-rose-400"
                 }`}
             >
               {btcChange >= 0 ? "+" : ""}
