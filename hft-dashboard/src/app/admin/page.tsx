@@ -205,7 +205,9 @@ export default function AdminPage() {
 
   useEffect(() => {
     if (user?.email === "ayushsinghe07@gmail.com") {
-      setIsAdminAuthenticated(true);
+      queueMicrotask(() => {
+        setIsAdminAuthenticated(true);
+      });
     }
   }, [user]);
 
@@ -541,7 +543,7 @@ export default function AdminPage() {
                 {activeTab === "users" && (
                   <select
                     value={statusFilter}
-                    onChange={(e) => setStatusFilter(e.target.value as any)}
+                    onChange={(e) => setStatusFilter(e.target.value as "ALL" | "ACTIVE" | "SUSPENDED")}
                     className="bg-[#0d0d14] text-xs font-mono text-white px-3 py-2 rounded-xl border border-[#222234] focus:outline-none focus:border-[#387ed1]"
                   >
                     <option value="ALL">All Status</option>
@@ -657,7 +659,7 @@ export default function AdminPage() {
                               {/* Plan Selector */}
                               <select
                                 value={u.plan}
-                                onChange={(e) => handleChangePlan(u.id, e.target.value as any)}
+                                onChange={(e) => handleChangePlan(u.id, e.target.value as "FREE" | "PRO" | "INSTITUTIONAL")}
                                 className="bg-[#161622] text-[11px] text-zinc-300 px-2 py-1 rounded border border-[#2a2a3e] focus:outline-none focus:border-[#387ed1]"
                               >
                                 <option value="FREE">FREE Plan</option>

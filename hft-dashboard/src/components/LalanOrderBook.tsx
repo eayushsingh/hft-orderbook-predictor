@@ -85,21 +85,23 @@ export default function LalanOrderBook({
   // Compute cumulative volumes and maximum volume for depth background bar fill
   const { bidsWithCum, asksWithCum, maxCumVolume, totalBidQty, totalAskQty } = useMemo(() => {
     let cumBid = 0;
-    const bidsWithCum = formattedBids.map((b) => {
+    const bidsWithCumList = [];
+    for (const b of formattedBids) {
       cumBid += b.qty;
-      return { ...b, cumQty: cumBid };
-    });
+      bidsWithCumList.push({ ...b, cumQty: cumBid });
+    }
 
     let cumAsk = 0;
-    const asksWithCum = formattedAsks.map((a) => {
+    const asksWithCumList = [];
+    for (const a of formattedAsks) {
       cumAsk += a.qty;
-      return { ...a, cumQty: cumAsk };
-    });
+      asksWithCumList.push({ ...a, cumQty: cumAsk });
+    }
 
     const maxCumVolume = Math.max(cumBid, cumAsk, 1);
     return {
-      bidsWithCum,
-      asksWithCum,
+      bidsWithCum: bidsWithCumList,
+      asksWithCum: asksWithCumList,
       maxCumVolume,
       totalBidQty: cumBid,
       totalAskQty: cumAsk,

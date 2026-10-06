@@ -41,14 +41,14 @@ function runTests() {
   assert(relActivity?.score !== undefined && relActivity.score >= 0 && relActivity.score <= 100, "Accumulation Score is within 0-100");
   assert(relActivity?.classification === "STRONG_ACCUMULATION", "Classifies RELIANCE as STRONG_ACCUMULATION");
   assert(relActivity?.confidence === "HIGH", "Determines HIGH confidence level for fresh data");
-  assert(relActivity?.evidence.positive.length! > 0, "Generates positive evidence array");
+  assert((relActivity?.evidence.positive.length ?? 0) > 0, "Generates positive evidence array");
   assert(relActivity?.signals.length === 9, "Computes all 9 granular signals across 7 scoring modules");
 
   // 3. AI Explanation Engine Tests
   const aiSummary = repo.getAISummary("RELIANCE");
   assert(aiSummary !== null, "Generates AI Explanation summary for RELIANCE");
   assert(Boolean(aiSummary?.executiveSummary.includes("Publicly disclosed")), "Executive summary contains required regulatory phrasing");
-  assert(aiSummary?.keyInsights.length! > 0, "Key insights generated correctly");
+  assert((aiSummary?.keyInsights.length ?? 0) > 0, "Key insights generated correctly");
 
   console.log("==========================================");
   console.log(`TEST SUMMARY: ${passed} PASSED | ${failed} FAILED`);

@@ -8,7 +8,7 @@ export interface CalculatedSignal {
   calculationUsed: string;
   source: string;
   timestamp: string;
-  metadata?: Record<string, any>;
+  metadata?: Record<string, unknown>;
 }
 
 export interface ShareholdingTrendData {

@@ -71,34 +71,33 @@ const SubscriptionContext = createContext<SubscriptionContextType | undefined>(u
 
 export function SubscriptionProvider({ children }: { children: React.ReactNode }) {
   const [state, setState] = useState<SubscriptionState>(DEFAULT_STATE);
-  const [isLoaded, setIsLoaded] = useState(false);
 
   // Synchronize state from localStorage on initial render
   useEffect(() => {
-    try {
-      const saved = localStorage.getItem(STORAGE_KEY);
-      if (saved) {
-        const parsed: SubscriptionState = JSON.parse(saved);
-        
-        // Check if trial has expired
-        if (parsed.isTrialActive && parsed.trialEndDate) {
-          const endDate = new Date(parsed.trialEndDate).getTime();
-          if (Date.now() > endDate) {
-            // Trial expired, downgrade to retail if not paid
-            parsed.isTrialActive = false;
-            parsed.activePlanId = "retail";
+    queueMicrotask(() => {
+      try {
+        const saved = typeof window !== "undefined" ? localStorage.getItem(STORAGE_KEY) : null;
+        if (saved) {
+          const parsed: SubscriptionState = JSON.parse(saved);
+          
+          // Check if trial has expired
+          if (parsed.isTrialActive && parsed.trialEndDate) {
+            const endDate = new Date(parsed.trialEndDate).getTime();
+            if (Date.now() > endDate) {
+              // Trial expired, downgrade to retail if not paid
+              parsed.isTrialActive = false;
+              parsed.activePlanId = "retail";
+            }
           }
+          setState(parsed);
+        } else if (typeof window !== "undefined") {
+          // Save initial 14-day free trial launch default
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(DEFAULT_STATE));
         }
-        setState(parsed);
-      } else {
-        // Save initial 14-day free trial launch default
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(DEFAULT_STATE));
+      } catch (err) {
+        console.error("Failed to load subscription state:", err);
       }
-    } catch (err) {
-      console.error("Failed to load subscription state:", err);
-    } finally {
-      setIsLoaded(true);
-    }
+    });
   }, []);
 
   // Save changes to localStorage

@@ -34,15 +34,17 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    setMounted(true);
-    const storedUser = localStorage.getItem("lalan_auth_user");
-    if (storedUser) {
-      try {
-        setUser(JSON.parse(storedUser));
-      } catch (e) {
-        console.error("Failed to parse stored auth user", e);
+    queueMicrotask(() => {
+      setMounted(true);
+      const storedUser = typeof window !== "undefined" ? localStorage.getItem("lalan_auth_user") : null;
+      if (storedUser) {
+        try {
+          setUser(JSON.parse(storedUser));
+        } catch (e) {
+          console.error("Failed to parse stored auth user", e);
+        }
       }
-    }
+    });
   }, []);
 
   const saveUserSession = (userData: User) => {

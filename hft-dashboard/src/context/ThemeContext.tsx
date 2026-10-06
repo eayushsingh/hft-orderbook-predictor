@@ -12,36 +12,34 @@ interface ThemeContextType {
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
+function applyTheme(newTheme: Theme) {
+  if (typeof document === "undefined") return;
+  const root = document.documentElement;
+  if (newTheme === "light") {
+    root.classList.remove("dark");
+    root.classList.add("light");
+    root.setAttribute("data-theme", "light");
+  } else {
+    root.classList.remove("light");
+    root.classList.add("dark");
+    root.setAttribute("data-theme", "dark");
+  }
+}
+
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const [theme, setThemeState] = useState<Theme>("dark");
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    setMounted(true);
-    const savedTheme = localStorage.getItem("lalan_theme") as Theme | null;
-    if (savedTheme === "light" || savedTheme === "dark") {
-      setThemeState(savedTheme);
-      applyTheme(savedTheme);
-    } else {
-      // Default to dark for HFT trading dashboard
-      const initialTheme = "dark";
-      setThemeState(initialTheme);
-      applyTheme(initialTheme);
-    }
-  }, []);
+    const savedTheme = typeof window !== "undefined" ? (localStorage.getItem("lalan_theme") as Theme | null) : null;
+    const initialTheme = savedTheme === "light" || savedTheme === "dark" ? savedTheme : "dark";
+    applyTheme(initialTheme);
 
-  const applyTheme = (newTheme: Theme) => {
-    const root = document.documentElement;
-    if (newTheme === "light") {
-      root.classList.remove("dark");
-      root.classList.add("light");
-      root.setAttribute("data-theme", "light");
-    } else {
-      root.classList.remove("light");
-      root.classList.add("dark");
-      root.setAttribute("data-theme", "dark");
-    }
-  };
+    queueMicrotask(() => {
+      setThemeState(initialTheme);
+      setMounted(true);
+    });
+  }, []);
 
   const setTheme = (newTheme: Theme) => {
     setThemeState(newTheme);

@@ -75,6 +75,65 @@ export interface FullInstitutionalActivityResponse {
   breakdown: Record<string, number>;
 }
 
+interface StockRow {
+  id: number;
+  symbol: string;
+  name: string;
+  sector: string;
+  market_cap_cr: number;
+}
+
+interface ShareholdingSnapshotRow {
+  id: number;
+  stock_id: number;
+  quarter: string;
+  year: number;
+  total_inst_pct: number;
+  mutual_fund_pct: number;
+  fii_fpi_pct: number;
+}
+
+interface DealRow {
+  id: number;
+  stock_id: number;
+  deal_date: string;
+  deal_type: "BUY" | "SELL";
+  value_cr: number;
+  shares: number;
+  price: number;
+  exchange: string;
+  raw_institution_name?: string;
+  buyer_seller_name?: string;
+  normalized_name?: string;
+  category?: string;
+}
+
+interface HoldingRow {
+  id: number;
+  stock_id: number;
+  institution_id: number;
+  holding_percentage: number;
+  quarter: string;
+  year: number;
+  normalized_name: string;
+  category: string;
+}
+
+interface VolumeRow {
+  total_traded_volume: number;
+  volume_anomaly_ratio: number;
+}
+
+interface DeliveryRow {
+  delivery_pct: number;
+  delivery_anomaly_ratio: number;
+}
+
+interface PriceRow {
+  trade_date: string;
+  change_pct: number;
+}
+
 export class InstitutionalRepository {
   private db: Database.Database;
 
@@ -83,8 +142,8 @@ export class InstitutionalRepository {
     seedInstitutionalDatabase(this.db);
   }
 
-  public getStockBySymbol(symbol: string): { id: number; symbol: string; name: string; sector: string; market_cap_cr: number } | null {
-    const row = this.db.prepare("SELECT * FROM stocks WHERE UPPER(symbol) = UPPER(?)").get(symbol) as any;
+  public getStockBySymbol(symbol: string): StockRow | null {
+    const row = this.db.prepare("SELECT * FROM stocks WHERE UPPER(symbol) = UPPER(?)").get(symbol) as StockRow | undefined;
     return row || null;
   }
 
@@ -93,7 +152,7 @@ export class InstitutionalRepository {
       .prepare(
         "SELECT symbol, name, sector, market_cap_cr FROM stocks WHERE symbol LIKE ? OR name LIKE ? LIMIT 10"
       )
-      .all(`%${query}%`, `%${query}%`) as any[];
+      .all(`%${query}%`, `%${query}%`) as StockRow[];
     return rows;
   }
 
@@ -108,7 +167,7 @@ export class InstitutionalRepository {
       .prepare(
         "SELECT * FROM shareholding_snapshots WHERE stock_id = ? ORDER BY year DESC, quarter DESC LIMIT 4"
       )
-      .all(stockId) as any[];
+      .all(stockId) as ShareholdingSnapshotRow[];
 
     if (snapshots.length === 0) {
       return null;
@@ -149,7 +208,7 @@ export class InstitutionalRepository {
          WHERE bd.stock_id = ?
          ORDER BY bd.deal_date DESC LIMIT 20`
       )
-      .all(stockId) as any[];
+      .all(stockId) as DealRow[];
 
     const blockRows = this.db
       .prepare(
@@ -159,7 +218,7 @@ export class InstitutionalRepository {
          WHERE bd.stock_id = ?
          ORDER BY bd.deal_date DESC LIMIT 20`
       )
-      .all(stockId) as any[];
+      .all(stockId) as DealRow[];
 
     let bulkBuyVal = 0, bulkSellVal = 0, bulkBuyCnt = 0, bulkSellCnt = 0;
     bulkRows.forEach((r) => {
@@ -195,7 +254,7 @@ export class InstitutionalRepository {
          WHERE ih.stock_id = ?
          ORDER BY ih.year DESC, ih.quarter DESC`
       )
-      .all(stockId) as any[];
+      .all(stockId) as HoldingRow[];
 
     // Group by institution
     const instGroup = new Map<string, { name: string; category: string; prevPct: number; currPct: number }>();
@@ -237,17 +296,17 @@ export class InstitutionalRepository {
     // 4. Query Market Telemetry (Price, Volume, Delivery)
     const latestVolume = this.db
       .prepare("SELECT * FROM volume_data WHERE stock_id = ? ORDER BY trade_date DESC LIMIT 1")
-      .get(stockId) as any;
+      .get(stockId) as VolumeRow | undefined;
     const latestDelivery = this.db
       .prepare("SELECT * FROM delivery_data WHERE stock_id = ? ORDER BY trade_date DESC LIMIT 1")
-      .get(stockId) as any;
+      .get(stockId) as DeliveryRow | undefined;
     const priceRows = this.db
       .prepare("SELECT * FROM price_data WHERE stock_id = ? ORDER BY trade_date DESC LIMIT 30")
-      .all(stockId) as any[];
+      .all(stockId) as PriceRow[];
 
     let upVol = 0, downVol = 0;
-    priceRows.forEach((p, idx) => {
-      const volRow = this.db.prepare("SELECT total_traded_volume FROM volume_data WHERE stock_id = ? AND trade_date = ?").get(stockId, p.trade_date) as any;
+    priceRows.forEach((p) => {
+      const volRow = this.db.prepare("SELECT total_traded_volume FROM volume_data WHERE stock_id = ? AND trade_date = ?").get(stockId, p.trade_date) as VolumeRow | undefined;
       const vol = volRow ? volRow.total_traded_volume : 1;
       if (p.change_pct >= 0) upVol += vol;
       else downVol += vol;
@@ -310,8 +369,8 @@ export class InstitutionalRepository {
       })),
       bulk_deals: bulkRows.map((r) => ({
         deal_date: r.deal_date,
-        raw_institution_name: r.raw_institution_name,
-        normalized_institution_name: r.normalized_name || r.buyer_seller_name,
+        raw_institution_name: r.raw_institution_name || r.buyer_seller_name || "",
+        normalized_institution_name: r.normalized_name || r.buyer_seller_name || "",
         category: r.category || "MUTUAL_FUND",
         deal_type: r.deal_type,
         shares: r.shares,
@@ -321,8 +380,8 @@ export class InstitutionalRepository {
       })),
       block_deals: blockRows.map((r) => ({
         deal_date: r.deal_date,
-        raw_institution_name: r.raw_institution_name,
-        normalized_institution_name: r.normalized_name || r.buyer_seller_name,
+        raw_institution_name: r.raw_institution_name || r.buyer_seller_name || "",
+        normalized_institution_name: r.normalized_name || r.buyer_seller_name || "",
         category: r.category || "FII_FPI",
         deal_type: r.deal_type,
         shares: r.shares,
@@ -361,20 +420,30 @@ export class InstitutionalRepository {
     const scoreResult: AccumulationScoreResult = {
       symbol: activity.symbol,
       score: activity.score,
-      classification: activity.classification as any,
-      confidence: activity.confidence as any,
+      classification: activity.classification as AccumulationScoreResult["classification"],
+      confidence: activity.confidence as AccumulationScoreResult["confidence"],
       institutionalOwnership: {
         current: activity.institutional_ownership.current,
-        previousQuarter: (activity.institutional_ownership as any).previousQuarter ?? activity.institutional_ownership.previous_quarter,
+        previousQuarter: activity.institutional_ownership.previous_quarter,
         change: activity.institutional_ownership.change,
       },
-      signals: activity.signals as any,
-      breakdown: activity.breakdown as any,
+      signals: activity.signals.map((s) => ({
+        signalName: s.signal_name,
+        signalCategory: s.signal_category,
+        weight: s.weight,
+        rawValue: s.raw_value,
+        normalizedValue: s.normalized_value,
+        scoreContribution: s.score_contribution,
+        calculationUsed: s.calculation_used,
+        source: s.source,
+        timestamp: s.timestamp,
+      })),
+      breakdown: activity.breakdown as unknown as AccumulationScoreResult["breakdown"],
       evidence: activity.evidence,
       dataFreshness: {
-        shareholdingAgeDays: (activity.data_freshness as any).shareholdingAgeDays ?? activity.data_freshness.shareholding_age_days,
-        dealsAgeDays: (activity.data_freshness as any).dealsAgeDays ?? activity.data_freshness.deals_age_days,
-        marketDataAgeDays: (activity.data_freshness as any).marketDataAgeDays ?? activity.data_freshness.market_data_age_days,
+        shareholdingAgeDays: activity.data_freshness.shareholding_age_days,
+        dealsAgeDays: activity.data_freshness.deals_age_days,
+        marketDataAgeDays: activity.data_freshness.market_data_age_days,
       },
       missingSources: [],
     };

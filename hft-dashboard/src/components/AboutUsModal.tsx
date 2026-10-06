@@ -84,7 +84,7 @@ export default function AboutUsModal({ isOpen, onClose }: AboutUsModalProps) {
               return (
                 <button
                   key={tab.id}
-                  onClick={() => setActiveSection(tab.id as any)}
+                  onClick={() => setActiveSection(tab.id as typeof activeSection)}
                   className={`flex items-center space-x-1.5 px-3 py-1.5 rounded-lg text-xs font-mono font-bold transition-all shrink-0 ${
                     isActive
                       ? "bg-[#387ed1] text-white shadow-md"

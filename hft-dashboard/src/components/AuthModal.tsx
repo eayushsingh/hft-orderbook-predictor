@@ -5,6 +5,21 @@ import { motion, AnimatePresence } from "framer-motion";
 import { X, Mail, Lock, User, ArrowRight, ShieldCheck, Sparkles, CheckCircle, KeyRound } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 
+interface GoogleCredentialResponse {
+  credential?: string;
+}
+
+interface WindowWithGoogle {
+  google?: {
+    accounts?: {
+      id?: {
+        initialize: (config: { client_id: string; callback: (response: GoogleCredentialResponse) => void }) => void;
+        prompt: () => void;
+      };
+    };
+  };
+}
+
 export default function AuthModal() {
   const {
     isAuthModalOpen,
@@ -28,6 +43,8 @@ export default function AuthModal() {
     const clientId = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID;
     if (!clientId || clientId.includes("YOUR_GOOGLE_CLIENT_ID")) return;
 
+    const win = window as unknown as WindowWithGoogle;
+
     // Check if script already exists
     const existingScript = document.getElementById("google-gsi-script");
     if (!existingScript) {
@@ -37,10 +54,10 @@ export default function AuthModal() {
       script.async = true;
       script.defer = true;
       script.onload = () => {
-        if ((window as any).google?.accounts?.id) {
-          (window as any).google.accounts.id.initialize({
+        if (win.google?.accounts?.id) {
+          win.google.accounts.id.initialize({
             client_id: clientId,
-            callback: (response: any) => {
+            callback: (response: GoogleCredentialResponse) => {
               if (response.credential) {
                 loginWithGoogle(response.credential);
               }
@@ -49,10 +66,10 @@ export default function AuthModal() {
         }
       };
       document.body.appendChild(script);
-    } else if ((window as any).google?.accounts?.id) {
-      (window as any).google.accounts.id.initialize({
+    } else if (win.google?.accounts?.id) {
+      win.google.accounts.id.initialize({
         client_id: clientId,
-        callback: (response: any) => {
+        callback: (response: GoogleCredentialResponse) => {
           if (response.credential) {
             loginWithGoogle(response.credential);
           }
@@ -97,9 +114,10 @@ export default function AuthModal() {
       
       // Attempt Google Identity prompt if initialized
       const googleClientId = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID;
-      if (googleClientId && typeof window !== "undefined" && (window as any).google?.accounts?.id) {
+      const win = typeof window !== "undefined" ? (window as unknown as WindowWithGoogle) : null;
+      if (googleClientId && win?.google?.accounts?.id) {
         try {
-          (window as any).google.accounts.id.prompt();
+          win.google.accounts.id.prompt();
         } catch (e) {
           console.warn("Google OAuth prompt notice", e);
         }

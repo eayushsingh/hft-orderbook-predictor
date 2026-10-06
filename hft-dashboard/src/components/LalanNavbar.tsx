@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   TrendingUp,
@@ -167,12 +168,11 @@ export default function LalanNavbar({
           </div>
         </div>
       </div>
-
       {/* ── MAIN NAVBAR (BACKPACK.EXCHANGE UI REF) ── */}
       <div className="mx-auto flex h-13 items-center justify-between px-3 sm:px-5">
         {/* Left Section: Logo + Symbol Selector + Plan Badge */}
         <div className="flex items-center space-x-2.5">
-          <a href="/" className="flex items-center space-x-2 group shrink-0">
+          <Link href="/" className="flex items-center space-x-2 group shrink-0">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src="/logo.png"
@@ -182,7 +182,7 @@ export default function LalanNavbar({
             <span className="text-base font-black uppercase tracking-wider text-white">
               LALAN
             </span>
-          </a>
+          </Link>
 
           <div className="hidden sm:inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#387ed1]/15 border border-[#387ed1]/50 shadow-sm backdrop-blur-md shrink-0">
             <span className="relative flex h-2 w-2">

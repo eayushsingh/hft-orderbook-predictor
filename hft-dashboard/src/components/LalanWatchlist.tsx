@@ -127,18 +127,20 @@ export default function LalanWatchlist({
   // Sync BTC price tick updates
   useEffect(() => {
     if (!liveBtcPrice) return;
-    setWatchlist((prev) =>
-      prev.map((item) =>
-        item.symbol === "BTC/USDT"
-          ? {
-              ...item,
-              price: liveBtcPrice,
-              changeAbs: liveBtcPrice - 62930,
-              changePct: ((liveBtcPrice - 62930) / 62930) * 100,
-            }
-          : item
-      )
-    );
+    queueMicrotask(() => {
+      setWatchlist((prev) =>
+        prev.map((item) =>
+          item.symbol === "BTC/USDT"
+            ? {
+                ...item,
+                price: liveBtcPrice,
+                changeAbs: liveBtcPrice - 62930,
+                changePct: ((liveBtcPrice - 62930) / 62930) * 100,
+              }
+            : item
+        )
+      );
+    });
   }, [liveBtcPrice]);
 
   // Market price tick calculation

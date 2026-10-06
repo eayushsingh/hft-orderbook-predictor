@@ -29,10 +29,11 @@ export async function GET(
         "Cache-Control": "public, max-age=60, s-maxage=300, stale-while-revalidate=600",
       },
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
+    const err = error as Error;
     console.error("Error fetching institutional activity:", error);
     return NextResponse.json(
-      { error: "Internal Server Error", message: error?.message || "Unknown error" },
+      { error: "Internal Server Error", message: err?.message || "Unknown error" },
       { status: 500 }
     );
   }

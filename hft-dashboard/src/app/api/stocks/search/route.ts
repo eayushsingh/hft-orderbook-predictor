@@ -10,9 +10,10 @@ export async function GET(request: NextRequest) {
     const results = repo.searchStocks(query);
 
     return NextResponse.json({ query, results });
-  } catch (error: any) {
+  } catch (error: unknown) {
+    const err = error as Error;
     return NextResponse.json(
-      { error: "Internal Server Error", message: error?.message || "Unknown error" },
+      { error: "Internal Server Error", message: err?.message || "Unknown error" },
       { status: 500 }
     );
   }

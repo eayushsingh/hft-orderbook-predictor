@@ -16,9 +16,10 @@ export async function POST(request: NextRequest) {
       score: updated?.score,
       classification: updated?.classification,
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
+    const err = error as Error;
     return NextResponse.json(
-      { error: "Refresh Failed", message: error?.message || "Unknown error" },
+      { error: "Refresh Failed", message: err?.message || "Unknown error" },
       { status: 500 }
     );
   }

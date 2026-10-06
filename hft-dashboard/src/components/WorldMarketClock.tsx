@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { Clock, Globe, ChevronDown, Check, Sparkles } from "lucide-react";
+import { Clock, Globe, ChevronDown, Check } from "lucide-react";
 
 export interface CountryTimezone {
   code: string;
@@ -115,24 +115,26 @@ export default function WorldMarketClock({ compact = false }: WorldMarketClockPr
   const [mounted, setMounted] = useState<boolean>(false);
 
   useEffect(() => {
-    setMounted(true);
-    // Detect stored country or match browser timezone
-    const storedCode = localStorage.getItem("lalan_country_code");
-    if (storedCode) {
-      const match = COUNTRIES.find((c) => c.code === storedCode);
-      if (match) setSelectedCountry(match);
-    } else if (typeof Intl !== "undefined") {
-      try {
-        const userTz = Intl.DateTimeFormat().resolvedOptions().timeZone;
-        const match = COUNTRIES.find((c) => c.timezone === userTz);
-        if (match) {
-          setSelectedCountry(match);
-          localStorage.setItem("lalan_country_code", match.code);
+    queueMicrotask(() => {
+      setMounted(true);
+      // Detect stored country or match browser timezone
+      const storedCode = typeof window !== "undefined" ? localStorage.getItem("lalan_country_code") : null;
+      if (storedCode) {
+        const match = COUNTRIES.find((c) => c.code === storedCode);
+        if (match) setSelectedCountry(match);
+      } else if (typeof Intl !== "undefined") {
+        try {
+          const userTz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+          const match = COUNTRIES.find((c) => c.timezone === userTz);
+          if (match) {
+            setSelectedCountry(match);
+            localStorage.setItem("lalan_country_code", match.code);
+          }
+        } catch (e) {
+          console.warn("Timezone resolution fallback to India IST", e);
         }
-      } catch (e) {
-        console.warn("Timezone resolution fallback to India IST", e);
       }
-    }
+    });
   }, []);
 
   useEffect(() => {
