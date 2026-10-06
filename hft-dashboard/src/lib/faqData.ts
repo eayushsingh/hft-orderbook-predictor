@@ -191,3 +191,42 @@ export const ROBO_FAQS: FAQItem[] = [
     lastUpdated: '2026-10-06',
   },
 ];
+
+export const TAX_FAQS: FAQItem[] = [
+  {
+    id: 'faq-tax-1',
+    category: 'tax',
+    categoryLabel: 'Tax-Loss Harvesting',
+    question: 'What is Tax-Loss Harvesting (TLH) and how does it save on taxes?',
+    answer:
+      'Tax-Loss Harvesting involves selling positions trading at an unrealized loss to harvest tax deductions that offset taxable capital gains (or up to $3,000 / ₹2,50,000 of ordinary income). The proceeds are immediately reinvested into a correlated substitute asset to maintain market exposure.',
+    tags: ['tax-loss-harvesting', 'tlh', 'capital-gains', 'deduction'],
+    helpfulCount: 334,
+    unhelpfulCount: 3,
+    lastUpdated: '2026-10-06',
+  },
+  {
+    id: 'faq-tax-2',
+    category: 'tax',
+    categoryLabel: 'Tax-Loss Harvesting',
+    question: 'How does LALAN prevent IRS & Income Tax Wash-Sale rule violations?',
+    answer:
+      'The wash-sale rule disallows tax deductions if a substantially identical security is purchased within 30 days before or after the loss sale. LALAN automatically maps non-identical secondary proxy ETFs (e.g. swapping VOO for SCHX, or BND for AGG) so asset exposure stays intact without triggering wash-sale penalties.',
+    tags: ['wash-sale', 'irs', '30-day', 'etf-swaps'],
+    helpfulCount: 312,
+    unhelpfulCount: 1,
+    lastUpdated: '2026-10-06',
+  },
+  {
+    id: 'faq-tax-3',
+    category: 'tax',
+    categoryLabel: 'Tax-Loss Harvesting',
+    question: 'What is the minimum loss threshold for automated tax harvesting?',
+    answer:
+      'By default, LALAN triggers tax harvesting opportunities when unrealized losses exceed $100 (or ₹5,000) and represent at least 3.0% of the tax lot value, ensuring transaction costs do not diminish tax savings.',
+    tags: ['threshold', 'minimum-loss', 'tax-lots'],
+    helpfulCount: 245,
+    unhelpfulCount: 2,
+    lastUpdated: '2026-10-06',
+  },
+];
