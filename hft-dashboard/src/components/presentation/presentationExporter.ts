@@ -6,7 +6,8 @@ export function exportPresentationSummaryMarkdown(slides: PresentationSlide[]) {
   content += `---\n\n`;
 
   slides.forEach((slide) => {
-    content += `## Slide 0${slide.slideNumber}: ${slide.title}\n`;
+    const paddedNum = slide.slideNumber < 10 ? `0${slide.slideNumber}` : `${slide.slideNumber}`;
+    content += `## Slide ${paddedNum}: ${slide.title}\n`;
     content += `**Category:** ${slide.category.replace(/_/g, ' ')}\n\n`;
     content += `**Subtitle:** ${slide.subtitle}\n\n`;
     content += `### Presenter Notes:\n${slide.speakerNotes}\n\n`;
