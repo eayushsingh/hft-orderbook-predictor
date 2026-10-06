@@ -89,3 +89,54 @@ export const GENERAL_FAQS: FAQItem[] = [
     lastUpdated: '2026-10-06',
   },
 ];
+
+export const TERMINAL_FAQS: FAQItem[] = [
+  {
+    id: 'faq-term-1',
+    category: 'terminal',
+    categoryLabel: 'L2 Terminal Engine',
+    question: 'What is Order Book Imbalance (OBI) and how is it calculated?',
+    answer:
+      'OBI measures immediate top-5 level liquidity imbalance: OBI = (V_bid - V_ask) / (V_bid + V_ask). Values above +0.35 trigger a STRONG BUY signal indicating heavy bid accumulation, while values below -0.35 signal heavy ask liquidity walls.',
+    tags: ['obi', 'formula', 'imbalance', 'order-book'],
+    helpfulCount: 412,
+    unhelpfulCount: 5,
+    lastUpdated: '2026-10-06',
+  },
+  {
+    id: 'faq-term-2',
+    category: 'terminal',
+    categoryLabel: 'L2 Terminal Engine',
+    question: 'What is Volume-Weighted Micro-Price and why is it better than Mid-Price?',
+    answer:
+      'Standard mid-price assumes equal weight between bid and ask. Micro-price weights quote prices by opposite volume density: Micro-Price = (P_bid * V_ask + P_ask * V_bid) / (V_bid + V_ask). If bid volume is 10x ask volume, Micro-Price shifts toward the ask, accurately predicting the next tick sweep.',
+    tags: ['micro-price', 'vwap', 'mid-price', 'bid-ask'],
+    helpfulCount: 385,
+    unhelpfulCount: 3,
+    lastUpdated: '2026-10-06',
+  },
+  {
+    id: 'faq-term-3',
+    category: 'terminal',
+    categoryLabel: 'L2 Terminal Engine',
+    question: 'How does the Multi-Source Intelligence Hub work?',
+    answer:
+      'The Screener & NSE Hub aggregates live metrics from Screener.in (P/E, ROCE, Shareholding), NSE India (SEBI Reg 30 disclosures & block deals), TradingView (technical rating consensus), Moneycontrol (FII/DII net flows), and Trendlyne (delivery volume %) into a single zero-context-switch workspace.',
+    tags: ['multi-source', 'screener', 'nse', 'moneycontrol'],
+    helpfulCount: 264,
+    unhelpfulCount: 1,
+    lastUpdated: '2026-10-06',
+  },
+  {
+    id: 'faq-term-4',
+    category: 'terminal',
+    categoryLabel: 'L2 Terminal Engine',
+    question: 'How do I execute instant buy and sell orders from the L2 Depth Ladder?',
+    answer:
+      'Click B or S on any stock in the Marketwatch sidebar or use the quick Buy/Sell action buttons in the top navbar. The order ticket modal allows you to configure MIS (Intraday), CNC (Delivery), or Limit/Market parameters with instant fill confirmation.',
+    tags: ['order-ticket', 'mis', 'cnc', 'execution'],
+    helpfulCount: 221,
+    unhelpfulCount: 2,
+    lastUpdated: '2026-10-06',
+  },
+];
