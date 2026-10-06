@@ -226,10 +226,10 @@ export default function LalanOrderBook({
                     onClick={() => onSelectPrice && onSelectPrice(bid.price, "BUY")}
                     onMouseEnter={() => setHoveredRow({ price: bid.price, type: "BUY" })}
                     onMouseLeave={() => setHoveredRow(null)}
-                    className="relative flex items-center justify-between px-2 py-1 rounded cursor-pointer transition-colors hover:bg-[#10b981]/15"
+                    className="relative flex items-center justify-between px-2 py-1 rounded cursor-pointer transition-all duration-200 hover:bg-[#10b981]/20 hover:scale-[1.01] active:scale-[0.99]"
                   >
                     <div
-                      className="absolute inset-y-0 left-0 rounded bg-[#10b981]/15 pointer-events-none transition-all duration-150"
+                      className="absolute inset-y-0 left-0 rounded bg-[#10b981]/15 pointer-events-none transition-all duration-300 ease-out transform-gpu"
                       style={{ width: `${fillPct}%` }}
                     />
                     <span className="relative z-10 text-[#10b981] font-bold">
@@ -251,10 +251,10 @@ export default function LalanOrderBook({
                     onClick={() => onSelectPrice && onSelectPrice(ask.price, "SELL")}
                     onMouseEnter={() => setHoveredRow({ price: ask.price, type: "SELL" })}
                     onMouseLeave={() => setHoveredRow(null)}
-                    className="relative flex items-center justify-between px-2 py-1 rounded cursor-pointer transition-colors hover:bg-[#f43f5e]/15"
+                    className="relative flex items-center justify-between px-2 py-1 rounded cursor-pointer transition-all duration-200 hover:bg-[#f43f5e]/20 hover:scale-[1.01] active:scale-[0.99]"
                   >
                     <div
-                      className="absolute inset-y-0 right-0 rounded bg-[#f43f5e]/15 pointer-events-none transition-all duration-150"
+                      className="absolute inset-y-0 right-0 rounded bg-[#f43f5e]/15 pointer-events-none transition-all duration-300 ease-out transform-gpu"
                       style={{ width: `${fillPct}%` }}
                     />
                     <span className="relative z-10 text-white font-semibold">{ask.qty.toFixed(4)}</span>
