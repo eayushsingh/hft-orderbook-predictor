@@ -17,6 +17,7 @@ export default function VPINSpoofingRadar() {
       setVpinScore(newVpin);
       setToxicFlowAlert(newVpin > 0.55 ? "HIGH" : newVpin > 0.4 ? "MODERATE" : "LOW");
       setCancelToFillRatio(parseFloat((10 + Math.random() * 12).toFixed(1)));
+      setPhantomOrders(Math.floor(12 + Math.random() * 15));
       if (Math.random() > 0.7) {
         setDetectedIcebergs((prev) => Math.min(12, Math.max(1, prev + (Math.random() > 0.5 ? 1 : -1))));
       }
