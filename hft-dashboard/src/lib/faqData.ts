@@ -140,3 +140,54 @@ export const TERMINAL_FAQS: FAQItem[] = [
     lastUpdated: '2026-10-06',
   },
 ];
+
+export const ROBO_FAQS: FAQItem[] = [
+  {
+    id: 'faq-robo-1',
+    category: 'robo',
+    categoryLabel: 'Robo-Advisor AI',
+    question: 'How does the Black-Litterman Asset Allocation model work?',
+    answer:
+      'Unlike naive Markowitz mean-variance optimization which produces erratic hyper-concentrated portfolios, Black-Litterman begins with market-equilibrium risk weights and incorporates investor risk scores to generate robust, diversified target allocations across 10 asset classes.',
+    tags: ['black-litterman', 'mpt', 'allocation', 'portfolio'],
+    helpfulCount: 310,
+    unhelpfulCount: 2,
+    lastUpdated: '2026-10-06',
+  },
+  {
+    id: 'faq-robo-2',
+    category: 'robo',
+    categoryLabel: 'Robo-Advisor AI',
+    question: 'When does the Autonomous Rebalancing Engine trigger a portfolio rebalance?',
+    answer:
+      'The drift engine continuously monitors portfolio holdings against target allocation weights. If an asset class weight strays by more than ±5.0% from target (or custom tolerance threshold), an automated rebalance plan is generated to re-establish optimal weights.',
+    tags: ['rebalance', 'drift', 'tolerance', 'automation'],
+    helpfulCount: 275,
+    unhelpfulCount: 1,
+    lastUpdated: '2026-10-06',
+  },
+  {
+    id: 'faq-robo-3',
+    category: 'robo',
+    categoryLabel: 'Robo-Advisor AI',
+    question: 'What asset classes and ETFs are included in the Robo-Advisor universe?',
+    answer:
+      'The allocation engine covers 10 liquid ETF asset categories: US Large Cap (VOO), US Small Cap (VB), International Developed (VEA), Emerging Markets (VWO), Core Bonds (BND), High Yield Bonds (JNK), Inflation TIPS (TIP), Real Estate REITs (VNQ), Gold Commodities (IAU), and Cash Equivalents (BIL).',
+    tags: ['etf', 'asset-classes', 'voo', 'bnd', 'vnq'],
+    helpfulCount: 250,
+    unhelpfulCount: 0,
+    lastUpdated: '2026-10-06',
+  },
+  {
+    id: 'faq-robo-4',
+    category: 'robo',
+    categoryLabel: 'Robo-Advisor AI',
+    question: 'How does Monte Carlo simulation forecast my retirement wealth?',
+    answer:
+      'Our simulation engine runs 1,000 stochastic geometric Brownian motion paths using historical return distributions and covariance matrices. It computes 10th, 50th (median), and 90th percentile wealth trajectories over 10-30 year horizons to measure goal probability of success.',
+    tags: ['monte-carlo', 'simulation', 'retirement', 'probability'],
+    helpfulCount: 295,
+    unhelpfulCount: 3,
+    lastUpdated: '2026-10-06',
+  },
+];
