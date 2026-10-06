@@ -1,18 +1,25 @@
 'use client';
 
 import React from 'react';
-import { Target, CheckCircle2, XCircle } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { Target, CheckCircle2, XCircle, Sparkles, ShieldCheck, Zap } from 'lucide-react';
 
 export const SlideVisionAndMission: React.FC = () => {
   return (
-    <div className="space-y-8 p-2">
+    <motion.div
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.3 }}
+      className="space-y-6 p-2"
+    >
       {/* Slide Header */}
       <div className="space-y-2">
         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-mono font-bold uppercase">
-          <Target className="w-3.5 h-3.5" /> Slide 01 • Vision &amp; Institutional Advantage
+          <Target className="w-3.5 h-3.5" /> Slide 01 &bull; Vision &amp; Institutional Advantage
         </div>
-        <h2 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
+        <h2 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight flex items-center gap-3">
           Eliminating the Information &amp; Latency Gap for Retail Quant Traders
+          <Sparkles className="w-5 h-5 text-emerald-400 animate-pulse hidden sm:inline-block" />
         </h2>
         <p className="text-slate-400 text-xs sm:text-sm">
           Co-located high-frequency trading desks have historically dominated market liquidity. LALAN levels the playing field.
@@ -22,7 +29,10 @@ export const SlideVisionAndMission: React.FC = () => {
       {/* Comparison Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* Traditional Retail Setup */}
-        <div className="bg-slate-950/80 border border-rose-500/30 rounded-2xl p-6 space-y-4 relative overflow-hidden">
+        <motion.div
+          whileHover={{ scale: 1.01 }}
+          className="bg-slate-950/80 border border-rose-500/30 rounded-2xl p-6 space-y-4 relative overflow-hidden shadow-lg shadow-rose-500/5"
+        >
           <div className="flex items-center justify-between border-b border-slate-800 pb-3">
             <h3 className="font-bold text-rose-400 text-sm flex items-center gap-2">
               <XCircle className="w-4 h-4" /> Traditional Retail Environment
@@ -50,10 +60,15 @@ export const SlideVisionAndMission: React.FC = () => {
               <span><strong>Tax Drag:</strong> Taxable gains without systematic tax-loss harvesting offsets.</span>
             </li>
           </ul>
-        </div>
+        </motion.div>
 
         {/* LALAN Institutional Alpha Engine */}
-        <div className="bg-slate-950/90 border border-emerald-500/40 rounded-2xl p-6 space-y-4 relative overflow-hidden shadow-xl shadow-emerald-500/5">
+        <motion.div
+          whileHover={{ scale: 1.01 }}
+          className="bg-slate-950/90 border border-emerald-500/40 rounded-2xl p-6 space-y-4 relative overflow-hidden shadow-xl shadow-emerald-500/10"
+        >
+          <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-500/10 rounded-full blur-2xl pointer-events-none" />
+
           <div className="flex items-center justify-between border-b border-slate-800 pb-3">
             <h3 className="font-bold text-emerald-400 text-sm flex items-center gap-2">
               <CheckCircle2 className="w-4 h-4" /> LALAN Institutional Advantage
@@ -81,7 +96,7 @@ export const SlideVisionAndMission: React.FC = () => {
               <span><strong>Automated Tax Harvester:</strong> 30-day wash-sale protected ETF swaps preserving capital.</span>
             </li>
           </ul>
-        </div>
+        </motion.div>
       </div>
 
       {/* Key Takeaways Cards */}
@@ -92,13 +107,17 @@ export const SlideVisionAndMission: React.FC = () => {
           { label: 'Liquidity Analyzed', val: '₹500+ Cr', sub: 'NSE & BSE Depth' },
           { label: 'Broker Bridge', val: '5 Top Brokers', sub: 'Unified Router' },
         ].map((item, idx) => (
-          <div key={idx} className="bg-slate-900 border border-slate-800 p-3 rounded-xl text-center space-y-1">
+          <motion.div
+            key={idx}
+            whileHover={{ y: -2 }}
+            className="bg-slate-900 border border-slate-800 p-3 rounded-xl text-center space-y-1 hover:border-emerald-500/30 transition-colors"
+          >
             <div className="text-[10px] text-slate-400 uppercase font-semibold">{item.label}</div>
-            <div className="text-base font-extrabold text-emerald-400">{item.val}</div>
+            <div className="text-base font-extrabold text-emerald-400 font-mono">{item.val}</div>
             <div className="text-[10px] text-slate-500">{item.sub}</div>
-          </div>
+          </motion.div>
         ))}
       </div>
-    </div>
+    </motion.div>
   );
 };
