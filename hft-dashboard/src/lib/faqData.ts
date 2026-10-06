@@ -308,3 +308,42 @@ export const HFT_FAQS: FAQItem[] = [
     lastUpdated: '2026-10-06',
   },
 ];
+
+export const COMPLIANCE_FAQS: FAQItem[] = [
+  {
+    id: 'faq-comp-1',
+    category: 'compliance',
+    categoryLabel: 'Risk & Compliance',
+    question: 'Is LALAN compliant with SEBI Algorithmic Trading regulations?',
+    answer:
+      'Yes! LALAN incorporates SEBI circular SEBI/HO/MRD/DP/CIR/P/2018/62 guidelines, including pre-trade risk controls (max order value caps, fat-finger price collars, order modification rate limits) and automated self-trade prevention.',
+    tags: ['sebi', 'regulations', 'algo-trading', 'pre-trade'],
+    helpfulCount: 320,
+    unhelpfulCount: 2,
+    lastUpdated: '2026-10-06',
+  },
+  {
+    id: 'faq-comp-2',
+    category: 'compliance',
+    categoryLabel: 'Risk & Compliance',
+    question: 'How do I access the Admin Telemetry & User Audit Panel (/admin)?',
+    answer:
+      'Authorized administrators can access the /admin route by clicking "Admin Telemetry Panel" in the profile dropdown or navigating to /admin. The panel provides live sub-millisecond latency monitoring, user subscription upgrades, access suspensions, and SEBI compliance CSV export.',
+    tags: ['admin', 'telemetry', 'audit', 'sebi-csv'],
+    helpfulCount: 260,
+    unhelpfulCount: 1,
+    lastUpdated: '2026-10-06',
+  },
+  {
+    id: 'faq-comp-3',
+    category: 'compliance',
+    categoryLabel: 'Risk & Compliance',
+    question: 'Are system security and SOC 2 Type II audit logs available?',
+    answer:
+      'Yes! All system events, order execution hashes, and pre-trade risk validations are recorded with nanosecond PTP timestamps in an immutable cryptographic audit ledger compliant with SOC 2 Type II and ISO 27001 standards.',
+    tags: ['soc2', 'iso27001', 'audit-log', 'cryptographic'],
+    helpfulCount: 284,
+    unhelpfulCount: 0,
+    lastUpdated: '2026-10-06',
+  },
+];
