@@ -60,9 +60,9 @@ function InstitutionalComparisonMatrixComponent() {
       <div className="overflow-x-auto rounded-2xl border border-slate-200 dark:border-[#1f1f2e] bg-white dark:bg-[#0e0e14] shadow-2xl">
         <table className="w-full min-w-[650px] text-left text-xs font-mono">
           <thead>
-            <tr className="border-b border-slate-200 dark:border-[#1f1f2e] bg-slate-100 dark:bg-[#09090e] text-slate-700 dark:text-[#747888] text-[11px] uppercase">
+            <tr className="border-b border-slate-200 dark:border-[#1f1f2e] bg-slate-100 dark:bg-[#09090e] text-slate-800 dark:text-slate-200 text-[11px] uppercase">
               <th className="py-4 px-5">Capability / Metric</th>
-              <th className="py-4 px-5 text-slate-500 dark:text-zinc-500">Traditional Charting Tools</th>
+              <th className="py-4 px-5 text-slate-700 dark:text-zinc-300">Traditional Charting Tools</th>
               <th className="py-4 px-5 text-[#387ed1] bg-[#387ed1]/10 dark:bg-[#387ed1]/15 border-x border-slate-200 dark:border-[#1f1f2e]">
                 LALAN Quantitative Engine
               </th>
@@ -75,7 +75,7 @@ function InstitutionalComparisonMatrixComponent() {
                 <td className="py-4 px-5 font-bold text-slate-900 dark:text-white text-xs sm:text-sm">
                   {item.feature}
                 </td>
-                <td className="py-4 px-5 text-slate-500 dark:text-zinc-400 flex items-center gap-2">
+                <td className="py-4 px-5 text-slate-700 dark:text-zinc-300 flex items-center gap-2">
                   <X className="w-4 h-4 text-rose-500 shrink-0" />
                   <span>{item.traditional}</span>
                 </td>
