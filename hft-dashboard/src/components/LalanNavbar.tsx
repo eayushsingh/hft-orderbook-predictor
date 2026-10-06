@@ -213,7 +213,7 @@ export default function LalanNavbar({
         </div>
 
         {/* Center Section: Compact Navigation Tabs */}
-        <nav className="hidden lg:flex items-center space-x-1 bg-[#14141c] p-1 rounded-xl border border-[#222230]">
+        <nav className="hidden lg:flex items-center space-x-1 bg-[#14141c] p-1 rounded-xl border border-[#222230] relative">
           {navItems.map((item) => {
             const Icon = item.icon;
             const isActive = activeTab === item.id;
@@ -229,14 +229,21 @@ export default function LalanNavbar({
                     setActiveTab(item.id);
                   }
                 }}
-                className={`flex items-center space-x-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold font-mono transition-all ${
+                className={`relative flex items-center space-x-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold font-mono transition-colors ${
                   isActive
-                    ? "bg-[#387ed1] text-white shadow-md font-bold"
+                    ? "text-white font-bold"
                     : "text-[#9e9ea8] hover:bg-[#1e1e2a] hover:text-white"
                 }`}
               >
-                <Icon className={`h-3.5 w-3.5 ${isActive ? "text-white" : "text-[#747888]"}`} />
-                <span>{item.label}</span>
+                {isActive && (
+                  <motion.div
+                    layoutId="navbar-active-tab-pill"
+                    className="absolute inset-0 bg-[#387ed1] rounded-lg shadow-md"
+                    transition={{ type: "spring", stiffness: 400, damping: 30 }}
+                  />
+                )}
+                <Icon className={`relative z-10 h-3.5 w-3.5 ${isActive ? "text-white" : "text-[#747888]"}`} />
+                <span className="relative z-10">{item.label}</span>
               </button>
             );
           })}
