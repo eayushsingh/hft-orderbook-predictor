@@ -101,9 +101,8 @@ export default function LalanNavbar({
               {niftyPrice.toLocaleString("en-IN", { minimumFractionDigits: 2 })}
             </span>
             <span
-              className={`flex items-center text-[10px] font-bold ${
-                niftyChange >= 0 ? "text-[#10b981]" : "text-[#f43f5e]"
-              }`}
+              className={`flex items-center text-[10px] font-bold ${niftyChange >= 0 ? "text-[#10b981]" : "text-[#f43f5e]"
+                }`}
             >
               {niftyChange >= 0 ? "+" : ""}
               {niftyChange.toFixed(2)}%
@@ -118,9 +117,8 @@ export default function LalanNavbar({
               {bankNiftyPrice.toLocaleString("en-IN", { minimumFractionDigits: 2 })}
             </span>
             <span
-              className={`flex items-center text-[10px] font-bold ${
-                bankNiftyChange >= 0 ? "text-[#10b981]" : "text-[#f43f5e]"
-              }`}
+              className={`flex items-center text-[10px] font-bold ${bankNiftyChange >= 0 ? "text-[#10b981]" : "text-[#f43f5e]"
+                }`}
             >
               {bankNiftyChange >= 0 ? "+" : ""}
               {bankNiftyChange.toFixed(2)}%
@@ -135,9 +133,8 @@ export default function LalanNavbar({
               ${btcPrice.toLocaleString("en-US", { minimumFractionDigits: 2 })}
             </span>
             <span
-              className={`flex items-center text-[10px] font-bold ${
-                btcChange >= 0 ? "text-[#10b981]" : "text-[#f43f5e]"
-              }`}
+              className={`flex items-center text-[10px] font-bold ${btcChange >= 0 ? "text-[#10b981]" : "text-[#f43f5e]"
+                }`}
             >
               {btcChange >= 0 ? "+" : ""}
               {btcChange.toFixed(2)}%
@@ -230,11 +227,10 @@ export default function LalanNavbar({
                     setActiveTab(item.id);
                   }
                 }}
-                className={`relative flex items-center space-x-1.5 px-2.5 py-1.5 rounded-lg text-xs font-semibold font-mono whitespace-nowrap transition-colors ${
-                  isActive
+                className={`relative flex items-center space-x-1.5 px-2.5 py-1.5 rounded-lg text-xs font-semibold font-mono whitespace-nowrap transition-colors ${isActive
                     ? "text-white font-bold"
                     : "text-[#9e9ea8] hover:bg-[#1e1e2a] hover:text-white"
-                }`}
+                  }`}
               >
                 {isActive && (
                   <motion.div
@@ -462,9 +458,8 @@ export default function LalanNavbar({
                     }
                     setMobileMenuOpen(false);
                   }}
-                  className={`flex items-center space-x-2 p-2 rounded-lg font-bold transition-all ${
-                    isActive ? "bg-[#387ed1] text-white shadow-md" : "bg-[#161620] text-[#a0a3b0] hover:text-white"
-                  }`}
+                  className={`flex items-center space-x-2 p-2 rounded-lg font-bold transition-all ${isActive ? "bg-[#387ed1] text-white shadow-md" : "bg-[#161620] text-[#a0a3b0] hover:text-white"
+                    }`}
                 >
                   <Icon className="h-4 w-4" />
                   <span>{item.label}</span>
