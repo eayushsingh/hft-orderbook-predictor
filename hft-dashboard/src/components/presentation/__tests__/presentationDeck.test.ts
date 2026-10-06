@@ -2,8 +2,8 @@ import { describe, expect, it } from 'vitest';
 import { SLIDES_REGISTRY } from '../InteractivePresentationDeck';
 
 describe('Presentation Slide Deck Unit Suite', () => {
-  it('should contain 8 slides in the registry with unique IDs and numbers', () => {
-    expect(SLIDES_REGISTRY.length).toBe(8);
+  it('should contain 11 slides in the registry with unique IDs and numbers', () => {
+    expect(SLIDES_REGISTRY.length).toBe(11);
 
     const ids = new Set<string>();
     SLIDES_REGISTRY.forEach((slide, index) => {
@@ -23,12 +23,15 @@ describe('Presentation Slide Deck Unit Suite', () => {
     });
   });
 
-  it('should categorize slides properly across OVERVIEW, ARCHITECTURE, MICROSTRUCTURE, and ROBO_ADVISOR', () => {
+  it('should categorize slides properly across 11 distinct categories', () => {
     const categories = SLIDES_REGISTRY.map((s) => s.category);
     expect(categories).toContain('OVERVIEW');
     expect(categories).toContain('ARCHITECTURE');
     expect(categories).toContain('MICROSTRUCTURE');
     expect(categories).toContain('ROBO_ADVISOR');
     expect(categories).toContain('BENCHMARK');
+    expect(categories).toContain('QUANT_ALPHA');
+    expect(categories).toContain('COMPLIANCE');
+    expect(categories).toContain('LIVE_SANDBOX');
   });
 });
