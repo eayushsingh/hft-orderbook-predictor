@@ -88,6 +88,18 @@ export const GENERAL_FAQS: FAQItem[] = [
     unhelpfulCount: 0,
     lastUpdated: '2026-10-06',
   },
+  {
+    id: 'faq-gen-5',
+    category: 'general',
+    categoryLabel: 'General & Platform',
+    question: 'How does Binance Crypto Perpetual vs NSE Futures basis arbitrage work?',
+    answer:
+      'LALAN measures real-time basis divergence between spot asset quotes and perpetual derivative contracts. When funding rate arbitrage windows open, automated cross-market signals trigger cash-and-carry execution strategies.',
+    tags: ['crypto', 'perpetual', 'basis-arbitrage', 'funding-rate'],
+    helpfulCount: 215,
+    unhelpfulCount: 1,
+    lastUpdated: '2026-10-06',
+  },
 ];
 
 export const TERMINAL_FAQS: FAQItem[] = [
@@ -136,6 +148,18 @@ export const TERMINAL_FAQS: FAQItem[] = [
       'Click B or S on any stock in the Marketwatch sidebar or use the quick Buy/Sell action buttons in the top navbar. The order ticket modal allows you to configure MIS (Intraday), CNC (Delivery), or Limit/Market parameters with instant fill confirmation.',
     tags: ['order-ticket', 'mis', 'cnc', 'execution'],
     helpfulCount: 221,
+    unhelpfulCount: 2,
+    lastUpdated: '2026-10-06',
+  },
+  {
+    id: 'faq-term-5',
+    category: 'terminal',
+    categoryLabel: 'L2 Terminal Engine',
+    question: 'What mathematical equation models Level-2 Micro-Price tick drift?',
+    answer:
+      'Micro-Price tick drift P_drift = Micro-Price_t + \\exp(-\\lambda * \\Delta t) * (VWAP_b - VWAP_a). The exponential decay factor \\lambda (0.015 ms^-1) accounts for rapid order cancellation and fill depletion across 1-10 tick horizons.',
+    tags: ['drift-equation', 'micro-price-math', 'exponential-decay'],
+    helpfulCount: 290,
     unhelpfulCount: 2,
     lastUpdated: '2026-10-06',
   },
@@ -190,6 +214,18 @@ export const ROBO_FAQS: FAQItem[] = [
     unhelpfulCount: 3,
     lastUpdated: '2026-10-06',
   },
+  {
+    id: 'faq-robo-5',
+    category: 'robo',
+    categoryLabel: 'Robo-Advisor AI',
+    question: 'How is the Black-Litterman Portfolio Asset Taxonomy configured?',
+    answer:
+      'Target weights are dynamically adjusted based on risk score (1-100). High risk scores (80+) allocate up to 90% in equities (VOO, VB, VEA, VWO) and 10% in bonds/gold, while conservative scores (20-) allocate 70% in fixed income (BND, TIP, BIL).',
+    tags: ['taxonomy', 'risk-weights', 'equities', 'fixed-income'],
+    helpfulCount: 230,
+    unhelpfulCount: 1,
+    lastUpdated: '2026-10-06',
+  },
 ];
 
 export const TAX_FAQS: FAQItem[] = [
@@ -227,6 +263,18 @@ export const TAX_FAQS: FAQItem[] = [
     tags: ['threshold', 'minimum-loss', 'tax-lots'],
     helpfulCount: 245,
     unhelpfulCount: 2,
+    lastUpdated: '2026-10-06',
+  },
+  {
+    id: 'faq-tax-4',
+    category: 'tax',
+    categoryLabel: 'Tax-Loss Harvesting',
+    question: 'What is the step-by-step automated workflow for harvesting tax losses?',
+    answer:
+      '1) Scans tax lots for losses > $100 & >3.0%. 2) Identifies non-substantially-identical ETF proxy. 3) Executes loss sale. 4) Instantly buys replacement proxy. 5) Logs loss tax savings in cryptographic audit ledger.',
+    tags: ['workflow', 'step-by-step', 'proxy-etf', 'automation'],
+    helpfulCount: 278,
+    unhelpfulCount: 1,
     lastUpdated: '2026-10-06',
   },
 ];
@@ -268,6 +316,18 @@ export const BROKER_FAQS: FAQItem[] = [
     unhelpfulCount: 0,
     lastUpdated: '2026-10-06',
   },
+  {
+    id: 'faq-broker-4',
+    category: 'brokers',
+    categoryLabel: 'Multi-Broker Gateway',
+    question: 'How do I configure Zerodha Kite & DhanHQ API hot-failover parameters?',
+    answer:
+      'In LALAN Settings -> Broker Bridges, enter your Kite API Key and Dhan Client ID. Toggle "Enable Hot-Failover" and set max allowed primary latency (default 50ms). The engine will run active heartbeat ping telemetry.',
+    tags: ['zerodha-setup', 'dhan-setup', 'heartbeat', 'ping'],
+    helpfulCount: 240,
+    unhelpfulCount: 2,
+    lastUpdated: '2026-10-06',
+  },
 ];
 
 export const HFT_FAQS: FAQItem[] = [
@@ -305,6 +365,30 @@ export const HFT_FAQS: FAQItem[] = [
     tags: ['ptp', 'ieee-1588', 'gps', 'timestamp'],
     helpfulCount: 298,
     unhelpfulCount: 1,
+    lastUpdated: '2026-10-06',
+  },
+  {
+    id: 'faq-hft-4',
+    category: 'hft',
+    categoryLabel: 'HFT & Co-Location',
+    question: 'What is the technical breakdown of FPGA Kernel-Bypass zero-GC Disruptor architecture?',
+    answer:
+      'Solarflare OpenOnload bypasses the OS TCP/IP stack directly to FPGA hardware. Messages enter ring buffer slots without object instantiation, preventing heap allocation and guaranteeing 0.42µs P99 latency.',
+    tags: ['fpga', 'openonload', 'disruptor', 'architecture'],
+    helpfulCount: 315,
+    unhelpfulCount: 1,
+    lastUpdated: '2026-10-06',
+  },
+  {
+    id: 'faq-hft-5',
+    category: 'hft',
+    categoryLabel: 'HFT & Co-Location',
+    question: 'How is PTP UTC Nanosecond Clock Synchronization verified in colocation?',
+    answer:
+      'Hardware network cards capture hardware timestamps upon physical PHY packet arrival. PTP grandmaster clocks poll atomic GPS receivers every 1 second to eliminate time drift across distributed nodes.',
+    tags: ['ptp-setup', 'phy-layer', 'grandmaster', 'gps-clock'],
+    helpfulCount: 260,
+    unhelpfulCount: 0,
     lastUpdated: '2026-10-06',
   },
 ];
@@ -346,6 +430,30 @@ export const COMPLIANCE_FAQS: FAQItem[] = [
     unhelpfulCount: 0,
     lastUpdated: '2026-10-06',
   },
+  {
+    id: 'faq-comp-4',
+    category: 'compliance',
+    categoryLabel: 'Risk & Compliance',
+    question: 'What pre-trade circuit breaker limits are mandated by SEBI Reg 2018?',
+    answer:
+      '1) Max single order value <= ₹50,00,000. 2) Price collar <= ±0.8% of BBO. 3) Order modification count <= 500/sec. 4) Self-trade matching prevention active across all internal sub-accounts.',
+    tags: ['sebi-2018', 'price-collar', 'circuit-breaker', 'limits'],
+    helpfulCount: 290,
+    unhelpfulCount: 1,
+    lastUpdated: '2026-10-06',
+  },
+  {
+    id: 'faq-comp-5',
+    category: 'compliance',
+    categoryLabel: 'Risk & Compliance',
+    question: 'How do I export SOC 2 Type II cryptographic audit logs for compliance audits?',
+    answer:
+      'In /admin -> Telemetry Panel, click "Export SEBI & SOC2 Audit CSV". The engine generates a SHA-256 signed CSV file containing PTP nanosecond execution logs and checksum validations.',
+    tags: ['soc2-export', 'sha-256', 'csv-export', 'audit-trail'],
+    helpfulCount: 275,
+    unhelpfulCount: 0,
+    lastUpdated: '2026-10-06',
+  },
 ];
 
 export const PRICING_FAQS: FAQItem[] = [
@@ -382,6 +490,18 @@ export const PRICING_FAQS: FAQItem[] = [
       'None! Equity delivery investments are 100% free with ₹0 brokerage. Intraday and F&O option trades are charged at flat ₹20 per executed order.',
     tags: ['brokerage', 'free-delivery', 'intraday', 'options-flat-fee'],
     helpfulCount: 355,
+    unhelpfulCount: 1,
+    lastUpdated: '2026-10-06',
+  },
+  {
+    id: 'faq-price-4',
+    category: 'pricing',
+    categoryLabel: 'Pricing & Billing',
+    question: 'How does 14-Day PRO QUANT Free Trial automatic renewal work?',
+    answer:
+      'No credit card is required to start your trial. You will receive an email reminder on Day 12. If you do not choose to subscribe to PRO QUANT (₹999/mo), your account auto-switches to the free RETAIL plan with zero charges.',
+    tags: ['trial-renewal', 'auto-downgrade', 'no-charge', 'billing-faq'],
+    helpfulCount: 310,
     unhelpfulCount: 1,
     lastUpdated: '2026-10-06',
   },
@@ -430,4 +550,13 @@ export function getFAQById(id: string): FAQItem | undefined {
 export function getFAQCategoryCount(category: FAQCategory | 'all'): number {
   if (category === 'all') return ALL_FAQS.length;
   return ALL_FAQS.filter((f) => f.category === category).length;
+}
+
+/**
+ * Returns top popular FAQs sorted by helpfulness score.
+ */
+export function getPopularFAQs(faqs: FAQItem[] = ALL_FAQS, limit = 10): FAQItem[] {
+  return [...faqs]
+    .sort((a, b) => (b.helpfulCount - b.unhelpfulCount) - (a.helpfulCount - a.unhelpfulCount))
+    .slice(0, limit);
 }
