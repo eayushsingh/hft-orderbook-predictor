@@ -4,8 +4,6 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import {
-  TrendingUp,
-  TrendingDown,
   Wifi,
   Bell,
   ChevronDown,
@@ -18,11 +16,9 @@ import {
   Info,
   Sun,
   Moon,
-  Gift,
   Clock,
   Menu,
   X,
-  Activity,
   LogIn,
   LogOut,
   Globe,
