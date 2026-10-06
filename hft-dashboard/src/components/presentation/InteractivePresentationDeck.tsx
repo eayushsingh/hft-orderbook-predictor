@@ -275,6 +275,11 @@ export const InteractivePresentationDeck: React.FC = () => {
     onPrevSlide: handlePrevSlide,
     onNextSlide: handleNextSlide,
     onToggleFullScreen: handleToggleFullScreen,
+    onToggleLaserPointer: handleToggleLaserPointer,
+    onToggleSound: handleToggleSound,
+    onToggleSpeakerNotes: handleToggleSpeakerNotes,
+    onToggleGridModal: handleToggleGridModal,
+    onToggleKeyboardHelp: handleToggleKeyboardHelp,
     onCloseModals: () =>
       setDeckState((prev) => ({ ...prev, showGridModal: false, showKeyboardHelp: false })),
   });
