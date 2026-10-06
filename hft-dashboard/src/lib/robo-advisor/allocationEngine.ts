@@ -84,19 +84,30 @@ export function generateTargetAllocation(
   const normalizedAllocations: TargetAllocation[] = [];
 
   const categories = Object.keys(rawAllocations) as AssetCategory[];
+  const unadjustedAllocations: { cat: AssetCategory; weight: number }[] = [];
 
-  let accumulatedNormalized = 0;
-  categories.forEach((cat, index) => {
+  categories.forEach((cat) => {
     let weight = totalRaw > 0 ? (rawAllocations[cat] / totalRaw) * 100 : 0;
     weight = Math.round(weight * 10) / 10; // Round to 1 decimal place
+    unadjustedAllocations.push({ cat, weight });
+  });
 
-    if (index === categories.length - 1) {
-      // Fix rounding variance on last element
-      weight = Math.max(0, Math.round((100 - accumulatedNormalized) * 10) / 10);
-    } else {
-      accumulatedNormalized += weight;
+  let currentSum = unadjustedAllocations.reduce((sum, item) => sum + item.weight, 0);
+  currentSum = Math.round(currentSum * 10) / 10;
+  const diff = Math.round((100.0 - currentSum) * 10) / 10;
+
+  if (diff !== 0 && unadjustedAllocations.length > 0) {
+    let maxIdx = 0;
+    for (let i = 1; i < unadjustedAllocations.length; i++) {
+      if (unadjustedAllocations[i].weight > unadjustedAllocations[maxIdx].weight) {
+        maxIdx = i;
+      }
     }
+    unadjustedAllocations[maxIdx].weight = Math.round((unadjustedAllocations[maxIdx].weight + diff) * 10) / 10;
+  }
 
+  categories.forEach((cat, index) => {
+    const weight = unadjustedAllocations[index].weight;
     const etf = DEFAULT_ETF_MAPPINGS[cat];
     // Dynamic rebalance thresholds based on target weight size
     const tolerancePct = Math.max(2.0, weight * 0.25);
