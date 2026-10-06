@@ -159,19 +159,19 @@ export const InteractivePresentationDeck: React.FC = () => {
     return () => clearInterval(timer);
   }, [deckState.isAutoPlaying, deckState.autoPlaySpeedSec, totalSlides]);
 
-  const handlePrevSlide = () => {
+  const handlePrevSlide = React.useCallback(() => {
     setDeckState((prev) => ({
       ...prev,
       currentSlideIndex: Math.max(0, prev.currentSlideIndex - 1),
     }));
-  };
+  }, []);
 
-  const handleNextSlide = () => {
+  const handleNextSlide = React.useCallback(() => {
     setDeckState((prev) => ({
       ...prev,
       currentSlideIndex: Math.min(totalSlides - 1, prev.currentSlideIndex + 1),
     }));
-  };
+  }, [totalSlides]);
 
   const handleToggleAutoPlay = () => {
     setDeckState((prev) => ({ ...prev, isAutoPlaying: !prev.isAutoPlaying }));
