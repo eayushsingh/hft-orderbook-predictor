@@ -240,7 +240,7 @@ export const RiskProfileWizard: React.FC<RiskProfileWizardProps> = ({ onComplete
                   onClick={() =>
                     setQuestionnaire({
                       ...questionnaire,
-                      primaryObjective: obj.val as any,
+                      primaryObjective: obj.val as RiskQuestionnaire['primaryObjective'],
                     })
                   }
                   className={`py-3 px-2 rounded-xl text-xs font-medium border transition-all ${
@@ -287,7 +287,7 @@ export const RiskProfileWizard: React.FC<RiskProfileWizardProps> = ({ onComplete
                 onClick={() =>
                   setQuestionnaire({
                     ...questionnaire,
-                    marketDropReaction: opt.val as any,
+                    marketDropReaction: opt.val as RiskQuestionnaire['marketDropReaction'],
                   })
                 }
                 className={`w-full p-4 rounded-xl text-left border flex items-center justify-between transition-all ${

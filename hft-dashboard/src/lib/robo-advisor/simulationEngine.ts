@@ -72,7 +72,7 @@ export function runMonteCarloSimulation(
 
   // Calculate probability of goal success
   const targetGoalNominal = goal.targetAmount * Math.pow(1 + inflationRate, years);
-  const successCount = endingValues.filter((val) => val >= goal.targetAmount).length;
+  const successCount = endingValues.filter((val) => val >= targetGoalNominal).length;
   const probabilityOfSuccessPct = Math.round((successCount / numSims) * 100);
 
   const medianEndingValue = trajectories[years].p50;

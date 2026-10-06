@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { generateTargetAllocation } from '@/lib/robo-advisor/allocationEngine';
 import { calculateRiskProfile } from '@/lib/robo-advisor/riskEngine';
-import { getDefaultSamplePortfolio } from '@/lib/robo-advisor/storage';
+import { getDefaultSamplePortfolio } from '@/lib/robo-advisor/sampleData';
 import { GoalType, RiskQuestionnaire } from '@/lib/robo-advisor/types';
 
 export async function GET() {

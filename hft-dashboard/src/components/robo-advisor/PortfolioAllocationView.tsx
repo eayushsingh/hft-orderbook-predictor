@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { PieChart, TrendingUp, Shield, DollarSign, Award, Layers } from 'lucide-react';
+import { PieChart, TrendingUp, Shield, DollarSign, Award } from 'lucide-react';
 import { ASSET_UNIVERSE, calculateExpectedMetrics } from '@/lib/robo-advisor/assetUniverse';
 import { TargetAllocation } from '@/lib/robo-advisor/types';
 

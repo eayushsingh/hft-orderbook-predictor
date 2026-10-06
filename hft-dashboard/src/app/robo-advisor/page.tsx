@@ -3,14 +3,12 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import {
-  Sparkles,
   PieChart,
   RefreshCw,
   DollarSign,
   Activity,
   ShieldAlert,
   Bot,
-  Zap,
 } from 'lucide-react';
 import LalanNavbar from '@/components/LalanNavbar';
 import LalanSiteFooter from '@/components/LalanSiteFooter';
@@ -19,7 +17,7 @@ import { PortfolioAllocationView } from '@/components/robo-advisor/PortfolioAllo
 import { DriftAndRebalanceRadar } from '@/components/robo-advisor/DriftAndRebalanceRadar';
 import { TaxHarvestingDashboard } from '@/components/robo-advisor/TaxHarvestingDashboard';
 import { GoalSimulationChart } from '@/components/robo-advisor/GoalSimulationChart';
-import { getDefaultSamplePortfolio, getSampleTaxLots } from '@/lib/robo-advisor/storage';
+import { getDefaultSamplePortfolio, getSampleTaxLots } from '@/lib/robo-advisor/sampleData';
 import { generateTargetAllocation } from '@/lib/robo-advisor/allocationEngine';
 import { GoalType, PortfolioSummary, RiskProfile } from '@/lib/robo-advisor/types';
 
@@ -113,7 +111,7 @@ export default function RoboAdvisorPage() {
               <button
                 key={tab.id}
                 type="button"
-                onClick={() => setActiveTab(tab.id as any)}
+                onClick={() => setActiveTab(tab.id as 'OVERVIEW' | 'PROFILER' | 'REBALANCE' | 'TAX' | 'SIMULATION')}
                 className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-all ${
                   isActive
                     ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 shadow-md shadow-emerald-500/10'

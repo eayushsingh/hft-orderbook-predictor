@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { runMonteCarloSimulation } from '@/lib/robo-advisor/simulationEngine';
-import { getDefaultSamplePortfolio } from '@/lib/robo-advisor/storage';
+import { getDefaultSamplePortfolio } from '@/lib/robo-advisor/sampleData';
 import { InvestorGoal } from '@/lib/robo-advisor/types';
 
 export async function POST(request: Request) {

@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { generateRebalancePlan } from '@/lib/robo-advisor/rebalanceEngine';
-import { getDefaultSamplePortfolio } from '@/lib/robo-advisor/storage';
+import { getDefaultSamplePortfolio } from '@/lib/robo-advisor/sampleData';
 
 export async function GET() {
   const samplePortfolio = getDefaultSamplePortfolio();

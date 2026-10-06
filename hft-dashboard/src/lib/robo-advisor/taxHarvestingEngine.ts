@@ -1,4 +1,4 @@
-import { AssetCategory, TaxHarvestOpportunity, TaxLot } from './types';
+import { TaxHarvestOpportunity, TaxLot } from './types';
 
 export const TAX_SWAP_REPLACEMENTS: Record<string, { symbol: string; name: string }> = {
   VOO: { symbol: 'SCHX', name: 'Schwab U.S. Large-Cap ETF' },

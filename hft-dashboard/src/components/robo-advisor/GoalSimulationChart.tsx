@@ -1,8 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { motion } from 'framer-motion';
-import { Activity, Target, Sliders, CheckCircle2, TrendingUp, Sparkles } from 'lucide-react';
+import { Activity } from 'lucide-react';
 import { runMonteCarloSimulation } from '@/lib/robo-advisor/simulationEngine';
 import { InvestorGoal, TargetAllocation } from '@/lib/robo-advisor/types';
 
