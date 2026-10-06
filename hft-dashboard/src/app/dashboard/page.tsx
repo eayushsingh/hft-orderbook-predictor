@@ -25,6 +25,9 @@ import OnboardingGuideModal from "@/components/OnboardingGuideModal";
 import ConsensusMatrix from "@/components/ConsensusMatrix";
 import IndianMarketMatrix from "@/components/IndianMarketMatrix";
 import MultiSourceIntelligenceHub from "@/components/MultiSourceIntelligenceHub";
+import VPINSpoofingRadar from "@/components/VPINSpoofingRadar";
+import MarketImpactCalculator from "@/components/MarketImpactCalculator";
+import QueuePositionPredictor from "@/components/QueuePositionPredictor";
 import { useSubscription } from "@/context/SubscriptionContext";
 
 
@@ -960,6 +963,7 @@ export default function DashboardPage() {
                 onExitPosition={handleExitPosition}
                 onSquareOffAll={handleSquareOffAll}
               />
+              <VPINSpoofingRadar />
             </>
           )}
 
@@ -989,9 +993,12 @@ export default function DashboardPage() {
           {/* ── TAB 5: MULTI-BROKER LIQUIDITY MATRIX ── */}
           {activeTab === "multibroker" && <IndianMarketMatrix />}
 
-          {/* ── TAB 6: AI MICROSTRUCTURE ANALYTICS & HUB ── */}
+          {/* ── TAB 6: AI MICROSTRUCTURE ANALYTICS & INSTITUTIONAL MMIP HUB ── */}
           {activeTab === "analytics" && (
             <div className="space-y-6">
+              <VPINSpoofingRadar />
+              <MarketImpactCalculator />
+              <QueuePositionPredictor />
               <MultiSourceIntelligenceHub />
               <ConsensusMatrix />
               <IndianMarketMatrix />
