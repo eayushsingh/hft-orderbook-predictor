@@ -1,7 +1,8 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Activity, Sliders, ArrowUpRight, ArrowDownRight } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { Activity, Sliders, ArrowUpRight, ArrowDownRight, Layers, Sparkles } from 'lucide-react';
 
 export const SlideOrderBookTheoryPPT: React.FC = () => {
   const [bidQty, setBidQty] = useState(15000);
@@ -19,14 +20,20 @@ export const SlideOrderBookTheoryPPT: React.FC = () => {
       : (bidPrice + askPrice) / 2;
 
   return (
-    <div className="space-y-6 p-2">
+    <motion.div
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.3 }}
+      className="space-y-6 p-2"
+    >
       {/* Slide Header */}
       <div className="space-y-2">
         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-mono font-bold uppercase">
-          <Activity className="w-3.5 h-3.5" /> Slide 03 • Quantitative Market Microstructure Engine
+          <Activity className="w-3.5 h-3.5" /> Slide 03 &bull; Quantitative Market Microstructure Engine
         </div>
-        <h2 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
+        <h2 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight flex items-center gap-3">
           Micro-Price Drift &amp; Order Book Imbalance (OBI) Equations
+          <Sparkles className="w-5 h-5 text-emerald-400 animate-pulse hidden sm:inline-block" />
         </h2>
         <p className="text-slate-400 text-xs sm:text-sm">
           Mathematical foundations powering tick-level directional forecasting and institutional spoofing detection.
@@ -34,7 +41,7 @@ export const SlideOrderBookTheoryPPT: React.FC = () => {
       </div>
 
       {/* Interactive Calculator Simulator Widget */}
-      <div className="bg-slate-950 border border-emerald-500/30 rounded-2xl p-5 space-y-4">
+      <div className="bg-slate-950 border border-emerald-500/30 rounded-2xl p-5 space-y-4 shadow-xl">
         <div className="flex justify-between items-center border-b border-slate-800 pb-3">
           <h3 className="text-xs font-bold text-white uppercase tracking-wider flex items-center gap-2">
             <Sliders className="w-4 h-4 text-emerald-400" /> Live Interactive OBI &amp; Micro-Price Simulator
@@ -45,11 +52,12 @@ export const SlideOrderBookTheoryPPT: React.FC = () => {
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-          <div className="space-y-3">
+          <div className="space-y-4">
             <div>
-              <label className="block text-xs font-medium text-slate-300 mb-1">
-                Bid Depth Volume: <span className="text-emerald-400 font-bold">{bidQty.toLocaleString()} qty</span>
-              </label>
+              <div className="flex justify-between text-xs font-medium text-slate-300 mb-1">
+                <span>Bid Depth Volume (L1-L5):</span>
+                <span className="text-emerald-400 font-bold font-mono">{bidQty.toLocaleString()} qty</span>
+              </div>
               <input
                 type="range"
                 min={1000}
@@ -62,9 +70,10 @@ export const SlideOrderBookTheoryPPT: React.FC = () => {
             </div>
 
             <div>
-              <label className="block text-xs font-medium text-slate-300 mb-1">
-                Ask Depth Volume: <span className="text-rose-400 font-bold">{askQty.toLocaleString()} qty</span>
-              </label>
+              <div className="flex justify-between text-xs font-medium text-slate-300 mb-1">
+                <span>Ask Depth Volume (L1-L5):</span>
+                <span className="text-rose-400 font-bold font-mono">{askQty.toLocaleString()} qty</span>
+              </div>
               <input
                 type="range"
                 min={1000}
@@ -77,7 +86,7 @@ export const SlideOrderBookTheoryPPT: React.FC = () => {
             </div>
           </div>
 
-          <div className="bg-slate-900/80 border border-slate-800 p-4 rounded-xl flex flex-col justify-between space-y-2">
+          <div className="bg-slate-900/80 border border-slate-800 p-4 rounded-xl flex flex-col justify-between space-y-3 shadow-inner">
             <div className="flex justify-between items-center text-xs">
               <span className="text-slate-400">Calculated OBI Metric:</span>
               <span
@@ -98,7 +107,7 @@ export const SlideOrderBookTheoryPPT: React.FC = () => {
 
             <div className="text-[11px] text-slate-400 border-t border-slate-800 pt-2 flex items-center justify-between">
               <span>Predicted Tick Direction:</span>
-              <span className="font-bold text-emerald-400 flex items-center gap-1">
+              <span className="font-bold text-emerald-400 flex items-center gap-1 font-mono">
                 {roundedObi > 0.2 ? (
                   <>
                     <ArrowUpRight className="w-3.5 h-3.5 text-emerald-400" /> BULLISH DRIFT
@@ -115,6 +124,6 @@ export const SlideOrderBookTheoryPPT: React.FC = () => {
           </div>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 };
