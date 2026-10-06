@@ -226,7 +226,9 @@ export const InteractivePresentationDeck: React.FC = () => {
       </div>
 
       {/* Main Slide Card Container */}
-      <div className="bg-slate-900/90 border border-slate-800 rounded-3xl p-6 sm:p-8 backdrop-blur-xl min-h-[480px] flex flex-col justify-between shadow-2xl relative overflow-hidden">
+      <div className="bg-slate-900/90 border border-emerald-500/20 hover:border-emerald-500/40 rounded-3xl p-6 sm:p-10 backdrop-blur-2xl min-h-[500px] flex flex-col justify-between shadow-2xl relative overflow-hidden transition-all duration-300">
+        <div className="absolute top-0 right-0 -mt-12 -mr-12 w-80 h-80 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute bottom-0 left-0 -mb-12 -ml-12 w-80 h-80 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none" />
         <AnimatePresence mode="wait">
           <motion.div
             key={currentSlide.id}
