@@ -18,6 +18,7 @@ interface IndexData {
 const INITIAL_INDICES: IndexData[] = [
   { symbol: "NIFTY 50", name: "NSE India Benchmark", price: 24850.45, change: 168.20, changePct: 0.68, high: 24890.10, low: 24710.30, sentiment: "BULLISH" },
   { symbol: "BANKNIFTY", name: "NSE Banking Index", price: 53210.15, change: 448.50, changePct: 0.85, high: 53350.00, low: 52890.50, sentiment: "BULLISH" },
+  { symbol: "FINNIFTY", name: "NSE Financial Services", price: 23640.80, change: 184.30, changePct: 0.79, high: 23710.00, low: 23490.20, sentiment: "BULLISH" },
   { symbol: "SENSEX", name: "BSE 30 Index", price: 81450.80, change: 512.40, changePct: 0.63, high: 81580.20, low: 81020.10, sentiment: "BULLISH" },
   { symbol: "INDIA VIX", name: "Volatility Index", price: 13.42, change: -0.85, changePct: -5.95, high: 14.20, low: 13.10, sentiment: "BULLISH" },
   { symbol: "GIFT NIFTY", name: "Gift City Futures", price: 24895.00, change: 195.00, changePct: 0.79, high: 24920.00, low: 24740.00, sentiment: "BULLISH" },
