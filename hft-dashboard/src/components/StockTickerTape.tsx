@@ -27,28 +27,28 @@ const TickerPill = memo(function TickerPill({ t }: { t: TickerItem }) {
   const isPos = t.changePct >= 0;
   return (
     <div className="inline-flex items-center space-x-2 shrink-0 transition-all duration-300 ease-out transform-gpu hover:scale-105">
-      <span className="font-bold text-slate-800 dark:text-zinc-200">{t.symbol}</span>
-      <span className="text-slate-900 dark:text-white font-bold transition-colors duration-200">₹{t.price.toLocaleString("en-IN")}</span>
+      <span className="font-black text-white tracking-wide text-xs">{t.symbol}</span>
+      <span className="text-cyan-300 font-extrabold text-xs tracking-tight">₹{t.price.toLocaleString("en-IN")}</span>
       <span
-        className={`inline-flex items-center gap-0.5 font-bold text-[11px] transition-colors duration-200 ${
-          isPos ? "text-emerald-500" : "text-rose-500"
+        className={`inline-flex items-center gap-0.5 font-extrabold text-[11px] ${
+          isPos ? "text-emerald-400" : "text-rose-400"
         }`}
       >
-        {isPos ? <TrendingUp className="w-3 h-3" /> : <TrendingDown className="w-3 h-3" />}
+        {isPos ? <TrendingUp className="w-3 h-3 text-emerald-400" /> : <TrendingDown className="w-3 h-3 text-rose-400" />}
         <span>{isPos ? `+${t.changePct}%` : `${t.changePct}%`}</span>
       </span>
       <span
-        className={`text-[9px] font-bold px-1.5 py-0.2 rounded border transition-all duration-300 ${
+        className={`text-[9px] font-black px-1.5 py-0.5 rounded border transition-all duration-300 ${
           t.signal === "BUY"
-            ? "bg-emerald-500/10 text-emerald-500 border-emerald-500/30"
+            ? "bg-emerald-500/20 text-emerald-300 border-emerald-500/40"
             : t.signal === "SELL"
-            ? "bg-rose-500/10 text-rose-500 border-rose-500/30"
-            : "bg-slate-200 dark:bg-zinc-800 text-slate-600 dark:text-zinc-400 border-slate-300 dark:border-zinc-700"
+            ? "bg-rose-500/20 text-rose-300 border-rose-500/40"
+            : "bg-slate-800 text-slate-300 border-slate-700"
         }`}
       >
         OBI {t.obi > 0 ? `+${t.obi}` : t.obi} ({t.signal})
       </span>
-      <span className="text-slate-300 dark:text-zinc-800">|</span>
+      <span className="text-slate-700 font-bold mx-1">|</span>
     </div>
   );
 });
@@ -60,7 +60,7 @@ function StockTickerTapeComponent() {
   const updateTickers = useCallback(() => {
     setTickers((prev) =>
       prev.map((item) => {
-        const deltaPct = (Math.random() - 0.49) * 0.08;
+        const deltaPct = (Math.random() - 0.48) * 0.15;
         const newPrice = parseFloat((item.price * (1 + deltaPct / 100)).toFixed(2));
         const newChange = parseFloat((item.changePct + deltaPct * 0.2).toFixed(2));
         const newObi = parseFloat((Math.max(-0.9, Math.min(0.9, item.obi + (Math.random() - 0.49) * 0.05))).toFixed(2));
@@ -82,14 +82,14 @@ function StockTickerTapeComponent() {
   }, [updateTickers]);
 
   return (
-    <div className="w-full bg-[#08080c] dark:bg-[#07070b] border-b border-slate-200 dark:border-[#1a1a26] text-xs font-mono py-1.5 overflow-hidden select-none">
+    <div className="w-full bg-[#08080e] border-b border-[#1f1f2e] text-xs font-mono py-2 overflow-hidden select-none shadow-inner">
       <div className="flex items-center space-x-6 animate-marquee whitespace-nowrap overflow-x-auto no-scrollbar px-4">
-        <div className="flex items-center gap-1.5 text-[10px] font-bold text-[#387ed1] shrink-0 border-r border-slate-300 dark:border-[#1a1a26] pr-4">
+        <div className="flex items-center gap-1.5 text-[10px] font-black text-cyan-400 shrink-0 border-r border-[#1f1f2e] pr-4">
           <span className="relative flex h-2 w-2">
             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
             <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
           </span>
-          <span>L2 TICK STREAM</span>
+          <span className="tracking-wider">L2 TICK STREAM</span>
         </div>
 
         {tickers.map((t) => (
