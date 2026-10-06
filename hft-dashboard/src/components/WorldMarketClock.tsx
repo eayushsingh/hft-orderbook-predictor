@@ -207,13 +207,13 @@ export default function WorldMarketClock({ compact = false }: WorldMarketClockPr
         }`}
       >
         <span className="text-sm">{selectedCountry.flag}</span>
-        <span className="font-bold text-slate-900 dark:text-white uppercase">{selectedCountry.code}</span>
-        <span className="text-slate-400 dark:text-zinc-500">|</span>
+        <span className="font-black text-slate-950 dark:text-white uppercase">{selectedCountry.code}</span>
+        <span className="text-slate-400 dark:text-zinc-500 font-bold">|</span>
 
         {/* Live Ticking Clock Text */}
-        <div className="flex items-center gap-1 text-emerald-600 dark:text-emerald-400 font-bold tracking-wider">
+        <div className="flex items-center gap-1 text-emerald-700 dark:text-emerald-400 font-black tracking-wider">
           <Clock className="w-3 h-3 text-[#387ed1] animate-pulse" />
-          <span>{currentTime || "00:00:00 AM"}</span>
+          <span className="font-mono">{currentTime || "00:00:00 AM"}</span>
         </div>
 
         {/* Market Live Status Pill */}
