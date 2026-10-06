@@ -12,8 +12,8 @@ import {
   Bot,
   Zap,
 } from 'lucide-react';
-import { LalanNavbar } from '@/components/LalanNavbar';
-import { LalanSiteFooter } from '@/components/LalanSiteFooter';
+import LalanNavbar from '@/components/LalanNavbar';
+import LalanSiteFooter from '@/components/LalanSiteFooter';
 import { RiskProfileWizard } from '@/components/robo-advisor/RiskProfileWizard';
 import { PortfolioAllocationView } from '@/components/robo-advisor/PortfolioAllocationView';
 import { DriftAndRebalanceRadar } from '@/components/robo-advisor/DriftAndRebalanceRadar';
@@ -42,7 +42,18 @@ export default function RoboAdvisorPage() {
 
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col font-sans selection:bg-emerald-500 selection:text-slate-950">
-      <LalanNavbar />
+      <LalanNavbar
+        activeTab="robo"
+        setActiveTab={() => {}}
+        latencyMs={1.2}
+        availableFunds={portfolio.cashBalance}
+        niftyPrice={24850.75}
+        niftyChange={0.62}
+        bankNiftyPrice={52340.1}
+        bankNiftyChange={0.85}
+        btcPrice={84572.52}
+        btcChange={2.1}
+      />
 
       <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
         {/* Top Hero Banner */}
