@@ -11,10 +11,7 @@ import {
   CheckCircle2,
   ArrowRight,
   ArrowLeft,
-  Sparkles,
   Compass,
-  Layers,
-  ShieldCheck,
   Award,
 } from "lucide-react";
 
@@ -141,7 +138,9 @@ export default function OnboardingGuideModal({
   const handleClose = () => {
     try {
       localStorage.setItem("lalan_onboarding_completed", "true");
-    } catch (e) {}
+    } catch {
+      // Ignored storage error
+    }
     if (externalOnClose) {
       externalOnClose();
     } else {
