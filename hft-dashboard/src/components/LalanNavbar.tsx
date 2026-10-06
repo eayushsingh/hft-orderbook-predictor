@@ -80,14 +80,13 @@ export default function LalanNavbar({
 
   const navItems = [
     { id: "terminal", label: "Terminal", icon: Zap },
-    { id: "allinone", label: "Screener & NSE Hub", icon: Globe },
+    { id: "allinone", label: "Screener & NSE", icon: Globe },
     { id: "orders", label: "Orders", icon: BookOpen },
     { id: "positions", label: "Positions", icon: Briefcase },
     { id: "multibroker", label: "Multi-Broker", icon: Layers },
-    { id: "analytics", label: "AI Microstructure", icon: BarChart3 },
+    { id: "analytics", label: "AI Engine", icon: BarChart3 },
     { id: "pricing", label: "Pricing", icon: Crown },
     { id: "about", label: "Specs", icon: Info },
-    { id: "guide", label: "Guided Tour", icon: Compass },
   ];
 
   const planBadgeText = isTrialActive
@@ -213,7 +212,7 @@ export default function LalanNavbar({
         </div>
 
         {/* Center Section: Compact Navigation Tabs */}
-        <nav className="hidden lg:flex items-center space-x-1 bg-[#14141c] p-1 rounded-xl border border-[#222230] relative">
+        <nav className="hidden xl:flex items-center space-x-1 bg-[#14141c] p-1 rounded-xl border border-[#222230] shrink-0">
           {navItems.map((item) => {
             const Icon = item.icon;
             const isActive = activeTab === item.id;
@@ -229,7 +228,7 @@ export default function LalanNavbar({
                     setActiveTab(item.id);
                   }
                 }}
-                className={`relative flex items-center space-x-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold font-mono transition-colors ${
+                className={`relative flex items-center space-x-1.5 px-2.5 py-1.5 rounded-lg text-xs font-semibold font-mono whitespace-nowrap transition-colors ${
                   isActive
                     ? "text-white font-bold"
                     : "text-[#9e9ea8] hover:bg-[#1e1e2a] hover:text-white"
@@ -243,7 +242,7 @@ export default function LalanNavbar({
                   />
                 )}
                 <Icon className={`relative z-10 h-3.5 w-3.5 ${isActive ? "text-white" : "text-[#747888]"}`} />
-                <span className="relative z-10">{item.label}</span>
+                <span className="relative z-10 whitespace-nowrap">{item.label}</span>
               </button>
             );
           })}
