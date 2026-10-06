@@ -28,3 +28,8 @@ Built with zero-delay client filtering, fuzzy keyword tag matching, and local vo
 - **Deep Link Sharing**: Generates shareable URLs with `?faq=id` parameter for instant scrolling to specific questions.
 - **In-Terminal Drawer (`QuickFAQDrawerModal.tsx`)**: Allows traders on `/dashboard` to search documentation without leaving their active order ticket setup.
 - **Vitest & Playwright Tests**: Automated CI test suites (`faqEngine.test.ts` and `faq.spec.ts`) validating zero broken links or empty answers.
+- **Schema.org JSON-LD FAQPage**: Generates rich search result microdata injected directly into `/support` head for Google Search indexing.
+- **Keyboard Navigation (`useFAQKeyboardShortcuts`)**: Press `/` to focus search bar, `Esc` to clear/close, `?` for keyboard help menu, `J`/`K` for article stepping.
+- **JSON & Markdown Knowledge Base Exporters**: One-click download of full or filtered FAQ dataset in structured JSON or Markdown file formats.
+- **Print & PDF Mode Stylesheet**: `@media print` layout formatting FAQs into clean, high-contrast print documents sans navigation chrome.
+- **Community Analytics & Metrics Modal**: Live tracking of user satisfaction rate, total helpful votes, and top-rated quant articles.
