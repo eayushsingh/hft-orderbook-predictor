@@ -40,7 +40,8 @@ export default function AboutUsModal({ isOpen, onClose }: AboutUsModalProps) {
           initial={{ opacity: 0, scale: 0.95, y: 15 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.95, y: 15 }}
-          className="w-full max-w-4xl rounded-2xl bg-[#14141a] border border-[#282836] shadow-2xl overflow-hidden my-auto text-[#e0e0e0] flex flex-col max-h-[90vh]"
+          transition={{ type: "spring", stiffness: 350, damping: 25 }}
+          className="w-full max-w-4xl rounded-2xl bg-[#14141a] border border-[#282836] shadow-2xl overflow-hidden my-auto text-[#e0e0e0] flex flex-col max-h-[90vh] transform-gpu"
         >
           {/* ── HEADER ── */}
           <div className="p-5 border-b border-[#262634] bg-[#0f0f14] flex items-center justify-between shrink-0">
