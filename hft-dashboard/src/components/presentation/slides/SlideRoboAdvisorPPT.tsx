@@ -1,11 +1,16 @@
 'use client';
 
-import React from 'react';
-import { Bot, RefreshCw, DollarSign, Activity, CheckCircle2 } from 'lucide-react';
+import React, { useState } from 'react';
+import { Bot, Sliders } from 'lucide-react';
 
 export const SlideRoboAdvisorPPT: React.FC = () => {
+  const [riskScore, setRiskScore] = useState(65);
+
+  const equityTarget = Math.min(95, Math.max(10, Math.round(riskScore * 0.9)));
+  const bondTarget = 100 - equityTarget;
+
   return (
-    <div className="space-y-8 p-2">
+    <div className="space-y-6 p-2">
       {/* Slide Header */}
       <div className="space-y-2">
         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-purple-500/10 border border-purple-500/30 text-purple-400 text-xs font-mono font-bold uppercase">
@@ -19,54 +24,42 @@ export const SlideRoboAdvisorPPT: React.FC = () => {
         </p>
       </div>
 
-      {/* 4 Pillars Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <div className="bg-slate-950 border border-slate-800 rounded-2xl p-5 space-y-3">
-          <div className="flex items-center justify-between">
-            <h3 className="font-bold text-white text-sm">Black-Litterman MPT Allocation</h3>
-            <span className="text-[10px] bg-emerald-500/10 text-emerald-400 px-2 py-0.5 rounded font-mono font-bold">
-              10 Asset Classes
-            </span>
-          </div>
-          <p className="text-xs text-slate-400 leading-normal">
-            Combines market equilibrium returns with investor risk tolerance (1–100 scale) to construct optimal ETF weights (VOO, VB, VEA, VWO, BND).
-          </p>
+      {/* Interactive Risk Slider & Target Preview */}
+      <div className="bg-slate-950 border border-purple-500/30 rounded-2xl p-5 space-y-4">
+        <div className="flex justify-between items-center border-b border-slate-800 pb-3">
+          <h3 className="text-xs font-bold text-white uppercase tracking-wider flex items-center gap-2">
+            <Sliders className="w-4 h-4 text-purple-400" /> Interactive Risk Profile Model Simulator
+          </h3>
+          <span className="text-[10px] font-mono text-purple-400 font-bold bg-purple-500/10 px-2.5 py-0.5 rounded border border-purple-500/20">
+            Score: {riskScore} / 100
+          </span>
         </div>
 
-        <div className="bg-slate-950 border border-slate-800 rounded-2xl p-5 space-y-3">
-          <div className="flex items-center justify-between">
-            <h3 className="font-bold text-white text-sm">Dynamic Drift Rebalancer</h3>
-            <span className="text-[10px] bg-cyan-500/10 text-cyan-400 px-2 py-0.5 rounded font-mono font-bold">
-              Drift Threshold: 5.0%
-            </span>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+          <div>
+            <label className="block text-xs font-medium text-slate-300 mb-2">
+              Investor Risk Score: <span className="text-purple-400 font-bold">{riskScore}</span>
+            </label>
+            <input
+              type="range"
+              min={1}
+              max={100}
+              value={riskScore}
+              onChange={(e) => setRiskScore(parseInt(e.target.value))}
+              className="w-full accent-purple-500 bg-slate-800 rounded-lg cursor-pointer"
+            />
           </div>
-          <p className="text-xs text-slate-400 leading-normal">
-            Monitors target weight deviations. Generates trade orders automatically to trim overweight assets and top up underweight buckets ($50 min slice).
-          </p>
-        </div>
 
-        <div className="bg-slate-950 border border-slate-800 rounded-2xl p-5 space-y-3">
-          <div className="flex items-center justify-between">
-            <h3 className="font-bold text-white text-sm">Tax-Loss Harvester (TLH)</h3>
-            <span className="text-[10px] bg-amber-500/10 text-amber-400 px-2 py-0.5 rounded font-mono font-bold">
-              Wash-Sale Guard
-            </span>
+          <div className="bg-slate-900/80 border border-slate-800 p-4 rounded-xl flex flex-col justify-between space-y-2">
+            <div className="flex justify-between text-xs font-medium">
+              <span>Equity Target: <strong className="text-emerald-400">{equityTarget}%</strong></span>
+              <span>Fixed Income: <strong className="text-cyan-400">{bondTarget}%</strong></span>
+            </div>
+            <div className="h-3 w-full bg-slate-800 rounded-full overflow-hidden flex">
+              <div style={{ width: `${equityTarget}%` }} className="h-full bg-emerald-400" />
+              <div style={{ width: `${bondTarget}%` }} className="h-full bg-cyan-400" />
+            </div>
           </div>
-          <p className="text-xs text-slate-400 leading-normal">
-            Identifies tax lots with unrealized capital losses and executes correlated substitute ETF swaps (VOO → SCHX) to preserve market exposure.
-          </p>
-        </div>
-
-        <div className="bg-slate-950 border border-slate-800 rounded-2xl p-5 space-y-3">
-          <div className="flex items-center justify-between">
-            <h3 className="font-bold text-white text-sm">Monte Carlo Forecast</h3>
-            <span className="text-[10px] bg-purple-500/10 text-purple-400 px-2 py-0.5 rounded font-mono font-bold">
-              1,000 Simulations
-            </span>
-          </div>
-          <p className="text-xs text-slate-400 leading-normal">
-            Runs 1,000 Geometric Brownian Motion iterations with inflation discounting to project 10th, 50th, and 90th percentile wealth growth trajectories.
-          </p>
         </div>
       </div>
     </div>
