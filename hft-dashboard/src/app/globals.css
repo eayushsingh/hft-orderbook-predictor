@@ -67,6 +67,11 @@ body {
   backface-visibility: hidden;
 }
 
+/* Subtle glow utility for PPT slides */
+.ppt-glow-emerald {
+  box-shadow: 0 0 25px -5px rgba(16, 185, 129, 0.15);
+}
+
 /* ═══════════════════════════════════════════════════════════════
    PRODUCTION-GRADE DUAL THEME OVERRIDES (LIGHT & DARK MODE)
    Ensures 100% text visibility, high contrast, & Zerodha Kite polish.
@@ -130,16 +135,6 @@ html.light .bg-\[\#10b981\] {
   color: #000000 !important;
 }
 
-/* Gradient Text In Light Mode (Converts white gradient to deep slate/black gradient) */
-html.light .bg-clip-text {
-  background-image: linear-gradient(to bottom, #0f172a, #1e293b, #334155) !important;
-  -webkit-background-clip: text !important;
-  background-clip: text !important;
-  color: transparent !important;
-  filter: none !important;
-  drop-shadow: none !important;
-}
-
 /* Form Inputs & Selects in Light Mode */
 html.light input,
 html.light select,
@@ -182,4 +177,3 @@ html.light footer {
   border-color: #cbd5e1 !important;
   color: #475569 !important;
 }
-
