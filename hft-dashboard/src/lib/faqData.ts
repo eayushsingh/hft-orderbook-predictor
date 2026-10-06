@@ -233,7 +233,7 @@ export const TAX_FAQS: FAQItem[] = [
 
 export const BROKER_FAQS: FAQItem[] = [
   {
-    id: 'faq-[#broker-1]',
+    id: 'faq-broker-1',
     category: 'brokers',
     categoryLabel: 'Multi-Broker Gateway',
     question: 'Which Indian brokerages can I link to LALAN for automated trading?',
@@ -266,6 +266,45 @@ export const BROKER_FAQS: FAQItem[] = [
     tags: ['aes-256', 'encryption', 'totp', 'oauth'],
     helpfulCount: 312,
     unhelpfulCount: 0,
+    lastUpdated: '2026-10-06',
+  },
+];
+
+export const HFT_FAQS: FAQItem[] = [
+  {
+    id: 'faq-hft-1',
+    category: 'hft',
+    categoryLabel: 'HFT & Co-Location',
+    question: 'How does LALAN achieve sub-microsecond engine execution latency?',
+    answer:
+      'Built on Java 21 primitives and the LMAX Disruptor lock-free circular ring buffer (1,048,576 slots with 64-byte cache-line padding), LALAN processes raw WebSocket ticks with O(1) memory allocation to eliminate JVM garbage collection pauses.',
+    tags: ['java21', 'disruptor', 'ring-buffer', 'zero-gc'],
+    helpfulCount: 450,
+    unhelpfulCount: 6,
+    lastUpdated: '2026-10-06',
+  },
+  {
+    id: 'faq-hft-2',
+    category: 'hft',
+    categoryLabel: 'HFT & Co-Location',
+    question: 'What colocation facilities and network hardware are utilized?',
+    answer:
+      'LALAN server clusters are co-located directly inside NSE BKC Mumbai and BSE Fort data centers, connected via Solarflare EF_VI 10GbE fiber network cards with OS kernel-bypass acceleration.',
+    tags: ['nse-bkc', 'bse-fort', 'colocation', 'solarflare', 'kernel-bypass'],
+    helpfulCount: 380,
+    unhelpfulCount: 2,
+    lastUpdated: '2026-10-06',
+  },
+  {
+    id: 'faq-hft-3',
+    category: 'hft',
+    categoryLabel: 'HFT & Co-Location',
+    question: 'What is PTP UTC clock synchronization precision?',
+    answer:
+      'LALAN servers synchronize hardware PTP (Precision Time Protocol IEEE 1588v2) clocks directly to atomic GPS time standards, ensuring sub-100 nanosecond timestamp accuracy across all audit events.',
+    tags: ['ptp', 'ieee-1588', 'gps', 'timestamp'],
+    helpfulCount: 298,
+    unhelpfulCount: 1,
     lastUpdated: '2026-10-06',
   },
 ];
