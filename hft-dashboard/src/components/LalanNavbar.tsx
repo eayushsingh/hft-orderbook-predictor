@@ -24,6 +24,7 @@ import {
   Globe,
   ShieldAlert,
   Compass,
+  Bot,
 } from "lucide-react";
 import { useTheme } from "@/context/ThemeContext";
 import { useSubscription } from "@/context/SubscriptionContext";
@@ -76,6 +77,7 @@ export default function LalanNavbar({
 
   const navItems = [
     { id: "terminal", label: "Terminal", icon: Zap },
+    { id: "robo", label: "Robo-Advisor", icon: Bot, href: "/robo-advisor" },
     { id: "allinone", label: "Screener & NSE", icon: Globe },
     { id: "orders", label: "Orders", icon: BookOpen },
     { id: "positions", label: "Positions", icon: Briefcase },
@@ -219,7 +221,9 @@ export default function LalanNavbar({
               <button
                 key={item.id}
                 onClick={() => {
-                  if (item.id === "pricing" && onOpenPricingModal) {
+                  if (item.href) {
+                    window.location.href = item.href;
+                  } else if (item.id === "pricing" && onOpenPricingModal) {
                     onOpenPricingModal();
                   } else if (item.id === "about" && onOpenAboutModal) {
                     onOpenAboutModal();
@@ -449,7 +453,9 @@ export default function LalanNavbar({
                 <button
                   key={item.id}
                   onClick={() => {
-                    if (item.id === "pricing" && onOpenPricingModal) {
+                    if (item.href) {
+                      window.location.href = item.href;
+                    } else if (item.id === "pricing" && onOpenPricingModal) {
                       onOpenPricingModal();
                     } else if (item.id === "about" && onOpenAboutModal) {
                       onOpenAboutModal();
