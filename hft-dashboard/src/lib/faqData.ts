@@ -230,3 +230,42 @@ export const TAX_FAQS: FAQItem[] = [
     lastUpdated: '2026-10-06',
   },
 ];
+
+export const BROKER_FAQS: FAQItem[] = [
+  {
+    id: 'faq-[#broker-1]',
+    category: 'brokers',
+    categoryLabel: 'Multi-Broker Gateway',
+    question: 'Which Indian brokerages can I link to LALAN for automated trading?',
+    answer:
+      'LALAN features native low-latency API bridges for Zerodha Kite, DhanHQ, Upstox Pro v3, AngelOne SmartAPI, and Groww Trade API. You can link multiple broker accounts simultaneously for automated order routing.',
+    tags: ['zerodha', 'dhan', 'upstox', 'angelone', 'groww'],
+    helpfulCount: 367,
+    unhelpfulCount: 4,
+    lastUpdated: '2026-10-06',
+  },
+  {
+    id: 'faq-broker-2',
+    category: 'brokers',
+    categoryLabel: 'Multi-Broker Gateway',
+    question: 'How does automatic Hot-Failover order routing protect my trades?',
+    answer:
+      'If your primary broker API experiences latency spikes above 50ms or HTTP 5xx errors, LALAN automatic hot-failover instantly reroutes unexecuted order slices to your configured backup broker within microseconds to guarantee fill execution.',
+    tags: ['hot-failover', 'routing', 'redundancy', 'latency-spike'],
+    helpfulCount: 288,
+    unhelpfulCount: 1,
+    lastUpdated: '2026-10-06',
+  },
+  {
+    id: 'faq-broker-3',
+    category: 'brokers',
+    categoryLabel: 'Multi-Broker Gateway',
+    question: 'Are my broker API keys and TOTP sessions stored securely?',
+    answer:
+      'Yes! API keys and OAuth access tokens are encrypted using AES-256 GCM in your browser local storage. Daily TOTP login authentication is handled via automated secure session renewal without exposing plain-text credentials.',
+    tags: ['aes-256', 'encryption', 'totp', 'oauth'],
+    helpfulCount: 312,
+    unhelpfulCount: 0,
+    lastUpdated: '2026-10-06',
+  },
+];
