@@ -60,7 +60,7 @@ export default function QueuePositionPredictor() {
           </div>
           <div className="text-2xl font-black text-white flex items-baseline gap-2">
             <span>#{queuePos}</span>
-            <span className="text-xs font-normal text-zinc-400">of 114 orders in level</span>
+            <span className="text-xs font-normal text-zinc-400">({myOrderQty.toLocaleString()} / {totalQueueQty.toLocaleString()} qty)</span>
           </div>
           <div className="w-full h-1.5 rounded-full bg-zinc-800 overflow-hidden">
             <motion.div
@@ -76,7 +76,7 @@ export default function QueuePositionPredictor() {
             <Zap className="w-4 h-4 text-emerald-400 animate-pulse" />
           </div>
           <div className="text-2xl font-black text-emerald-400">{estWaitTimeMs} ms</div>
-          <p className="text-[10px] text-zinc-500">Calculated via real-time market order arrival rate</p>
+          <p className="text-[10px] text-zinc-500">Calculated via real-time order arrival rate</p>
         </div>
 
         <div className="p-4 rounded-xl bg-[#141420] border border-[#222234] space-y-2">
