@@ -118,7 +118,7 @@ function InteractiveAlphaEngineDemoComponent() {
           >
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
               <div className="space-y-4 font-mono">
-                <div className="flex items-center justify-between text-xs text-slate-600 dark:text-zinc-400">
+                <div className="flex items-center justify-between text-xs text-slate-700 dark:text-zinc-300">
                   <span>Top-5 Bid Volume (V_bid):</span>
                   <span className="font-bold text-emerald-600 dark:text-emerald-400">{bidVolume.toLocaleString()} qty</span>
                 </div>
@@ -132,7 +132,7 @@ function InteractiveAlphaEngineDemoComponent() {
                   className="w-full accent-emerald-500 cursor-pointer"
                 />
 
-                <div className="flex items-center justify-between text-xs text-slate-600 dark:text-zinc-400">
+                <div className="flex items-center justify-between text-xs text-slate-700 dark:text-zinc-300">
                   <span>Top-5 Ask Volume (V_ask):</span>
                   <span className="font-bold text-rose-600 dark:text-rose-400">{askVolume.toLocaleString()} qty</span>
                 </div>
