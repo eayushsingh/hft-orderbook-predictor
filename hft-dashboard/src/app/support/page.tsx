@@ -4,12 +4,22 @@ import React from 'react';
 import LalanSiteHeader from '@/components/LalanSiteHeader';
 import LalanSiteFooter from '@/components/LalanSiteFooter';
 import { ProductionGradeFAQHub } from '@/components/faq/ProductionGradeFAQHub';
+import { ALL_FAQS } from '@/lib/faqData';
+import { generateFAQJsonLdString } from '@/lib/faqSchemaGenerator';
 import { Mail } from 'lucide-react';
 
 export default function SupportPage() {
+  const jsonLdData = generateFAQJsonLdString(ALL_FAQS);
+
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-[#060609] text-slate-900 dark:text-[#e0e0e0] font-sans selection:bg-[#387ed1] selection:text-white flex flex-col transition-colors duration-200">
       <LalanSiteHeader />
+
+      {/* SEO Schema.org Structured Microdata */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: jsonLdData }}
+      />
 
       <main className="flex-1 py-12 px-4 sm:px-8 max-w-[1150px] w-full mx-auto space-y-10">
         {/* Production Grade FAQ Hub */}
@@ -39,4 +49,5 @@ export default function SupportPage() {
       <LalanSiteFooter />
     </div>
   );
+}
 }
