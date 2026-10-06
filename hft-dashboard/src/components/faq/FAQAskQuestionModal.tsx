@@ -13,19 +13,33 @@ export const FAQAskQuestionModal: React.FC<FAQAskQuestionModalProps> = ({ isOpen
   const [question, setQuestion] = useState('');
   const [email, setEmail] = useState('');
   const [category, setCategory] = useState('general');
+  const [captchaAnswer, setCaptchaAnswer] = useState('');
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
 
   if (!isOpen) return null;
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!question.trim()) return;
+    setErrorMessage('');
+
+    if (!question.trim()) {
+      setErrorMessage('Please enter your question.');
+      return;
+    }
+
+    if (captchaAnswer.trim() !== '7') {
+      setErrorMessage('Security answer incorrect. What is 3 + 4?');
+      return;
+    }
 
     setIsSubmitted(true);
     setTimeout(() => {
       setIsSubmitted(false);
       setQuestion('');
       setEmail('');
+      setCaptchaAnswer('');
+      setErrorMessage('');
       onClose();
     }, 2200);
   };
@@ -111,13 +125,33 @@ export const FAQAskQuestionModal: React.FC<FAQAskQuestionModalProps> = ({ isOpen
                 </label>
                 <textarea
                   required
-                  rows={4}
+                  rows={3}
                   value={question}
                   onChange={(e) => setQuestion(e.target.value)}
                   placeholder="Describe your question regarding OBI signals, broker OAuth setup, or co-location hardware..."
                   className="w-full bg-slate-50 dark:bg-[#14141e] border border-slate-300 dark:border-[#1f1f2c] rounded-xl px-3 py-2 text-xs font-sans focus:outline-none focus:border-[#387ed1]"
                 />
               </div>
+
+              <div>
+                <label className="block text-xs font-mono font-bold text-slate-700 dark:text-slate-300 mb-1">
+                  Anti-Spam Verification: What is 3 + 4?
+                </label>
+                <input
+                  type="text"
+                  required
+                  value={captchaAnswer}
+                  onChange={(e) => setCaptchaAnswer(e.target.value)}
+                  placeholder="Enter 7"
+                  className="w-full bg-slate-50 dark:bg-[#14141e] border border-slate-300 dark:border-[#1f1f2c] rounded-xl px-3 py-2 text-xs font-mono focus:outline-none focus:border-[#387ed1]"
+                />
+              </div>
+
+              {errorMessage && (
+                <div className="p-2.5 rounded-xl bg-rose-500/10 border border-rose-500/30 text-rose-500 text-xs font-mono">
+                  {errorMessage}
+                </div>
+              )}
 
               <div className="flex items-center justify-end gap-3 pt-2">
                 <button
