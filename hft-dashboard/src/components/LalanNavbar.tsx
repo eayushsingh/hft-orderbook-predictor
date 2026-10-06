@@ -380,7 +380,7 @@ export default function LalanNavbar({
                       <button
                         onClick={() => {
                           setProfileDropdownOpen(false);
-                          onOpenGuideModal && onOpenGuideModal();
+                          if (onOpenGuideModal) onOpenGuideModal();
                         }}
                         className="w-full mt-2 py-1.5 bg-[#387ed1]/15 hover:bg-[#387ed1]/25 text-[#387ed1] border border-[#387ed1]/35 font-mono font-bold text-[11px] rounded-lg transition-all flex items-center justify-center gap-1.5"
                       >
@@ -390,7 +390,7 @@ export default function LalanNavbar({
                       <button
                         onClick={() => {
                           setProfileDropdownOpen(false);
-                          onOpenAboutModal && onOpenAboutModal();
+                          if (onOpenAboutModal) onOpenAboutModal();
                         }}
                         className="w-full mt-1.5 py-1.5 bg-[#181824] hover:bg-[#222230] text-white border border-[#282838] font-mono font-bold text-[11px] rounded-lg transition-all"
                       >
@@ -433,7 +433,7 @@ export default function LalanNavbar({
           {/* Mobile Drawer Menu Toggle */}
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="p-1.5 rounded-lg text-[#9e9ea8] hover:text-white lg:hidden"
+            className="p-1.5 rounded-lg text-[#9e9ea8] hover:text-white xl:hidden"
           >
             {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
           </button>
@@ -442,8 +442,8 @@ export default function LalanNavbar({
 
       {/* ── MOBILE DRAWER NAVIGATION MENU ── */}
       {mobileMenuOpen && (
-        <div className="lg:hidden border-t border-[#222230] bg-[#0e0e14] px-4 py-3 space-y-2 font-mono text-xs">
-          <div className="grid grid-cols-2 gap-2 pb-2">
+        <div className="xl:hidden border-t border-[#222230] bg-[#0e0e14] px-4 py-3 space-y-2 font-mono text-xs">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 pb-2">
             {navItems.map((item) => {
               const Icon = item.icon;
               const isActive = activeTab === item.id;
@@ -451,11 +451,17 @@ export default function LalanNavbar({
                 <button
                   key={item.id}
                   onClick={() => {
-                    setActiveTab(item.id);
+                    if (item.id === "pricing" && onOpenPricingModal) {
+                      onOpenPricingModal();
+                    } else if (item.id === "about" && onOpenAboutModal) {
+                      onOpenAboutModal();
+                    } else {
+                      setActiveTab(item.id);
+                    }
                     setMobileMenuOpen(false);
                   }}
-                  className={`flex items-center space-x-2 p-2 rounded-lg font-bold ${
-                    isActive ? "bg-[#387ed1] text-white" : "bg-[#161620] text-[#a0a3b0]"
+                  className={`flex items-center space-x-2 p-2 rounded-lg font-bold transition-all ${
+                    isActive ? "bg-[#387ed1] text-white shadow-md" : "bg-[#161620] text-[#a0a3b0] hover:text-white"
                   }`}
                 >
                   <Icon className="h-4 w-4" />
