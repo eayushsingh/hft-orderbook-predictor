@@ -347,3 +347,53 @@ export const COMPLIANCE_FAQS: FAQItem[] = [
     lastUpdated: '2026-10-06',
   },
 ];
+
+export const PRICING_FAQS: FAQItem[] = [
+  {
+    id: 'faq-price-1',
+    category: 'pricing',
+    categoryLabel: 'Pricing & Billing',
+    question: 'Is there a Free Trial available for new quantitative traders?',
+    answer:
+      'Yes! Every new account automatically gets a 14-Day Free Trial of the PRO QUANT plan with $0 required today and zero credit card required.',
+    tags: ['free-trial', 'pro-quant', 'no-credit-card', 'billing'],
+    helpfulCount: 420,
+    unhelpfulCount: 4,
+    lastUpdated: '2026-10-06',
+  },
+  {
+    id: 'faq-price-2',
+    category: 'pricing',
+    categoryLabel: 'Pricing & Billing',
+    question: 'What happens when my 14-day Free Trial finishes?',
+    answer:
+      'When your trial finishes, your account safely transitions to the free RETAIL plan (₹0/mo forever) with zero interruption to basic trading capabilities unless you choose to upgrade.',
+    tags: ['trial-expiry', 'retail-plan', 'downgrade', 'free-forever'],
+    helpfulCount: 390,
+    unhelpfulCount: 2,
+    lastUpdated: '2026-10-06',
+  },
+  {
+    id: 'faq-price-3',
+    category: 'pricing',
+    categoryLabel: 'Pricing & Billing',
+    question: 'Are there any hidden brokerage charges for equity delivery investments?',
+    answer:
+      'None! Equity delivery investments are 100% free with ₹0 brokerage. Intraday and F&O option trades are charged at flat ₹20 per executed order.',
+    tags: ['brokerage', 'free-delivery', 'intraday', 'options-flat-fee'],
+    helpfulCount: 355,
+    unhelpfulCount: 1,
+    lastUpdated: '2026-10-06',
+  },
+];
+
+export const ALL_FAQS: FAQItem[] = [
+  ...GENERAL_FAQS,
+  ...TERMINAL_FAQS,
+  ...ROBO_FAQS,
+  ...TAX_FAQS,
+  ...BROKER_FAQS,
+  ...HFT_FAQS,
+  ...COMPLIANCE_FAQS,
+  ...PRICING_FAQS,
+];
