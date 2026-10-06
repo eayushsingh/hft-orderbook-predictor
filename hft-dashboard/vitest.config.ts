@@ -1,5 +1,8 @@
 import { defineConfig } from 'vitest/config';
 
+/**
+ * Vitest configuration for LALAN HFT & Robo-Advisor monorepo unit test suites.
+ */
 export default defineConfig({
   test: {
     globals: true,
