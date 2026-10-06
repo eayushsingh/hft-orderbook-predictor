@@ -186,3 +186,28 @@ html.light footer {
   border-color: #cbd5e1 !important;
   color: #475569 !important;
 }
+
+/* Production FAQ Print & PDF Export Stylesheet */
+@media print {
+  header, footer, button, .no-print {
+    display: none !important;
+  }
+  body {
+    background: #ffffff !important;
+    color: #000000 !important;
+    font-size: 12pt;
+  }
+  .faq-print-container {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    box-shadow: none !important;
+  }
+  .faq-accordion-item {
+    break-inside: avoid;
+    border: 1px solid #ddd !important;
+    margin-bottom: 12pt !important;
+    padding: 10pt !important;
+  }
+}
