@@ -391,6 +391,42 @@ export const HFT_FAQS: FAQItem[] = [
     unhelpfulCount: 0,
     lastUpdated: '2026-10-06',
   },
+  {
+    id: 'faq-hft-6',
+    category: 'hft',
+    categoryLabel: 'HFT & Co-Location',
+    question: 'How does Avellaneda-Stoikov market making inventory skew work?',
+    answer:
+      'The Avellaneda-Stoikov model shifts bid and ask quote placement away from mid-price based on current inventory position q and risk aversion gamma: r(s, q, t) = s - q * gamma * sigma^2 * (T - t). As inventory grows long, bid prices drop to discourage buys and ask prices drop to encourage inventory unwinding.',
+    tags: ['avellaneda-stoikov', 'inventory-skew', 'market-making', 'gamma'],
+    helpfulCount: 388,
+    unhelpfulCount: 1,
+    lastUpdated: '2026-10-06',
+  },
+  {
+    id: 'faq-hft-7',
+    category: 'hft',
+    categoryLabel: 'HFT & Co-Location',
+    question: 'What kernel density estimation is used to predict order arrival rates?',
+    answer:
+      'LALAN uses adaptive Epanechnikov kernel density estimation over a rolling 500ms sliding window of L2 depth changes to compute instantaneous intensity rate lambda(t).',
+    tags: ['kde', 'epanechnikov', 'intensity-rate', 'order-arrival'],
+    helpfulCount: 310,
+    unhelpfulCount: 2,
+    lastUpdated: '2026-10-06',
+  },
+  {
+    id: 'faq-hft-8',
+    category: 'hft',
+    categoryLabel: 'HFT & Co-Location',
+    question: 'How are microstructure noise and bid-ask bounce filtered out in delta calculation?',
+    answer:
+      'Microstructure noise is filtered using a Kalman Filter state-space model with dynamic noise covariance matrix Q, separating true price drift from transient bid-ask bounce tick noise.',
+    tags: ['kalman-filter', 'microstructure-noise', 'bid-ask-bounce', 'drift'],
+    helpfulCount: 345,
+    unhelpfulCount: 0,
+    lastUpdated: '2026-10-06',
+  },
 ];
 
 export const COMPLIANCE_FAQS: FAQItem[] = [
