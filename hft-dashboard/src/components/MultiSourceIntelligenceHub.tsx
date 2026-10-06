@@ -1,29 +1,17 @@
 "use client";
 
 import React, { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
 import {
   Search,
   Globe,
   ExternalLink,
   ShieldCheck,
-  TrendingUp,
-  TrendingDown,
   BarChart3,
   Building2,
-  FileText,
   Newspaper,
   PieChart,
-  Activity,
   Layers,
-  Sparkles,
-  RefreshCw,
-  CheckCircle2,
-  AlertCircle,
-  Clock,
   ArrowUpRight,
-  ArrowDownRight,
-  Maximize2,
 } from "lucide-react";
 
 interface StockMetadata {
