@@ -397,3 +397,37 @@ export const ALL_FAQS: FAQItem[] = [
   ...COMPLIANCE_FAQS,
   ...PRICING_FAQS,
 ];
+
+/**
+ * Filter FAQs by category and multi-term search query
+ */
+export function filterFAQs(category: FAQCategory | 'all', query: string = ''): FAQItem[] {
+  const cleanQuery = query.toLowerCase().trim();
+  return ALL_FAQS.filter((faq) => {
+    const matchesCategory = category === 'all' || faq.category === category;
+    if (!matchesCategory) return false;
+
+    if (!cleanQuery) return true;
+
+    const inQuestion = faq.question.toLowerCase().includes(cleanQuery);
+    const inAnswer = faq.answer.toLowerCase().includes(cleanQuery);
+    const inTags = faq.tags.some((tag) => tag.toLowerCase().includes(cleanQuery));
+
+    return inQuestion || inAnswer || inTags;
+  });
+}
+
+/**
+ * Get FAQ by ID
+ */
+export function getFAQById(id: string): FAQItem | undefined {
+  return ALL_FAQS.find((f) => f.id === id);
+}
+
+/**
+ * Count total FAQs per category
+ */
+export function getFAQCategoryCount(category: FAQCategory | 'all'): number {
+  if (category === 'all') return ALL_FAQS.length;
+  return ALL_FAQS.filter((f) => f.category === category).length;
+}
