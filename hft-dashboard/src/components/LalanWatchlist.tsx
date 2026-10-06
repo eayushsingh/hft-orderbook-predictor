@@ -1,16 +1,12 @@
 "use client";
 
 import React, { useState, useEffect, useMemo, useCallback } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import {
   Search,
-  Plus,
   Trash2,
   TrendingUp,
   TrendingDown,
-  BarChart2,
-  Layers,
-  ChevronRight,
   Pin,
   PinOff,
 } from "lucide-react";
@@ -302,6 +298,13 @@ export default function LalanWatchlist({
                       ) : (
                         <Pin className="h-3 w-3" />
                       )}
+                    </button>
+                    <button
+                      onClick={(e) => removeStock(e, stock.symbol)}
+                      className="p-1 rounded hover:bg-[#242432] text-[#747888] hover:text-rose-400"
+                      title="Remove Stock"
+                    >
+                      <Trash2 className="h-3 w-3" />
                     </button>
                   </motion.div>
                 ) : (
