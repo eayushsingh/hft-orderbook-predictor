@@ -90,19 +90,19 @@ export default function MarketOverviewHero() {
               whileHover={{ scale: 1.02 }}
               className="p-4 rounded-2xl bg-[#13131c] border border-[#222234] hover:border-[#387ed1]/50 transition-all shadow-lg font-mono space-y-2 transform-gpu"
             >
-              <div className="flex items-center justify-between text-xs text-zinc-400 font-bold">
-                <span>{idx.symbol}</span>
+              <div className="flex items-center justify-between text-xs font-bold">
+                <span className="text-white font-extrabold tracking-wide">{idx.symbol}</span>
                 <span
-                  className={`flex items-center gap-0.5 text-[11px] font-bold ${
+                  className={`flex items-center gap-0.5 text-[11px] font-extrabold ${
                     isPos ? "text-emerald-400" : "text-rose-400"
                   }`}
                 >
-                  {isPos ? <TrendingUp className="w-3 h-3" /> : <TrendingDown className="w-3 h-3" />}
+                  {isPos ? <TrendingUp className="w-3 h-3 text-emerald-400" /> : <TrendingDown className="w-3 h-3 text-rose-400" />}
                   <span>{isPos ? `+${idx.changePct}%` : `${idx.changePct}%`}</span>
                 </span>
               </div>
 
-              <div className="text-lg sm:text-xl font-black text-white">
+              <div className="text-lg sm:text-xl font-black text-cyan-300">
                 {idx.symbol === "INDIA VIX"
                   ? idx.price.toFixed(2)
                   : `₹${idx.price.toLocaleString("en-IN", { minimumFractionDigits: 2 })}`}
