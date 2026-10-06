@@ -161,8 +161,8 @@ export default function AboutPage() {
         {/* ── CORE TEAM / FOUNDERS ── */}
         <section className="py-16 sm:py-24 px-4 sm:px-8 max-w-[1100px] mx-auto border-b border-slate-200 dark:border-[#181824]">
           <div className="text-center mb-16">
-            <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white tracking-tight">People behind LALAN</h2>
-            <p className="text-xs sm:text-sm text-slate-500 dark:text-[#747888] font-mono mt-2">Quant Engineers &amp; Systems Architects</p>
+            <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white tracking-tight">Engineering Behind LALAN HFT</h2>
+            <p className="text-xs sm:text-sm text-slate-500 dark:text-[#747888] font-mono mt-2">Quantitative Architecture &amp; System Divisions</p>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
@@ -178,27 +178,27 @@ export default function AboutPage() {
               </p>
             </div>
 
-            {/* Person 2 */}
+            {/* Division 2 */}
             <div className="bg-white dark:bg-[#0f0f16] border border-slate-200 dark:border-[#1f1f2b] p-6 rounded-2xl text-center space-y-3 shadow-lg">
-              <div className="h-24 w-24 rounded-full bg-[#10b981]/20 border-2 border-[#10b981] flex items-center justify-center text-2xl font-black text-[#10b981] mx-auto">
-                VS
+              <div className="h-24 w-24 rounded-full bg-[#10b981]/20 border-2 border-[#10b981] flex items-center justify-center text-xl font-black text-[#10b981] mx-auto font-mono">
+                ML
               </div>
-              <h3 className="text-lg font-bold text-slate-900 dark:text-white">Vikram Sharma</h3>
-              <p className="text-xs text-[#10b981] font-mono font-bold">Head of Machine Learning</p>
+              <h3 className="text-lg font-bold text-slate-900 dark:text-white">LALAN Inference Core</h3>
+              <p className="text-xs text-[#10b981] font-mono font-bold">Algorithmic Predictive Division</p>
               <p className="text-xs text-slate-600 dark:text-[#8a8d9b] leading-relaxed">
-                Focuses on Order Book Imbalance (OBI) drift and deep learning models for directional tick prediction.
+                Engineers Order Book Imbalance (OBI) drift, Hawkes point process intensity, and deep learning tick models.
               </p>
             </div>
 
-            {/* Person 3 */}
+            {/* Division 3 */}
             <div className="bg-white dark:bg-[#0f0f16] border border-slate-200 dark:border-[#1f1f2b] p-6 rounded-2xl text-center space-y-3 shadow-lg">
-              <div className="h-24 w-24 rounded-full bg-[#ff5722]/20 border-2 border-[#ff5722] flex items-center justify-center text-2xl font-black text-[#ff5722] mx-auto">
-                PK
+              <div className="h-24 w-24 rounded-full bg-[#ff5722]/20 border-2 border-[#ff5722] flex items-center justify-center text-xl font-black text-[#ff5722] mx-auto font-mono">
+                NET
               </div>
-              <h3 className="text-lg font-bold text-slate-900 dark:text-white">Priya Kulkarni</h3>
-              <p className="text-xs text-[#ff5722] font-mono font-bold">Lead Infrastructure Engineer</p>
+              <h3 className="text-lg font-bold text-slate-900 dark:text-white">LALAN Telemetry Core</h3>
+              <p className="text-xs text-[#ff5722] font-mono font-bold">Co-Location &amp; DMA Division</p>
               <p className="text-xs text-slate-600 dark:text-[#8a8d9b] leading-relaxed">
-                Architects binary WebSocket telemetry, LALAN Direct API adapters, and co-location servers.
+                Architects binary SBE WebSocket telemetry, Solarflare kernel bypass adapters, and direct exchange feeds.
               </p>
             </div>
           </div>
