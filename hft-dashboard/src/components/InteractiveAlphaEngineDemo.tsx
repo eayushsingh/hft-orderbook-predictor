@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, memo, useMemo } from "react";
+import { motion } from "framer-motion";
 import { Activity, Cpu, Layers, TrendingUp, Sparkles } from "lucide-react";
 
 function InteractiveAlphaEngineDemoComponent() {
@@ -108,7 +109,13 @@ function InteractiveAlphaEngineDemoComponent() {
 
         {/* Tab 1: OBI Simulator */}
         {activeTab === "obi" && (
-          <div className="p-6 sm:p-8 space-y-6">
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.3 }}
+            className="p-6 sm:p-8 space-y-6"
+          >
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
               <div className="space-y-4 font-mono">
                 <div className="flex items-center justify-between text-xs text-slate-600 dark:text-zinc-400">
@@ -165,7 +172,7 @@ function InteractiveAlphaEngineDemoComponent() {
                 </p>
               </div>
             </div>
-          </div>
+          </motion.div>
         )}
 
         {/* Tab 2: Micro-Price Simulator */}
