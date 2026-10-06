@@ -13,7 +13,6 @@ import {
   BarChart3,
   BookOpen,
   Crown,
-  Info,
   Sun,
   Moon,
   Clock,

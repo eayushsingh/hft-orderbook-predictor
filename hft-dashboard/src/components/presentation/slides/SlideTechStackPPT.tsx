@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { Layers, Cpu, ShieldCheck, Code, CheckCircle2 } from 'lucide-react';
+import { Layers } from 'lucide-react';
 
 export const SlideTechStackPPT: React.FC = () => {
   return (

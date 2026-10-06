@@ -1,8 +1,7 @@
 'use client';
 
 import React from 'react';
-import { motion } from 'framer-motion';
-import { Target, CheckCircle2, XCircle, ArrowRight, ShieldCheck, Zap } from 'lucide-react';
+import { Target, CheckCircle2, XCircle } from 'lucide-react';
 
 export const SlideVisionAndMission: React.FC = () => {
   return (

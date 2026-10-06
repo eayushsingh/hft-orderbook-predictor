@@ -7,12 +7,7 @@ import {
   Cpu,
   Bot,
   Globe,
-  TrendingUp,
-  ShieldCheck,
-  Activity,
-  Award,
   Sparkles,
-  Layers,
 } from 'lucide-react';
 import { PlatformMetricItem } from './types';
 

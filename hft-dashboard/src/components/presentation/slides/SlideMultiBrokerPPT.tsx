@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { Globe, Layers, ShieldCheck, Zap, ArrowRight } from 'lucide-react';
+import { Globe } from 'lucide-react';
 
 export const SlideMultiBrokerPPT: React.FC = () => {
   return (

@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { FileText, Sparkles, CheckCircle2 } from 'lucide-react';
+import { FileText, CheckCircle2 } from 'lucide-react';
 import { PresentationSlide } from './types';
 
 interface SpeakerNotesDrawerProps {

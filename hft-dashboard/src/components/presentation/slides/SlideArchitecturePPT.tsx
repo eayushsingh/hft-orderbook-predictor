@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Cpu, Zap, Activity, Server, Sliders } from 'lucide-react';
+import { Cpu, Sliders } from 'lucide-react';
 
 export const SlideArchitecturePPT: React.FC = () => {
   const [eventRate, setEventRate] = useState(1000000);

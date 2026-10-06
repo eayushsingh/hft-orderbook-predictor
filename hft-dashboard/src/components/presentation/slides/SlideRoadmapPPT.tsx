@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { Rocket, CheckCircle2, Clock, Sparkles } from 'lucide-react';
+import { Rocket } from 'lucide-react';
 
 export const SlideRoadmapPPT: React.FC = () => {
   return (
