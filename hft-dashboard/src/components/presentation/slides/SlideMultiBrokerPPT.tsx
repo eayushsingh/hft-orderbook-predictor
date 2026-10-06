@@ -34,7 +34,7 @@ export const SlideMultiBrokerPPT: React.FC = () => {
             <span className="text-[10px] font-bold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded inline-block">
               {broker.status}
             </span>
-            <p className="text-[11px] text-slate-500 leading-tight">{broker.description || broker.desc}</p>
+            <p className="text-[11px] text-slate-500 leading-tight">{broker.desc}</p>
           </div>
         ))}
       </div>
