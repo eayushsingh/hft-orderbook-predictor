@@ -7,7 +7,7 @@ export async function GET() {
       totalUsers: 1450,
       activeSessions: 142,
       executedVolumeCr: 1842.5,
-      engineLatencyMs: 0.78,
+      engineLatencyMs: 0.42,
       gcPauseOverheadMb: 0,
     },
     users: [
@@ -25,8 +25,8 @@ export async function GET() {
       },
       {
         id: "usr_2",
-        name: "Vikram Sharma",
-        email: "vikram.sharma@quantlab.in",
+        name: "LALAN Gateway Node",
+        email: "gateway.nifty@lalan-hft.internal",
         role: "INSTITUTIONAL",
         plan: "INSTITUTIONAL",
         status: "ACTIVE",
