@@ -34,6 +34,14 @@ describe('Production FAQ Engine & Data Registry Suite', () => {
     expect(zeroResults.length).toBe(0);
   });
 
+  it('should match search queries against tags and answers case-insensitively', () => {
+    const tagMatches = filterFAQs('all', 'disruptor');
+    expect(tagMatches.length).toBeGreaterThan(0);
+
+    const uppercaseMatches = filterFAQs('all', 'MICRO-PRICE');
+    expect(uppercaseMatches.length).toBeGreaterThan(0);
+  });
+
   it('should retrieve individual FAQ items by ID', () => {
     const target = ALL_FAQS[0];
     const retrieved = getFAQById(target.id);
