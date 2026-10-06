@@ -203,10 +203,16 @@ export default function LalanNavbar({
 
           {/* Sleek Free Trial / Plan Badge */}
           <button
-            onClick={() => onOpenPricingModal && onOpenPricingModal()}
-            className="hidden md:flex items-center space-x-1 bg-[#10b981]/15 hover:bg-[#10b981]/25 border border-[#10b981]/35 text-[#10b981] text-[10px] font-mono font-bold px-2.5 py-1 rounded-full transition-all active:scale-95"
+            onClick={() => {
+              if (onOpenPricingModal) onOpenPricingModal();
+            }}
+            className="hidden sm:flex items-center space-x-1.5 bg-emerald-500/15 hover:bg-emerald-500/25 border border-emerald-500/40 text-emerald-400 text-[10px] font-mono font-bold px-2.5 py-1 rounded-full transition-all active:scale-95 shadow-sm whitespace-nowrap"
           >
-            {isTrialActive && <Clock className="h-3 w-3 animate-spin" />}
+            {isTrialActive ? (
+              <Clock className="h-3 w-3 animate-spin text-emerald-400" />
+            ) : (
+              <Crown className="h-3 w-3 text-amber-400" />
+            )}
             <span>{planBadgeText}</span>
           </button>
         </div>
