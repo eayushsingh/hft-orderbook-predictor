@@ -38,3 +38,54 @@ export const FAQ_CATEGORIES: FAQCategoryMeta[] = [
   { id: 'compliance', label: 'Risk & Compliance', description: 'SEBI circulars, SOC2, and PTP audit logs', iconName: 'ShieldCheck' },
   { id: 'pricing', label: 'Pricing & Billing', description: 'Subscriptions, free trials, and plans', iconName: 'CreditCard' },
 ];
+
+export const GENERAL_FAQS: FAQItem[] = [
+  {
+    id: 'faq-gen-1',
+    category: 'general',
+    categoryLabel: 'General & Platform',
+    question: 'What is LALAN HFT Predictor and how does it differ from traditional charting tools?',
+    answer:
+      'Traditional charting tools like Zerodha Kite or TradingView render historical candlestick output (what already occurred). LALAN connects directly to exchange Level-2 WebSocket streams, running a zero-allocation LMAX Disruptor engine to compute Order Book Imbalance (OBI), VWAP Micro-Price drift, and VPIN liquidity toxicity in sub-millisecond real time. This exposes institutional liquidity input before price moves.',
+    tags: ['platform', 'hft', 'charting', 'lmax'],
+    helpfulCount: 342,
+    unhelpfulCount: 4,
+    lastUpdated: '2026-10-06',
+  },
+  {
+    id: 'faq-gen-2',
+    category: 'general',
+    categoryLabel: 'General & Platform',
+    question: 'Can retail traders use institutional HFT signals without coding experience?',
+    answer:
+      'Yes! LALAN provides pre-built visual HFT predictor signals (STRONG BUY, STRONG SELL, OBI Drift, Micro-Price trend) with real-time confidence percentages so retail options and intraday traders can trade alongside institutional sweeps with zero programming required.',
+    tags: ['retail', 'no-code', 'signals', 'intraday'],
+    helpfulCount: 289,
+    unhelpfulCount: 2,
+    lastUpdated: '2026-10-06',
+  },
+  {
+    id: 'faq-gen-3',
+    category: 'general',
+    categoryLabel: 'General & Platform',
+    question: 'Which stock exchanges and crypto markets does LALAN support?',
+    answer:
+      'LALAN natively supports Indian equity indices (NIFTY 50, BANK NIFTY, FINNIFTY), top NSE/BSE stocks (RELIANCE, HDFCBANK, TATAMOTORS, INFY, TCS), and Binance Crypto perpetual feeds (BTC/USDT, ETH/USDT, SOL/USDT).',
+    tags: ['nse', 'bse', 'nifty', 'crypto', 'binance'],
+    helpfulCount: 198,
+    unhelpfulCount: 1,
+    lastUpdated: '2026-10-06',
+  },
+  {
+    id: 'faq-gen-4',
+    category: 'general',
+    categoryLabel: 'General & Platform',
+    question: 'Is LALAN web-based or do I need to install desktop software?',
+    answer:
+      'LALAN is a high-performance Web application built with Next.js 16 Server Components and WebSockets. It runs directly inside any modern web browser (Chrome, Edge, Safari, Firefox) on desktop, laptop, or tablet without needing local software installation.',
+    tags: ['web-app', 'browser', 'nextjs', 'cross-platform'],
+    helpfulCount: 176,
+    unhelpfulCount: 0,
+    lastUpdated: '2026-10-06',
+  },
+];
