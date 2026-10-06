@@ -24,11 +24,15 @@ export const SlideGridModal: React.FC<SlideGridModalProps> = ({
 
   if (!isOpen) return null;
 
-  const filteredSlides = slides.filter(
-    (s) =>
-      s.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      s.subtitle.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      s.category.toLowerCase().includes(searchQuery.toLowerCase())
+  const filteredSlides = React.useMemo(
+    () =>
+      slides.filter(
+        (s) =>
+          s.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          s.subtitle.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          s.category.toLowerCase().includes(searchQuery.toLowerCase())
+      ),
+    [slides, searchQuery]
   );
 
   return (
