@@ -25,6 +25,7 @@ import {
   ShieldAlert,
   Compass,
   Bot,
+  Presentation,
 } from "lucide-react";
 import { useTheme } from "@/context/ThemeContext";
 import { useSubscription } from "@/context/SubscriptionContext";
@@ -84,7 +85,7 @@ export default function LalanNavbar({
     { id: "multibroker", label: "Multi-Broker", icon: Layers },
     { id: "analytics", label: "AI Engine", icon: BarChart3 },
     { id: "pricing", label: "Pricing", icon: Crown },
-    { id: "about", label: "Specs", icon: Info },
+    { id: "about", label: "Specs & PPT", icon: Presentation, href: "/about" },
   ];
 
   const planBadgeText = isTrialActive
