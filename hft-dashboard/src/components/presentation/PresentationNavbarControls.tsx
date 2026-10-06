@@ -11,6 +11,10 @@ import {
   FileText,
   Grid,
   Download,
+  Crosshair,
+  Volume2,
+  VolumeX,
+  HelpCircle,
 } from 'lucide-react';
 import { PresentationDeckState } from './types';
 
@@ -23,6 +27,9 @@ interface PresentationNavbarControlsProps {
   onToggleFullScreen: () => void;
   onToggleSpeakerNotes: () => void;
   onToggleGridModal: () => void;
+  onToggleLaserPointer?: () => void;
+  onToggleSound?: () => void;
+  onToggleKeyboardHelp?: () => void;
   onExportSummary?: () => void;
 }
 
@@ -35,6 +42,9 @@ export const PresentationNavbarControls: React.FC<PresentationNavbarControlsProp
   onToggleFullScreen,
   onToggleSpeakerNotes,
   onToggleGridModal,
+  onToggleLaserPointer,
+  onToggleSound,
+  onToggleKeyboardHelp,
   onExportSummary,
 }) => {
   return (
@@ -83,6 +93,38 @@ export const PresentationNavbarControls: React.FC<PresentationNavbarControlsProp
           <span>{deckState.isAutoPlaying ? 'Pause' : 'Auto-Play'}</span>
         </button>
 
+        {/* Laser Pointer Toggle */}
+        {onToggleLaserPointer && (
+          <button
+            type="button"
+            onClick={onToggleLaserPointer}
+            className={`p-2 rounded-xl border transition-all ${
+              deckState.isLaserPointerActive
+                ? 'bg-emerald-500/20 border-emerald-500/40 text-emerald-400 shadow-md shadow-emerald-500/20'
+                : 'bg-slate-950 border-slate-800 text-slate-400 hover:text-white'
+            }`}
+            title="Toggle Presenter Laser Pointer (L key)"
+          >
+            <Crosshair className="w-4 h-4" />
+          </button>
+        )}
+
+        {/* Sound Toggle */}
+        {onToggleSound && (
+          <button
+            type="button"
+            onClick={onToggleSound}
+            className={`p-2 rounded-xl border transition-all ${
+              deckState.isSoundEnabled
+                ? 'bg-slate-950 border-slate-800 text-emerald-400'
+                : 'bg-slate-950 border-slate-800 text-slate-600 hover:text-slate-400'
+            }`}
+            title="Toggle Slide Transition Audio Cues (M key)"
+          >
+            {deckState.isSoundEnabled ? <Volume2 className="w-4 h-4" /> : <VolumeX className="w-4 h-4" />}
+          </button>
+        )}
+
         {/* Speaker Notes Toggle */}
         <button
           type="button"
@@ -92,7 +134,7 @@ export const PresentationNavbarControls: React.FC<PresentationNavbarControlsProp
               ? 'bg-cyan-500/20 border-cyan-500/40 text-cyan-400'
               : 'bg-slate-950 border-slate-800 text-slate-400 hover:text-white'
           }`}
-          title="Toggle Presenter Notes"
+          title="Toggle Presenter Notes (S key)"
         >
           <FileText className="w-4 h-4" />
         </button>
@@ -102,10 +144,22 @@ export const PresentationNavbarControls: React.FC<PresentationNavbarControlsProp
           type="button"
           onClick={onToggleGridModal}
           className="p-2 rounded-xl border border-slate-800 bg-slate-950 text-slate-400 hover:text-white transition-all"
-          title="Overview Grid View"
+          title="Overview Grid View (G key)"
         >
           <Grid className="w-4 h-4" />
         </button>
+
+        {/* Keyboard Shortcuts Help */}
+        {onToggleKeyboardHelp && (
+          <button
+            type="button"
+            onClick={onToggleKeyboardHelp}
+            className="p-2 rounded-xl border border-slate-800 bg-slate-950 text-slate-400 hover:text-white transition-all"
+            title="Keyboard Shortcuts Help (? key)"
+          >
+            <HelpCircle className="w-4 h-4" />
+          </button>
+        )}
 
         {/* Export Briefing Summary */}
         {onExportSummary && (
@@ -124,7 +178,7 @@ export const PresentationNavbarControls: React.FC<PresentationNavbarControlsProp
           type="button"
           onClick={onToggleFullScreen}
           className="p-2 rounded-xl border border-slate-800 bg-slate-950 text-slate-400 hover:text-white transition-all"
-          title="Toggle Fullscreen Mode"
+          title="Toggle Fullscreen Mode (F key)"
         >
           {deckState.isFullScreen ? <Minimize2 className="w-4 h-4" /> : <Maximize2 className="w-4 h-4" />}
         </button>

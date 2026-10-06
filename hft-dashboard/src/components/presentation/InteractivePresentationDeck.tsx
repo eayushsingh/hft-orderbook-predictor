@@ -10,9 +10,15 @@ import { SlideMultiBrokerPPT } from './slides/SlideMultiBrokerPPT';
 import { SlideBenchmarkPPT } from './slides/SlideBenchmarkPPT';
 import { SlideTechStackPPT } from './slides/SlideTechStackPPT';
 import { SlideRoadmapPPT } from './slides/SlideRoadmapPPT';
+import { SlideQuantAlphaPPT } from './slides/SlideQuantAlphaPPT';
+import { SlideCompliancePPT } from './slides/SlideCompliancePPT';
+import { SlideLiveSandboxPPT } from './slides/SlideLiveSandboxPPT';
 import { PresentationNavbarControls } from './PresentationNavbarControls';
 import { SlideGridModal } from './SlideGridModal';
 import { SpeakerNotesDrawer } from './SpeakerNotesDrawer';
+import { LaserPointerCanvas } from './LaserPointerCanvas';
+import { KeyboardHelpModal } from './KeyboardHelpModal';
+import { soundEffects } from './soundEffects';
 import { exportPresentationSummaryMarkdown } from './presentationExporter';
 import { usePresentationKeyboardNav } from './usePresentationKeyboardNav';
 import { PresentationDeckState, PresentationSlide } from './types';
@@ -116,8 +122,50 @@ export const SLIDES_REGISTRY: PresentationSlide[] = [
     ],
   },
   {
-    id: 's8-roadmap',
+    id: 's8-quantalpha',
     slideNumber: 8,
+    title: 'Quantitative Microstructure Alpha Signals',
+    subtitle: 'Self-exciting Hawkes Process, Deep-LSTM LOB price forecasting, and OBI delta metrics.',
+    category: 'QUANT_ALPHA',
+    iconName: 'Calculator',
+    speakerNotes: 'Detail Hawkes intensity function lambda(t) and spatial-temporal 2D ConvLSTM level-2 order book depth predictor.',
+    durationSeconds: 15,
+    takeaways: [
+      { title: 'Hawkes Intensity', description: 'Models self-exciting order flow arrival clustering.' },
+      { title: '78.4% Hit Ratio', description: 'Directional 10-tick price prediction accuracy.' },
+    ],
+  },
+  {
+    id: 's9-compliance',
+    slideNumber: 9,
+    title: 'Risk Engineering & Regulatory Compliance',
+    subtitle: 'Sub-microsecond FPGA pre-trade checks, SEBI circular compliance, and PTP audit ledger.',
+    category: 'COMPLIANCE',
+    iconName: 'ShieldCheck',
+    speakerNotes: 'Explain 120ns pre-trade circuit breaker validation and SOC2 Type II cryptographic audit logs.',
+    durationSeconds: 15,
+    takeaways: [
+      { title: '120ns Circuit Breakers', description: 'Sub-microsecond fat-finger price collars & size caps.' },
+      { title: 'SEBI Audit Trail', description: 'PTP nanosecond UTC synchronized transaction logging.' },
+    ],
+  },
+  {
+    id: 's10-livesandbox',
+    slideNumber: 10,
+    title: 'Interactive Order Execution Sandbox',
+    subtitle: 'Live tick-to-trade FPGA gateway simulator with zero-GC telemetry benchmarking.',
+    category: 'LIVE_SANDBOX',
+    iconName: 'Zap',
+    speakerNotes: 'Demonstrate live test order burst routing across simulated NSE BKC colocation gateway.',
+    durationSeconds: 15,
+    takeaways: [
+      { title: 'Direct DMA Routing', description: '420ns tick-to-trade kernel bypass execution.' },
+      { title: 'Zero Queue Drop', description: 'Solarflare EF_VI 10GbE network interface acceleration.' },
+    ],
+  },
+  {
+    id: 's11-roadmap',
+    slideNumber: 11,
     title: 'Strategic Enterprise Roadmap (2026-2027)',
     subtitle: 'Continuous delivery vision expanding option greeks delta hedging and FIX protocol bridges.',
     category: 'ROADMAP',
@@ -138,7 +186,11 @@ export const InteractivePresentationDeck: React.FC = () => {
     autoPlaySpeedSec: 10,
     showSpeakerNotes: false,
     showGridModal: false,
+    showKeyboardHelp: false,
     isFullScreen: false,
+    isLaserPointerActive: false,
+    isSoundEnabled: true,
+    isPresenterMode: false,
     viewMode: 'PRESENTATION',
   });
 
@@ -150,60 +202,94 @@ export const InteractivePresentationDeck: React.FC = () => {
     if (!deckState.isAutoPlaying) return;
 
     const timer = setInterval(() => {
-      setDeckState((prev) => ({
-        ...prev,
-        currentSlideIndex: (prev.currentSlideIndex + 1) % totalSlides,
-      }));
+      setDeckState((prev) => {
+        const nextIndex = (prev.currentSlideIndex + 1) % totalSlides;
+        soundEffects.playSlideClick(prev.isSoundEnabled);
+        return { ...prev, currentSlideIndex: nextIndex };
+      });
     }, deckState.autoPlaySpeedSec * 1000);
 
     return () => clearInterval(timer);
   }, [deckState.isAutoPlaying, deckState.autoPlaySpeedSec, totalSlides]);
 
   const handlePrevSlide = React.useCallback(() => {
-    setDeckState((prev) => ({
-      ...prev,
-      currentSlideIndex: Math.max(0, prev.currentSlideIndex - 1),
-    }));
+    setDeckState((prev) => {
+      const nextIndex = Math.max(0, prev.currentSlideIndex - 1);
+      soundEffects.playSlideClick(prev.isSoundEnabled);
+      return { ...prev, currentSlideIndex: nextIndex };
+    });
   }, []);
 
   const handleNextSlide = React.useCallback(() => {
-    setDeckState((prev) => ({
-      ...prev,
-      currentSlideIndex: Math.min(totalSlides - 1, prev.currentSlideIndex + 1),
-    }));
+    setDeckState((prev) => {
+      const nextIndex = Math.min(totalSlides - 1, prev.currentSlideIndex + 1);
+      soundEffects.playSlideClick(prev.isSoundEnabled);
+      return { ...prev, currentSlideIndex: nextIndex };
+    });
   }, [totalSlides]);
 
   const handleToggleAutoPlay = () => {
-    setDeckState((prev) => ({ ...prev, isAutoPlaying: !prev.isAutoPlaying }));
+    setDeckState((prev) => {
+      soundEffects.playToggleChime(prev.isSoundEnabled);
+      return { ...prev, isAutoPlaying: !prev.isAutoPlaying };
+    });
   };
 
   const handleToggleFullScreen = () => {
-    setDeckState((prev) => ({ ...prev, isFullScreen: !prev.isFullScreen }));
+    setDeckState((prev) => {
+      soundEffects.playToggleChime(prev.isSoundEnabled);
+      return { ...prev, isFullScreen: !prev.isFullScreen };
+    });
   };
 
   const handleToggleSpeakerNotes = () => {
-    setDeckState((prev) => ({ ...prev, showSpeakerNotes: !prev.showSpeakerNotes }));
+    setDeckState((prev) => {
+      soundEffects.playToggleChime(prev.isSoundEnabled);
+      return { ...prev, showSpeakerNotes: !prev.showSpeakerNotes };
+    });
   };
 
   const handleToggleGridModal = () => {
-    setDeckState((prev) => ({ ...prev, showGridModal: !prev.showGridModal }));
+    setDeckState((prev) => {
+      soundEffects.playToggleChime(prev.isSoundEnabled);
+      return { ...prev, showGridModal: !prev.showGridModal };
+    });
+  };
+
+  const handleToggleLaserPointer = () => {
+    setDeckState((prev) => {
+      soundEffects.playToggleChime(prev.isSoundEnabled);
+      return { ...prev, isLaserPointerActive: !prev.isLaserPointerActive };
+    });
+  };
+
+  const handleToggleSound = () => {
+    setDeckState((prev) => ({ ...prev, isSoundEnabled: !prev.isSoundEnabled }));
+  };
+
+  const handleToggleKeyboardHelp = () => {
+    setDeckState((prev) => ({ ...prev, showKeyboardHelp: !prev.showKeyboardHelp }));
   };
 
   usePresentationKeyboardNav({
     onPrevSlide: handlePrevSlide,
     onNextSlide: handleNextSlide,
     onToggleFullScreen: handleToggleFullScreen,
-    onCloseModals: () => setDeckState((prev) => ({ ...prev, showGridModal: false })),
+    onCloseModals: () =>
+      setDeckState((prev) => ({ ...prev, showGridModal: false, showKeyboardHelp: false })),
   });
 
   return (
     <div
-      className={`space-y-4 transition-all duration-300 ${
+      className={`space-y-4 transition-all duration-300 relative ${
         deckState.isFullScreen
           ? 'fixed inset-0 z-50 bg-slate-950 p-6 overflow-y-auto'
           : 'w-full'
       }`}
     >
+      {/* Laser Pointer overlay */}
+      <LaserPointerCanvas isActive={deckState.isLaserPointerActive} />
+
       {/* Navigation Controls Bar */}
       <PresentationNavbarControls
         deckState={deckState}
@@ -214,10 +300,13 @@ export const InteractivePresentationDeck: React.FC = () => {
         onToggleFullScreen={handleToggleFullScreen}
         onToggleSpeakerNotes={handleToggleSpeakerNotes}
         onToggleGridModal={handleToggleGridModal}
+        onToggleLaserPointer={handleToggleLaserPointer}
+        onToggleSound={handleToggleSound}
+        onToggleKeyboardHelp={handleToggleKeyboardHelp}
         onExportSummary={() => exportPresentationSummaryMarkdown(SLIDES_REGISTRY)}
       />
 
-      {/* Progress Bar */}
+      {/* Slide Progress Indicator Bar */}
       <div className="h-1.5 w-full bg-slate-900 rounded-full overflow-hidden border border-slate-800">
         <div
           style={{ width: `${((deckState.currentSlideIndex + 1) / totalSlides) * 100}%` }}
@@ -226,16 +315,17 @@ export const InteractivePresentationDeck: React.FC = () => {
       </div>
 
       {/* Main Slide Card Container */}
-      <div className="bg-slate-900/90 border border-emerald-500/20 hover:border-emerald-500/40 rounded-3xl p-6 sm:p-10 backdrop-blur-2xl min-h-[500px] flex flex-col justify-between shadow-2xl relative overflow-hidden transition-all duration-300">
+      <div className="bg-slate-900/90 border border-emerald-500/20 hover:border-emerald-500/40 rounded-3xl p-6 sm:p-10 backdrop-blur-2xl min-h-[520px] flex flex-col justify-between shadow-2xl relative overflow-hidden transition-all duration-300">
         <div className="absolute top-0 right-0 -mt-12 -mr-12 w-80 h-80 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
         <div className="absolute bottom-0 left-0 -mb-12 -ml-12 w-80 h-80 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none" />
+
         <AnimatePresence mode="wait">
           <motion.div
             key={currentSlide.id}
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -20 }}
-            transition={{ duration: 0.3 }}
+            initial={{ opacity: 0, scale: 0.98, y: 8 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.98, y: -8 }}
+            transition={{ duration: 0.25, ease: 'easeOut' }}
             className="flex-1"
           >
             {currentSlide.slideNumber === 1 && <SlideVisionAndMission />}
@@ -245,11 +335,14 @@ export const InteractivePresentationDeck: React.FC = () => {
             {currentSlide.slideNumber === 5 && <SlideMultiBrokerPPT />}
             {currentSlide.slideNumber === 6 && <SlideBenchmarkPPT />}
             {currentSlide.slideNumber === 7 && <SlideTechStackPPT />}
-            {currentSlide.slideNumber === 8 && <SlideRoadmapPPT />}
+            {currentSlide.slideNumber === 8 && <SlideQuantAlphaPPT />}
+            {currentSlide.slideNumber === 9 && <SlideCompliancePPT />}
+            {currentSlide.slideNumber === 10 && <SlideLiveSandboxPPT />}
+            {currentSlide.slideNumber === 11 && <SlideRoadmapPPT />}
           </motion.div>
         </AnimatePresence>
 
-        {/* Speaker Notes Overlay */}
+        {/* Speaker Notes Drawer */}
         <SpeakerNotesDrawer slide={currentSlide} isOpen={deckState.showSpeakerNotes} />
       </div>
 
@@ -259,7 +352,16 @@ export const InteractivePresentationDeck: React.FC = () => {
         currentSlideIndex={deckState.currentSlideIndex}
         isOpen={deckState.showGridModal}
         onClose={handleToggleGridModal}
-        onSelectSlide={(index) => setDeckState((prev) => ({ ...prev, currentSlideIndex: index }))}
+        onSelectSlide={(index) => {
+          soundEffects.playSlideClick(deckState.isSoundEnabled);
+          setDeckState((prev) => ({ ...prev, currentSlideIndex: index }));
+        }}
+      />
+
+      {/* Keyboard Shortcuts Overlay */}
+      <KeyboardHelpModal
+        isOpen={deckState.showKeyboardHelp}
+        onClose={() => setDeckState((prev) => ({ ...prev, showKeyboardHelp: false }))}
       />
     </div>
   );
