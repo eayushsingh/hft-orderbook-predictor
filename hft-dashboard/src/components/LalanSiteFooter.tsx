@@ -24,12 +24,12 @@ export default function LalanSiteFooter() {
 
           {/* Col 2 */}
           <div className="space-y-2">
-            <p className="text-white font-bold text-sm mb-3">Company</p>
+            <p className="text-white font-bold text-sm mb-3">Company &amp; FAQs</p>
             <ul className="space-y-2 text-[#a0a3b0]">
-              <li><Link href="/about" className="hover:text-white transition-colors">About Us</Link></li>
+              <li><Link href="/about" className="hover:text-white transition-colors">About Us &amp; PPT Deck</Link></li>
               <li><Link href="/products" className="hover:text-white transition-colors">Ecosystem &amp; Products</Link></li>
               <li><Link href="/pricing" className="hover:text-white transition-colors">Brokerage &amp; Pricing</Link></li>
-              <li><Link href="/support" className="hover:text-white transition-colors">Support &amp; FAQ</Link></li>
+              <li><Link href="/support" className="hover:text-white transition-colors">Support &amp; FAQ Hub</Link></li>
               <li><a href="mailto:ayushsinghe07@gmail.com" className="text-[#387ed1] hover:underline transition-colors font-mono text-[11px]">ayushsinghe07@gmail.com</a></li>
             </ul>
           </div>
@@ -41,7 +41,7 @@ export default function LalanSiteFooter() {
               <li><Link href="/dashboard" className="hover:text-white transition-colors">LALAN HFT Terminal</Link></li>
               <li><Link href="/dashboard" className="hover:text-white transition-colors">L2 Direct Feed</Link></li>
               <li><Link href="/dashboard" className="hover:text-white transition-colors">Order Book Imbalance (OBI)</Link></li>
-              <li><Link href="/dashboard" className="hover:text-white transition-colors">Disruptor Engine</Link></li>
+              <li><Link href="/robo-advisor" className="hover:text-white transition-colors">Robo-Advisor Engine</Link></li>
             </ul>
           </div>
 
@@ -49,10 +49,10 @@ export default function LalanSiteFooter() {
           <div className="space-y-2">
             <p className="text-white font-bold text-sm mb-3">Legal &amp; Compliance</p>
             <ul className="space-y-2 text-[#a0a3b0]">
-              <li><span className="hover:text-white cursor-pointer">SEBI Quant Guidelines</span></li>
-              <li><span className="hover:text-white cursor-pointer">NSE/BSE API Terms</span></li>
-              <li><span className="hover:text-white cursor-pointer">Privacy Policy</span></li>
-              <li><span className="hover:text-white cursor-pointer">Risk Disclosure</span></li>
+              <li><Link href="/support" className="hover:text-white transition-colors">SEBI Quant Guidelines FAQ</Link></li>
+              <li><Link href="/support" className="hover:text-white transition-colors">Multi-Broker API Security</Link></li>
+              <li><Link href="/support" className="hover:text-white transition-colors">SOC2 Type II Audit Logs</Link></li>
+              <li><Link href="/support" className="hover:text-white transition-colors">Tax Loss Harvesting Rules</Link></li>
             </ul>
           </div>
         </div>
@@ -71,8 +71,6 @@ export default function LalanSiteFooter() {
         <div className="border-t border-[#181822] pt-4 text-center font-mono text-xs text-[#a0a3b0]">
           Made with ❤️ by <span className="font-bold text-white">Ayush</span>
         </div>
-
-
       </div>
     </footer>
   );
