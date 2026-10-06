@@ -1,4 +1,12 @@
 {
+  "name": "hft-monorepo",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "build": "npm --prefix hft-dashboard run build",
+    "test": "npm --prefix hft-dashboard run test",
+    "lint": "npm --prefix hft-dashboard run lint"
+  },
   "dependencies": {
     "clsx": "^2.1.1",
     "framer-motion": "^12.43.0",
