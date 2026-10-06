@@ -13,6 +13,9 @@ import InteractiveAlphaEngineDemo from "@/components/InteractiveAlphaEngineDemo"
 import QuantApiPlayground from "@/components/QuantApiPlayground";
 import InstitutionalComparisonMatrix from "@/components/InstitutionalComparisonMatrix";
 import SmoothPageWrapper from "@/components/SmoothPageWrapper";
+import MarketOverviewHero from "@/components/MarketOverviewHero";
+import SectorPerformanceBar from "@/components/SectorPerformanceBar";
+import MarketBreadthGauge from "@/components/MarketBreadthGauge";
 
 const featureCards = [
   {
@@ -173,6 +176,15 @@ export default function LandingPage() {
               </div>
             </div>
           </motion.div>
+        </section>
+
+        {/* ════════════════════════════════════════════════
+            LIVE MARKET OVERVIEW & VIBE DASHBOARD
+            ════════════════════════════════════════════════ */}
+        <section className="py-12 px-4 sm:px-6 space-y-10 border-b border-slate-200 dark:border-white/[0.06] bg-slate-100/40 dark:bg-[#07070b]/60">
+          <MarketOverviewHero />
+          <SectorPerformanceBar />
+          <MarketBreadthGauge />
         </section>
 
         {/* ════════════════════════════════════════════════
