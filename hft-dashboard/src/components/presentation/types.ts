@@ -1,11 +1,14 @@
 export type SlideCategory =
   | 'OVERVIEW'
-  | 'ARCHITECTURE'
   | 'MICROSTRUCTURE'
+  | 'ARCHITECTURE'
   | 'ROBO_ADVISOR'
-  | 'MULTI_BROKER'
   | 'BENCHMARK'
+  | 'MULTI_BROKER'
   | 'TECH_STACK'
+  | 'QUANT_ALPHA'
+  | 'COMPLIANCE'
+  | 'LIVE_SANDBOX'
   | 'ROADMAP';
 
 export interface SlideTakeaway {
@@ -32,7 +35,11 @@ export interface PresentationDeckState {
   autoPlaySpeedSec: number;
   showSpeakerNotes: boolean;
   showGridModal: boolean;
+  showKeyboardHelp: boolean;
   isFullScreen: boolean;
+  isLaserPointerActive: boolean;
+  isSoundEnabled: boolean;
+  isPresenterMode: boolean;
   viewMode: 'PRESENTATION' | 'DOCUMENT' | 'GRID';
 }
 
