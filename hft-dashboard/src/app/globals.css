@@ -72,6 +72,15 @@ body {
   box-shadow: 0 0 25px -5px rgba(16, 185, 129, 0.15);
 }
 
+/* Production FAQ System Styling */
+.faq-pill-glow {
+  box-shadow: 0 0 15px -3px rgba(56, 126, 209, 0.25);
+}
+
+.faq-accordion-expanded {
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
 /* ═══════════════════════════════════════════════════════════════
    PRODUCTION-GRADE DUAL THEME OVERRIDES (LIGHT & DARK MODE)
    Ensures 100% text visibility, high contrast, & Zerodha Kite polish.
