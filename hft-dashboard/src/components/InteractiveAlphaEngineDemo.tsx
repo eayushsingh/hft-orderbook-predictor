@@ -4,15 +4,28 @@ import React, { useState, memo, useMemo } from "react";
 import { motion } from "framer-motion";
 import { Activity, Cpu, Layers, TrendingUp, Sparkles } from "lucide-react";
 
+/**
+ * Interactive Microstructure Alpha Engine Simulator
+ * 
+ * Humanized Explanation for Maintainers:
+ * This component provides an interactive mathematical simulator for high-frequency trading metrics:
+ * 1. Order Book Imbalance (OBI): `(V_bid - V_ask) / (V_bid + V_ask)` bounded in [-1.0, +1.0].
+ * 2. VWAP Micro-Price: `(P_bid * V_ask + P_ask * V_bid) / (V_bid + V_ask)`. Notice that opposite depth
+ *    weighting forecasts tick price drift before aggressive market orders sweep the depth ladder.
+ * 3. LMAX Disruptor Ring Buffer telemetry simulation.
+ * 4. Multi-Broker Latency comparison matrix.
+ */
 function InteractiveAlphaEngineDemoComponent() {
   const [activeTab, setActiveTab] = useState<"obi" | "microprice" | "disruptor" | "matrix">("obi");
   
-  // Interactive OBI State
+  // Interactive OBI State: Bid and Ask volume sliders
   const [bidVolume, setBidVolume] = useState<number>(85000);
   const [askVolume, setAskVolume] = useState<number>(32000);
 
+  // Memoized real-time microstructure calculations
   const { totalVolume, obiValue, signalText, signalColor, midPrice, microPrice } = useMemo(() => {
     const total = bidVolume + askVolume;
+    // OBI formula: (Bid Volume - Ask Volume) / Total Volume
     const obi = total > 0 ? (bidVolume - askVolume) / total : 0;
     const signal = obi > 0.35 ? "STRONG BUY" : obi < -0.35 ? "STRONG SELL" : "NEUTRAL DRIFT";
     const color =
@@ -25,6 +38,7 @@ function InteractiveAlphaEngineDemoComponent() {
     const bBid = 24850.0;
     const bAsk = 24850.5;
     const mPrice = (bBid + bAsk) / 2;
+    // Micro-Price formula: Weighted by opposite volume density
     const micro = total > 0 ? (bBid * askVolume + bAsk * bidVolume) / total : mPrice;
 
     return {

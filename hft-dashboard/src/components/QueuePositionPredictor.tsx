@@ -4,13 +4,25 @@ import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Clock, Layers, Activity, Zap } from "lucide-react";
 
+/**
+ * Queue Position Predictor & Hawkes Volatility Intensity Component
+ * 
+ * Humanized Explanation for Maintainers:
+ * Limit orders placed at the National Stock Exchange (NSE) are priority-ordered via First-In, First-Out (FIFO) queueing.
+ * This widget estimates:
+ * 1. Queue Position: How many limit order lots remain ahead of the trader's passive order at the price level.
+ * 2. Estimated Time-To-Fill (ms): Estimated delay until order fill, updated continuously via trade tick arrival frequency.
+ * 3. Hawkes Process Intensity λ(t): Self-exciting point process model parameter `λ(t) = μ + ∑ α * exp(-β * (t - t_i))`.
+ *    High intensity indicates order clustering and impending volatility bursts (Microstructure Market Impact Prediction - MMIP).
+ */
 export default function QueuePositionPredictor() {
   const [queuePos, setQueuePos] = useState<number>(42);
   const [totalQueueQty, setTotalQueueQty] = useState<number>(18500);
   const [myOrderQty] = useState<number>(2500);
   const [estWaitTimeMs, setEstWaitTimeMs] = useState<number>(140);
-  const [hawkesIntensity, setHawkesIntensity] = useState<number>(0.72); // Hawkes process intensity
+  const [hawkesIntensity, setHawkesIntensity] = useState<number>(0.72); // Hawkes process intensity λ(t)
 
+  // Real-time FIFO queue simulation tick loop
   useEffect(() => {
     const interval = setInterval(() => {
       setQueuePos((prev) => Math.max(1, prev - Math.floor(Math.random() * 4 + 1)));
