@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Globe, Sparkles, ShieldCheck, Zap } from 'lucide-react';
+import { Globe, Sparkles } from 'lucide-react';
 
 export const SlideMultiBrokerPPT: React.FC = () => {
   return (

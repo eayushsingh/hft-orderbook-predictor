@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Bot, Sliders, Sparkles, PieChart, ShieldCheck } from 'lucide-react';
+import { Bot, Sliders, Sparkles } from 'lucide-react';
 
 export const SlideRoboAdvisorPPT: React.FC = () => {
   const [riskScore, setRiskScore] = useState(65);

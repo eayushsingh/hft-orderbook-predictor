@@ -8,8 +8,6 @@ import {
   Bot,
   Globe,
   Sparkles,
-  ShieldCheck,
-  Award,
 } from 'lucide-react';
 import { PlatformMetricItem } from './types';
 

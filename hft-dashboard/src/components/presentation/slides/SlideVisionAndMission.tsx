@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Target, CheckCircle2, XCircle, Sparkles, ShieldCheck, Zap } from 'lucide-react';
+import { Target, CheckCircle2, XCircle, Sparkles } from 'lucide-react';
 
 export const SlideVisionAndMission: React.FC = () => {
   return (

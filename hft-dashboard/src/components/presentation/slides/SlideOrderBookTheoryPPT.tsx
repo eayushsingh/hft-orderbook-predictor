@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Activity, Sliders, ArrowUpRight, ArrowDownRight, Layers, Sparkles } from 'lucide-react';
+import { Activity, Sliders, ArrowUpRight, ArrowDownRight, Sparkles } from 'lucide-react';
 
 export const SlideOrderBookTheoryPPT: React.FC = () => {
   const [bidQty, setBidQty] = useState(15000);
