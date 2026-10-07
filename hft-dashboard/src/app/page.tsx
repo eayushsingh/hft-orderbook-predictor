@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import CountUp from "react-countup";
 import Link from "next/link";
-import { Zap, ShieldCheck, Cpu, Layers, ArrowRight, Sparkles, Activity, Terminal, Shield, Award, CheckCircle2 } from "lucide-react";
+import { Zap, ShieldCheck, Cpu, Layers, ArrowRight, Sparkles, Activity, Shield, CheckCircle2 } from "lucide-react";
 import LalanSiteHeader from "@/components/LalanSiteHeader";
 import LalanSiteFooter from "@/components/LalanSiteFooter";
 import FloatingMoney from "@/components/FloatingMoney";

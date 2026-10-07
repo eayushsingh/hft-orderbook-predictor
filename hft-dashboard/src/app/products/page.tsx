@@ -4,7 +4,7 @@ import React from "react";
 import Link from "next/link";
 import LalanSiteHeader from "@/components/LalanSiteHeader";
 import LalanSiteFooter from "@/components/LalanSiteFooter";
-import { Zap, Layers, Cpu, Code2, ArrowRight, Activity, Terminal } from "lucide-react";
+import { Layers, Cpu, ArrowRight, Activity, Terminal } from "lucide-react";
 
 export default function ProductsPage() {
   const products = [

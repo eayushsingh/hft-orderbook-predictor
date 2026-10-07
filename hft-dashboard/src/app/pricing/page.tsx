@@ -1,12 +1,10 @@
 "use client";
 
 import React, { useState } from "react";
-import Link from "next/link";
-import { motion } from "framer-motion";
 import LalanSiteHeader from "@/components/LalanSiteHeader";
 import LalanSiteFooter from "@/components/LalanSiteFooter";
 import SubscriptionPricingModal, { PRICING_PLANS } from "@/components/SubscriptionPricingModal";
-import { Check, ArrowRight, IndianRupee, Gift, Sparkles, Clock, ShieldCheck } from "lucide-react";
+import { Check, Gift, Sparkles, Clock, ShieldCheck } from "lucide-react";
 import { useSubscription } from "@/context/SubscriptionContext";
 
 export default function PricingPage() {

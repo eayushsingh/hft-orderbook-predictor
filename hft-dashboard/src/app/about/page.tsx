@@ -6,8 +6,7 @@ import LalanSiteHeader from '@/components/LalanSiteHeader';
 import LalanSiteFooter from '@/components/LalanSiteFooter';
 import { WhatWeDoOverview } from '@/components/presentation/WhatWeDoOverview';
 import { InteractivePresentationDeck } from '@/components/presentation/InteractivePresentationDeck';
-import { Sparkles, Presentation, Info, Award, Zap, Globe, Cpu, ArrowRight } from 'lucide-react';
-import Link from 'next/link';
+import { Sparkles, Presentation, Info } from 'lucide-react';
 
 export default function AboutPage() {
   const [viewMode, setViewMode] = useState<'OVERVIEW' | 'PRESENTATION'>('PRESENTATION');
