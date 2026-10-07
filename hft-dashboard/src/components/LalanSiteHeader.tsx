@@ -3,7 +3,8 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Menu, X, Zap, Sun, Moon, LogIn, LogOut, ChevronDown, ShieldAlert } from "lucide-react";
+import PaymentHistoryModal from "@/components/PaymentHistoryModal";
+import { Menu, X, Zap, Sun, Moon, LogIn, LogOut, ChevronDown, ShieldAlert, Receipt } from "lucide-react";
 import { useTheme } from "@/context/ThemeContext";
 import { useAuth } from "@/context/AuthContext";
 import WorldMarketClock from "@/components/WorldMarketClock";
@@ -11,6 +12,7 @@ import WorldMarketClock from "@/components/WorldMarketClock";
 export default function LalanSiteHeader() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [userDropdownOpen, setUserDropdownOpen] = useState(false);
+  const [historyModalOpen, setHistoryModalOpen] = useState(false);
   const pathname = usePathname();
   const { theme, toggleTheme } = useTheme();
   const { user, isLoggedIn, openSignIn, logout } = useAuth();
@@ -127,6 +129,16 @@ export default function LalanSiteHeader() {
                     <ShieldAlert className="w-3.5 h-3.5" />
                     <span>Admin Panel</span>
                   </Link>
+                  <button
+                    onClick={() => {
+                      setHistoryModalOpen(true);
+                      setUserDropdownOpen(false);
+                    }}
+                    className="w-full text-left flex items-center gap-2 px-3 py-2 text-[#387ed1] hover:bg-slate-100 dark:hover:bg-[#161624] transition-colors font-bold"
+                  >
+                    <Receipt className="w-3.5 h-3.5" />
+                    <span>Billing & Invoices</span>
+                  </button>
                   <button
                     onClick={() => {
                       logout();
@@ -252,6 +264,11 @@ export default function LalanSiteHeader() {
           </Link>
         </div>
       )}
+
+      <PaymentHistoryModal
+        isOpen={historyModalOpen}
+        onClose={() => setHistoryModalOpen(false)}
+      />
     </header>
   );
 }
