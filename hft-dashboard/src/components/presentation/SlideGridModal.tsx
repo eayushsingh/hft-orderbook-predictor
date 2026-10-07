@@ -22,8 +22,6 @@ export const SlideGridModal: React.FC<SlideGridModalProps> = ({
 }) => {
   const [searchQuery, setSearchQuery] = useState('');
 
-  if (!isOpen) return null;
-
   const filteredSlides = React.useMemo(
     () =>
       slides.filter(
@@ -34,6 +32,8 @@ export const SlideGridModal: React.FC<SlideGridModalProps> = ({
       ),
     [slides, searchQuery]
   );
+
+  if (!isOpen) return null;
 
   return (
     <AnimatePresence>
