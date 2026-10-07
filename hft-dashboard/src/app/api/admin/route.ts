@@ -48,10 +48,12 @@ export async function POST(request: Request) {
       success: true,
       action,
       userId,
+      plan,
+      status,
       updatedAt: new Date().toISOString(),
       message: `Admin operation '${action}' executed successfully.`,
     });
-  } catch (error) {
+  } catch {
     return NextResponse.json(
       { success: false, error: "Invalid admin payload" },
       { status: 400 }

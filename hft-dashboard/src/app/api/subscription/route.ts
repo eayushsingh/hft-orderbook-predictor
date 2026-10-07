@@ -53,7 +53,7 @@ export async function POST(request: Request) {
       { success: false, error: "Invalid subscription action" },
       { status: 400 }
     );
-  } catch (error) {
+  } catch {
     return NextResponse.json(
       { success: false, error: "Failed to process subscription request" },
       { status: 500 }
