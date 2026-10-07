@@ -22,6 +22,18 @@ export interface TaxHarvestSummary {
 
 /**
  * Scans investor tax lots to identify tax loss harvesting opportunities while guarding against wash sales.
+ * 
+ * Humanized Explanation for Maintainers:
+ * Tax-Loss Harvesting (TLH) realizes capital losses to offset taxable capital gains or income.
+ * To maintain market exposure without triggering the IRS 30-day "Wash-Sale" rule:
+ * 1. The engine scans individual purchase lots for unrealized losses exceeding a minimum threshold (e.g., $100).
+ * 2. It maps the sold ETF to a "substantially different" correlated proxy ETF (e.g. swapping VOO for SCHX, or BND for AGG).
+ * 3. It computes estimated tax savings using the investor's marginal tax bracket (e.g. 24% or 37%).
+ * 
+ * @param taxLots Array of granular tax lots purchased by the investor.
+ * @param marginalTaxRatePct Investor's marginal tax rate percentage (default 24.0%).
+ * @param minHarvestLossDollars Minimum unrealized loss required to justify harvest trade execution.
+ * @returns TaxHarvestSummary detailing harvestable losses, tax savings, and proxy replacement symbols.
  */
 export function detectTaxLossHarvestingOpportunities(
   taxLots: TaxLot[],
@@ -33,10 +45,12 @@ export function detectTaxLossHarvestingOpportunities(
   let totalEstimatedTaxSavings = 0;
 
   taxLots.forEach((lot) => {
+    // Calculate unrealized loss for this specific purchase lot
     const unrealizedLoss = (lot.costBasisPerShare - lot.currentPrice) * lot.shares;
 
     if (unrealizedLoss >= minHarvestLossDollars) {
       const estimatedSavings = (unrealizedLoss * marginalTaxRatePct) / 100;
+      // Look up correlated proxy ETF to maintain market exposure without wash-sale violation
       const swap = TAX_SWAP_REPLACEMENTS[lot.holdingSymbol] || {
         symbol: 'SPY',
         name: 'SPDR S&P 500 ETF Trust',
@@ -55,7 +69,7 @@ export function detectTaxLossHarvestingOpportunities(
         estimatedTaxSavings: Math.round(estimatedSavings * 100) / 100,
         replacementSymbol: swap.symbol,
         replacementName: swap.name,
-        washSaleWarning: false, // Avoid direct ticker purchase within 30 days
+        washSaleWarning: false, // 30-day wash-sale protection active
       });
     }
   });

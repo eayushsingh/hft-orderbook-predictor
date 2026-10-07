@@ -23,6 +23,18 @@ export interface PortfolioDriftAnalysis {
 
 /**
  * Evaluates current portfolio holdings against target allocation model to compute drift metrics.
+ * 
+ * Humanized Explanation for Maintainers:
+ * Over time, price fluctuations cause individual asset weights to deviate ("drift") from their target target model.
+ * This function calculates:
+ * 1. Individual percentage drift for each asset class vs min/max tolerance bands.
+ * 2. Total Portfolio Drift Score = Sum(Abs(CurrentWeight - TargetWeight)) / 2.
+ * 3. Rebalance triggers: Returns true if any asset breaches its tolerance corridor or if total drift score exceeds 5.0%.
+ * 
+ * @param holdings Current user portfolio holdings.
+ * @param targetAllocations Target model weights and tolerance bands.
+ * @param cashBalance Uninvested cash balance in portfolio.
+ * @returns Comprehensive PortfolioDriftAnalysis object.
  */
 export function calculatePortfolioDrift(
   holdings: PortfolioHolding[],
@@ -44,7 +56,9 @@ export function calculatePortfolioDrift(
     };
   }
 
-  // Map holdings to current asset class total values
+  // -------------------------------------------------------------------------
+  // Map holdings by asset class to calculate current aggregated market weights
+  // -------------------------------------------------------------------------
   const currentAssetValues: Partial<Record<AssetCategory, { value: number; symbol: string }>> = {};
   holdings.forEach((h) => {
     const existing = currentAssetValues[h.assetClass] || { value: 0, symbol: h.symbol };
@@ -69,6 +83,7 @@ export function calculatePortfolioDrift(
       maxSingleAssetDriftPct = absoluteDriftPct;
     }
 
+    // Check if current weight breaches tolerance corridors (minWeight / maxWeight)
     let status: 'OPTIMAL' | 'DRIFTED_HIGH' | 'DRIFTED_LOW' = 'OPTIMAL';
     if (currentWeightPct > target.maxWeightPct) {
       status = 'DRIFTED_HIGH';
@@ -90,13 +105,15 @@ export function calculatePortfolioDrift(
     };
   });
 
+  // Aggregate Total Drift Score (Half of sum of absolute deviations)
   const totalDriftScore = Math.round((totalAbsoluteDeviations / 2) * 10) / 10;
 
-  // Global threshold trigger: total drift score > 5.0% forces rebalance even if individual bounds haven't breached
+  // Global threshold trigger: total drift score >= 5.0% forces rebalance
   if (totalDriftScore >= 5.0) {
     isRebalanceRequired = true;
   }
 
+  // Determine overall portfolio drift severity level
   let driftSeverity: 'BALANCED' | 'MODERATE_DRIFT' | 'SEVERE_DRIFT' = 'BALANCED';
   if (totalDriftScore >= 8.0 || maxSingleAssetDriftPct >= 7.0) {
     driftSeverity = 'SEVERE_DRIFT';

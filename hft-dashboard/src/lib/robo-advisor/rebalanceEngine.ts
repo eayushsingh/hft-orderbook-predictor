@@ -13,6 +13,21 @@ export interface RebalanceOptions {
 
 /**
  * Calculates optimal rebalancing buy/sell trade orders to bring portfolio back to target weights.
+ * 
+ * Humanized Explanation for Maintainers:
+ * When a portfolio requires rebalancing, this engine generates an actionable trade execution plan:
+ * 1. SELL Orders: Executed FIRST to trim overweight positions and free up cash liquidity.
+ * 2. BUY Orders: Executed SECOND to purchase underweight positions using existing cash + sell proceeds.
+ * 3. Trade Thresholds: Ignores micro-trades under `minTradeValueDollars` (e.g. $50) to minimize unnecessary activity.
+ * 4. Cash Reserve Buffer: Maintains a configurable cash safety buffer (e.g. 1.0%) for liquidity.
+ * 5. Simulation: Recalculates expected drift after trade execution to confirm target alignment.
+ * 
+ * @param portfolioId Unique identifier for the account portfolio.
+ * @param holdings Current holdings.
+ * @param targetAllocations Model targets and tolerance thresholds.
+ * @param cashBalance Current available uninvested cash.
+ * @param options Execution settings like minimum trade size and cash buffer.
+ * @returns Complete RebalanceExecutionPlan containing trade orders array and post-rebalance drift metric.
  */
 export function generateRebalancePlan(
   portfolioId: string,
@@ -42,14 +57,16 @@ export function generateRebalancePlan(
   const reservedCash = (totalPortfolioValue * cashBufferPct) / 100;
   const investableCapital = totalPortfolioValue - reservedCash;
 
-  // Build map of current holdings by asset class
+  // Build map of current holdings by asset class for fast lookup
   const holdingsMap = new Map<string, PortfolioHolding>();
   holdings.forEach((h) => holdingsMap.set(h.assetClass, h));
 
   const orders: RebalanceTradeOrder[] = [];
   let totalTradeVolume = 0;
 
-  // 1. Process SELL orders first to free up capital
+  // -------------------------------------------------------------------------
+  // Step 1: Process SELL orders first to harvest capital from overweight positions
+  // -------------------------------------------------------------------------
   targetAllocations.forEach((target) => {
     const existingHolding = holdingsMap.get(target.assetClass);
     if (!existingHolding) return;
@@ -85,7 +102,9 @@ export function generateRebalancePlan(
     }
   });
 
-  // 2. Process BUY orders to allocate available cash & sold proceeds
+  // -------------------------------------------------------------------------
+  // Step 2: Process BUY orders using cash reserves and sell proceeds
+  // -------------------------------------------------------------------------
   targetAllocations.forEach((target) => {
     const existingHolding = holdingsMap.get(target.assetClass);
     const currentMarketValue = existingHolding ? existingHolding.totalMarketValue : 0;
@@ -123,7 +142,9 @@ export function generateRebalancePlan(
     }
   });
 
-  // Calculate estimated post-rebalance drift score
+  // -------------------------------------------------------------------------
+  // Step 3: Simulate post-rebalance drift score
+  // -------------------------------------------------------------------------
   const simulatedHoldings: PortfolioHolding[] = holdings.map((h) => {
     const order = orders.find((o) => o.symbol === h.symbol);
     if (!order) return h;
