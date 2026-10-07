@@ -137,6 +137,19 @@ const ALIAS_RULES: Array<{
   },
 ];
 
+/**
+ * Normalizes raw, messy regulatory institutional strings (FPI filings, shareholding pattern dumps, bulk deal feeds)
+ * into clean canonical entity titles and categories.
+ * 
+ * Humanized Explanation for Maintainers:
+ * Shareholding pattern disclosures submitted to BSE/NSE contain vast variations for the same institution
+ * (e.g. "HDFC MF", "HDFC Asset Management Co", "HDFC Trustee Ltd").
+ * This module uses regex pattern matching against a curated dictionary of Indian & global institutional entities
+ * (Mutual Funds, FIIs/FPIs, Insurance Companies, Banks, AIFs) to unify all variations into single canonical entities.
+ * 
+ * @param rawName Raw string from exchange bulk/block deal or shareholding pattern disclosure.
+ * @returns Object with normalizedName, category enum, and parentEntity string.
+ */
 export function normalizeInstitutionName(rawName: string): {
   normalizedName: string;
   category: InstitutionCategory;
@@ -144,6 +157,7 @@ export function normalizeInstitutionName(rawName: string): {
 } {
   const trimmed = rawName.trim();
 
+  // Step 1: Check curated regex alias dictionary
   for (const rule of ALIAS_RULES) {
     if (rule.patterns.some((pattern) => pattern.test(trimmed))) {
       return {
@@ -154,7 +168,7 @@ export function normalizeInstitutionName(rawName: string): {
     }
   }
 
-  // Fallback categorization heuristics
+  // Step 2: Fallback heuristic keyword analysis if entity is not in alias dictionary
   let category: InstitutionCategory = "OTHER_INSTITUTION";
   const lower = trimmed.toLowerCase();
 
@@ -170,7 +184,7 @@ export function normalizeInstitutionName(rawName: string): {
     category = "AIF";
   }
 
-  // Clean canonical title formatting
+  // Step 3: Strip corporate suffixes (Ltd, Inc, Corp, Pvt) for a clean display title
   const cleanTitle = trimmed
     .replace(/\s+/g, " ")
     .replace(/\b(ltd|limited|pvt|private|inc|llc|corp|corporation)\b/gi, "")
@@ -183,6 +197,9 @@ export function normalizeInstitutionName(rawName: string): {
   };
 }
 
+/**
+ * Retrieves existing normalized institution record from SQLite database or registers a new entry.
+ */
 export function getOrRegisterInstitution(
   db: Database.Database,
   rawName: string

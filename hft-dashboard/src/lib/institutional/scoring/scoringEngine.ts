@@ -44,6 +44,36 @@ export interface AccumulationScoreResult {
   missingSources: string[];
 }
 
+/**
+ * Computes institutional accumulation score (0 - 100), classification, and evidence breakdown.
+ * 
+ * Humanized Explanation for Maintainers:
+ * This is the central scoring engine for Indian equities. It aggregates 7 weighted modules:
+ * 1. Ownership Trend (max 25 pts): Mutual Fund & FPI quarterly shareholding pattern changes.
+ * 2. Bulk/Block Deals (max 20 pts): Exchange disclosed bulk buy vs sell deal cash flow.
+ * 3. Individual Institutions (max 15 pts): Conviction accumulation by marquee funds (LIC, HDFC, Vanguard).
+ * 4. Delivery Confirmation (max 15 pts): High NSE delivery volume % confirming institutional absorption.
+ * 5. Volume Anomaly (max 10 pts): Delivery volume spikes relative to 20-day moving average.
+ * 6. Persistence (max 10 pts): Multi-quarter consecutive accumulation quarters.
+ * 7. Price Volume Alignment (max 5 pts): Price rising on high delivery volume.
+ * 
+ * Score Classifications:
+ * - 80-100: STRONG_ACCUMULATION
+ * - 60-79: MODERATE_ACCUMULATION
+ * - 40-59: NEUTRAL_HOLD
+ * - 20-39: MODERATE_DISTRIBUTION
+ * - 0-19: STRONG_DISTRIBUTION
+ * 
+ * @param symbol Stock symbol (e.g. RELIANCE, TCS).
+ * @param signals Array of calculated signal contributions.
+ * @param trend Shareholding trend metrics.
+ * @param deals Bulk/block deal flow metrics.
+ * @param indTrend Marquee institutional holder movement.
+ * @param market NSE telemetry & delivery anomaly metrics.
+ * @param dataFreshness Age of regulatory data sources.
+ * @param missingSources Missing data feeds if any.
+ * @returns Complete AccumulationScoreResult object.
+ */
 export function computeAccumulationScore(
   symbol: string,
   signals: CalculatedSignal[],
@@ -54,12 +84,15 @@ export function computeAccumulationScore(
   dataFreshness: { shareholdingAgeDays: number; dealsAgeDays: number; marketDataAgeDays: number },
   missingSources: string[] = []
 ): AccumulationScoreResult {
-  // Extract module score contributions
+  // Helper to extract aggregate score contribution per signal category
   const getCategoryScore = (cat: string) =>
     signals
       .filter((s) => s.signalCategory === cat)
       .reduce((acc, s) => acc + s.scoreContribution, 0);
 
+  // -------------------------------------------------------------------------
+  // 1. Build Score Breakdown by Module Category
+  // -------------------------------------------------------------------------
   const breakdown: ScoreBreakdown = {
     ownershipTrendScore: Math.round(getCategoryScore("OWNERSHIP_TREND") * 10) / 10,
     bulkBlockDealsScore: Math.round(getCategoryScore("BULK_BLOCK_DEALS") * 10) / 10,
@@ -79,9 +112,12 @@ export function computeAccumulationScore(
     breakdown.persistenceScore +
     breakdown.priceVolumeScore;
 
+  // Clamp aggregate score between 0 and 100
   const score = Math.min(100, Math.max(0, Math.round(rawTotalScore)));
 
-  // Classify score
+  // -------------------------------------------------------------------------
+  // 2. Determine Classification Category
+  // -------------------------------------------------------------------------
   let classification: ClassificationType = "NEUTRAL_HOLD";
   if (score >= 80) classification = "STRONG_ACCUMULATION";
   else if (score >= 60) classification = "MODERATE_ACCUMULATION";
@@ -89,7 +125,9 @@ export function computeAccumulationScore(
   else if (score >= 20) classification = "MODERATE_DISTRIBUTION";
   else classification = "STRONG_DISTRIBUTION";
 
-  // Determine Confidence level
+  // -------------------------------------------------------------------------
+  // 3. Determine Data Confidence Level based on Data Staleness & Availability
+  // -------------------------------------------------------------------------
   let confidence: ConfidenceType = "HIGH";
   if (missingSources.length > 2 || dataFreshness.shareholdingAgeDays > 120) {
     confidence = "INSUFFICIENT_DATA";
@@ -99,7 +137,9 @@ export function computeAccumulationScore(
     confidence = "MEDIUM";
   }
 
-  // Generate Positive Evidence Points
+  // -------------------------------------------------------------------------
+  // 4. Generate Human-Readable Positive Evidence Trail
+  // -------------------------------------------------------------------------
   const positive: string[] = [];
   if (trend.mutualFundCurrentPct > trend.mutualFundPrevPct) {
     positive.push(
@@ -130,7 +170,9 @@ export function computeAccumulationScore(
     positive.push(`✓ ${acc.name} increased holding (+${acc.changePct.toFixed(2)}% pts)`);
   });
 
-  // Generate Negative / Warning Evidence Points
+  // -------------------------------------------------------------------------
+  // 5. Generate Human-Readable Warning Evidence Points
+  // -------------------------------------------------------------------------
   const negative: string[] = [];
   indTrend.topDistributors.slice(0, 2).forEach((dist) => {
     negative.push(`⚠ ${dist.name} reduced holding (${dist.changePct.toFixed(2)}% pts)`);
