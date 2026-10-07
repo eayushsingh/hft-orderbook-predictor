@@ -13,9 +13,7 @@ import {
   Sparkles,
   ShieldCheck,
   Zap,
-  Tag,
   FileText,
-  Download,
 } from "lucide-react";
 import { useSubscription, SubscriptionPlanId } from "@/context/SubscriptionContext";
 import { printOrDownloadInvoice, calculateGST, validateGSTIN, InvoiceDetails } from "@/lib/subscription/invoiceGenerator";

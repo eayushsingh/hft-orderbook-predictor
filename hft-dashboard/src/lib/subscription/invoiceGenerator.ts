@@ -65,7 +65,7 @@ export function calculateGST(amount: number, isInterState = false): GSTBreakdown
 
 export function generateInvoiceHTML(details: InvoiceDetails): string {
   const { customerGSTIN } = details;
-  const { taxableAmount, cgstAmount, sgstAmount, totalTaxAmount, totalInvoiceAmount } = details.gstBreakdown;
+  const { taxableAmount, cgstAmount, sgstAmount, totalInvoiceAmount } = details.gstBreakdown;
 
   return `
     <!DOCTYPE html>

@@ -2,7 +2,7 @@
 
 import React from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Receipt, X, Download, FileText, ShieldCheck } from "lucide-react";
+import { Receipt, X, Download, FileText } from "lucide-react";
 import { useSubscription, PaymentRecord } from "@/context/SubscriptionContext";
 import { printOrDownloadInvoice, calculateGST } from "@/lib/subscription/invoiceGenerator";
 

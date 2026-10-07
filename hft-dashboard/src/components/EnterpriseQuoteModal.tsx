@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Building2, X, Send, CheckCircle2, ShieldCheck, Cpu } from "lucide-react";
+import { Building2, X, Send, CheckCircle2, ShieldCheck } from "lucide-react";
 
 interface EnterpriseQuoteModalProps {
   isOpen: boolean;

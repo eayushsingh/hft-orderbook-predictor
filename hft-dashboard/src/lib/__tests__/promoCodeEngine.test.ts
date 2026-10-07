@@ -2,7 +2,6 @@ import { describe, it, expect } from "vitest";
 import {
   validatePromoCode,
   validateAndApplyPromoCode,
-  ACTIVE_PROMO_CODES,
 } from "../subscription/promoCodeEngine";
 
 /**

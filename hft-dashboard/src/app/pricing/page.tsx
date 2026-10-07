@@ -8,7 +8,7 @@ import EnterpriseQuoteModal from "@/components/EnterpriseQuoteModal";
 import TrialExtensionModal from "@/components/TrialExtensionModal";
 import SubscriptionUsageMeter from "@/components/SubscriptionUsageMeter";
 import PaymentFaqAccordion from "@/components/PaymentFaqAccordion";
-import { Check, Gift, Sparkles, Clock, ShieldCheck, Download, Building2, Lock, Award, FileSpreadsheet } from "lucide-react";
+import { Check, Gift, ShieldCheck, Building2, Lock, Award, FileSpreadsheet } from "lucide-react";
 import { useSubscription } from "@/context/SubscriptionContext";
 
 /**
