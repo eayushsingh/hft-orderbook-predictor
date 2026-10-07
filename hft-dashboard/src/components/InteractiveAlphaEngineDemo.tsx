@@ -178,24 +178,30 @@ function InteractiveAlphaEngineDemoComponent() {
         {/* Tab 2: Micro-Price Simulator */}
         {activeTab === "microprice" && (
           <div className="p-6 sm:p-8 space-y-6 font-mono">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
-              <div className="p-5 rounded-2xl bg-slate-100 dark:bg-[#141420] border border-slate-200 dark:border-[#222234]">
-                <div className="text-xs text-slate-500 dark:text-zinc-400 uppercase">Best Bid Price (P_bid)</div>
-                <div className="text-xl font-black text-emerald-600 dark:text-emerald-400 mt-1">₹{bestBid.toFixed(2)}</div>
-                <div className="text-[11px] text-slate-500 dark:text-zinc-500 mt-1">Bid Volume: {bidVolume.toLocaleString()}</div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 text-center">
+              <div className="p-4 rounded-2xl bg-slate-100 dark:bg-[#141420] border border-slate-200 dark:border-[#222234]">
+                <div className="text-xs text-slate-500 dark:text-zinc-400 uppercase">Best Bid (P_bid)</div>
+                <div className="text-lg font-black text-emerald-600 dark:text-emerald-400 mt-1">₹{bestBid.toFixed(2)}</div>
+                <div className="text-[11px] text-slate-500 dark:text-zinc-500 mt-1">Bid Qty: {bidVolume.toLocaleString()}</div>
               </div>
 
-              <div className="p-5 rounded-2xl bg-slate-100 dark:bg-[#141420] border border-slate-200 dark:border-[#222234]">
-                <div className="text-xs text-slate-500 dark:text-zinc-400 uppercase">Standard Mid-Price</div>
-                <div className="text-xl font-black text-slate-800 dark:text-white mt-1">₹{midPrice.toFixed(2)}</div>
+              <div className="p-4 rounded-2xl bg-slate-100 dark:bg-[#141420] border border-slate-200 dark:border-[#222234]">
+                <div className="text-xs text-slate-500 dark:text-zinc-400 uppercase">Best Ask (P_ask)</div>
+                <div className="text-lg font-black text-rose-600 dark:text-rose-400 mt-1">₹{bestAsk.toFixed(2)}</div>
+                <div className="text-[11px] text-slate-500 dark:text-zinc-500 mt-1">Ask Qty: {askVolume.toLocaleString()}</div>
+              </div>
+
+              <div className="p-4 rounded-2xl bg-slate-100 dark:bg-[#141420] border border-slate-200 dark:border-[#222234]">
+                <div className="text-xs text-slate-500 dark:text-zinc-400 uppercase">Standard Mid</div>
+                <div className="text-lg font-black text-slate-800 dark:text-white mt-1">₹{midPrice.toFixed(2)}</div>
                 <div className="text-[11px] text-slate-500 dark:text-zinc-500 mt-1">(P_bid + P_ask) / 2</div>
               </div>
 
-              <div className="p-5 rounded-2xl bg-[#387ed1]/10 border border-[#387ed1]/30">
-                <div className="text-xs text-[#387ed1] uppercase font-bold">LALAN Micro-Price</div>
-                <div className="text-xl font-black text-[#387ed1] mt-1">₹{microPrice.toFixed(2)}</div>
+              <div className="p-4 rounded-2xl bg-[#387ed1]/10 border border-[#387ed1]/30">
+                <div className="text-xs text-[#387ed1] uppercase font-bold">Micro-Price</div>
+                <div className="text-lg font-black text-[#387ed1] mt-1">₹{microPrice.toFixed(2)}</div>
                 <div className="text-[11px] text-[#387ed1] font-bold mt-1">
-                  Drift: {microPrice > midPrice ? `+₹${(microPrice - midPrice).toFixed(2)} (Bullish)` : `₹${(microPrice - midPrice).toFixed(2)} (Bearish)`}
+                  {microPrice > midPrice ? `+₹${(microPrice - midPrice).toFixed(2)} (Bullish)` : `₹${(microPrice - midPrice).toFixed(2)} (Bearish)`}
                 </div>
               </div>
             </div>
