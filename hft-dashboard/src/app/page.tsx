@@ -48,6 +48,16 @@ const featureCards = [
   },
 ];
 
+/**
+ * Primary Landing Page Component (`/`)
+ * 
+ * Humanized Explanation for Maintainers:
+ * Serves as the main entrance page for the LALAN HFT Predictor platform:
+ * 1. Hero Section: Displays live ticker tape, platform telemetry counters, and CTA buttons.
+ * 2. Interactive Alpha Engine: Embedded live math simulator for OBI and Micro-Price drift.
+ * 3. Institutional Matrix: Comparison breakdown of LALAN vs Zerodha, TradingView, and Bloomberg Terminal.
+ * 4. Quant API Playground: Code snippets in Python, TypeScript, and C++ for API integration.
+ */
 export default function LandingPage() {
   const [liveOrderEvents, setLiveOrderEvents] = useState<number>(1000000);
 

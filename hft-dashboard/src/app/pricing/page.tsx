@@ -7,6 +7,16 @@ import SubscriptionPricingModal, { PRICING_PLANS } from "@/components/Subscripti
 import { Check, Gift, Sparkles, Clock, ShieldCheck } from "lucide-react";
 import { useSubscription } from "@/context/SubscriptionContext";
 
+/**
+ * Pricing & Subscription Plans Page Component (`/pricing`)
+ * 
+ * Humanized Explanation for Maintainers:
+ * Tiered subscription matrix detailing Retail, Pro Quant, and Institutional HFT plans:
+ * 1. Launch Special: Highlights 14-Day Unlimited Free Trial banner active for all new accounts.
+ * 2. Billing Cycle Toggle: Allows switching between Monthly & Annual billing (with 20% annual discount).
+ * 3. Currency Selector: Toggles display between Indian Rupee (₹ INR) and US Dollar ($ USD).
+ * 4. Active Badge: Reads `useSubscription()` context to display active tier status and remaining trial days.
+ */
 export default function PricingPage() {
   const [billingCycle, setBillingCycle] = useState<"monthly" | "annual">("annual");
   const [currency, setCurrency] = useState<"INR" | "USD">("INR");
