@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, ArrowUpRight, ArrowDownRight, ShieldCheck, Zap, Info } from "lucide-react";
+import { X, Zap } from "lucide-react";
 
 export interface ExecutedOrder {
   orderId: string;
@@ -196,6 +196,20 @@ export default function LalanOrderTicketModal({
                 />
               </div>
             </div>
+
+            {validity === "SL" && (
+              <div>
+                <label className="text-[10px] text-[#747888] uppercase tracking-wider block mb-1">
+                  Trigger Price (Stop-Loss Level)
+                </label>
+                <input
+                  type="number"
+                  value={triggerPrice}
+                  onChange={(e) => setTriggerPrice(parseFloat(e.target.value) || 0)}
+                  className="w-full rounded-lg border border-[#262634] bg-[#14141a] px-3 py-2 text-sm font-bold text-white focus:border-[#387ed1] focus:outline-none"
+                />
+              </div>
+            )}
 
             {/* Margin Calculation Summary */}
             <div className="rounded-xl bg-[#14141a] border border-[#262634] p-3 space-y-1.5">
