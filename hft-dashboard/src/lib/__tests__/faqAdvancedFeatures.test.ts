@@ -3,6 +3,15 @@ import { generateFAQJsonLd, generateFAQJsonLdString } from '../faqSchemaGenerato
 import { trackFAQSearch, getSearchHistory, getTopSearchTerms } from '../faqAnalyticsTracker';
 import { getPopularFAQs, ALL_FAQS } from '../faqData';
 
+/**
+ * FAQ Advanced Features & Analytics Vitest Unit Test Suite
+ * 
+ * Humanized Explanation for Maintainers:
+ * Verifies key non-UI FAQ infrastructure utilities:
+ * 1. Schema.org JSON-LD Generator: Confirms proper `@context` and `@type` FAQPage metadata formatting for SEO.
+ * 2. Analytics Tracker: Tests search query logging to `localStorage` and query frequency ranking.
+ * 3. Popular FAQs Helper: Validates helpfulness vote sorting.
+ */
 describe('FAQ Advanced Utilities Test Suite', () => {
   beforeEach(() => {
     if (typeof localStorage !== 'undefined') {

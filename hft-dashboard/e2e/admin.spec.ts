@@ -1,5 +1,14 @@
 import { test, expect } from '@playwright/test';
 
+/**
+ * Admin Control Panel Playwright E2E Test Suite
+ * 
+ * Humanized Explanation for Maintainers:
+ * Automated End-to-End browser test suite validating:
+ * 1. Security PIN Auth Gate: Authorizes admin PIN `8899` before accessing sensitive panels.
+ * 2. Telemetry Cards: Verifies WebSocket session counts, execution volume, and engine latency displays.
+ * 3. User Roster Matrix: Validates subscription tier upgrade/downgrade controls.
+ */
 test.describe('Admin Control Panel & Telemetry', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('/admin');
