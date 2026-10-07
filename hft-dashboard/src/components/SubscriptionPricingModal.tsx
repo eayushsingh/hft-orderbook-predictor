@@ -13,8 +13,13 @@ import {
   Sparkles,
   ShieldCheck,
   Zap,
+  Tag,
+  FileText,
+  Download,
 } from "lucide-react";
 import { useSubscription, SubscriptionPlanId } from "@/context/SubscriptionContext";
+import { printOrDownloadInvoice, calculateGST, validateGSTIN, InvoiceDetails } from "@/lib/subscription/invoiceGenerator";
+import { validatePromoCode } from "@/lib/subscription/promoCodeEngine";
 
 export interface SubscriptionPlan {
   id: SubscriptionPlanId;
@@ -131,8 +136,23 @@ export default function SubscriptionPricingModal({
   const [paymentMethod, setPaymentMethod] = useState<"upi" | "card" | "netbanking">("upi");
   const [isProcessing, setIsProcessing] = useState(false);
   const [actionMessage, setActionMessage] = useState<string>("");
+  const [promoInput, setPromoInput] = useState("");
+  const [appliedPromo, setAppliedPromo] = useState<{ code: string; percent: number; msg: string } | null>(null);
+  const [gstinInput, setGstinInput] = useState("");
+  const [gstinError, setGstinError] = useState("");
+  const [invoiceDetails, setInvoiceDetails] = useState<InvoiceDetails | null>(null);
 
   if (!isOpen) return null;
+
+  const handleApplyPromo = () => {
+    if (!promoInput.trim()) return;
+    const res = validatePromoCode(promoInput, checkoutPlan?.id);
+    if (res.valid) {
+      setAppliedPromo({ code: res.code, percent: res.discountPercent, msg: res.description });
+    } else {
+      setAppliedPromo({ code: "", percent: 0, msg: res.error || "Invalid code" });
+    }
+  };
 
   const handleStartCheckout = (plan: SubscriptionPlan, isTrial = true) => {
     if (plan.id === activePlanId && !isTrialActive) return;
@@ -143,6 +163,12 @@ export default function SubscriptionPricingModal({
 
   const handleConfirmAction = async () => {
     if (!checkoutPlan) return;
+
+    if (gstinInput.trim() && !validateGSTIN(gstinInput)) {
+      setGstinError("Invalid GSTIN format (e.g. 27AABCL8899Z1Z5)");
+      return;
+    }
+    setGstinError("");
     setIsProcessing(true);
 
     if (isTrialCheckout && checkoutPlan.id !== "retail") {
@@ -154,7 +180,7 @@ export default function SubscriptionPricingModal({
         if (onSelectPlan) onSelectPlan(checkoutPlan.id);
       }
     } else {
-      const price =
+      let price =
         currency === "INR"
           ? billingCycle === "annual"
             ? checkoutPlan.annualPriceINR
@@ -163,7 +189,35 @@ export default function SubscriptionPricingModal({
           ? checkoutPlan.annualPriceUSD
           : checkoutPlan.monthlyPriceUSD;
 
-      const res = await upgradePlan(checkoutPlan.id, paymentMethod, price, currency);
+      if (appliedPromo && appliedPromo.percent > 0) {
+        price = Math.round(price * (1 - appliedPromo.percent / 100));
+      }
+
+      const invNum = `INV-LHFT-${Date.now().toString(36).toUpperCase()}`;
+      const gstDetails = calculateGST(price);
+      
+      const inv: InvoiceDetails = {
+        invoiceNumber: invNum,
+        invoiceDate: new Date().toLocaleDateString("en-IN"),
+        planName: checkoutPlan.name,
+        customerName: "Valued Quant Trader",
+        customerEmail: "trader@lalan-quant.com",
+        customerGSTIN: gstinInput.trim() || undefined,
+        paymentMethod: paymentMethod.toUpperCase(),
+        currency: currency,
+        amountPaid: price,
+        gstBreakdown: gstDetails,
+      };
+      setInvoiceDetails(inv);
+
+      const res = await upgradePlan(
+        checkoutPlan.id,
+        paymentMethod,
+        price,
+        currency,
+        appliedPromo?.code || undefined,
+        gstinInput.trim() || undefined
+      );
       setIsProcessing(false);
       if (res.success) {
         setActionMessage(res.message);
@@ -555,6 +609,45 @@ export default function SubscriptionPricingModal({
                         <option>Axis Bank Netbanking</option>
                       </select>
                     )}
+
+                    {/* Promo Code Input Box */}
+                    <div className="pt-2 border-t border-[#242432]">
+                      <label className="text-[10px] text-[#747888] font-mono block mb-1">Have a Promo / Coupon Code?</label>
+                      <div className="flex gap-2">
+                        <input
+                          type="text"
+                          placeholder="e.g. QUANT20, GSTFREE, ALPHA100"
+                          value={promoInput}
+                          onChange={(e) => setPromoInput(e.target.value)}
+                          className="flex-1 bg-[#181822] text-xs font-mono text-white p-2 rounded border border-[#282838] uppercase"
+                        />
+                        <button
+                          type="button"
+                          onClick={handleApplyPromo}
+                          className="px-3 py-2 bg-[#387ed1]/20 border border-[#387ed1] text-[#387ed1] font-mono text-xs font-bold rounded hover:bg-[#387ed1]/30"
+                        >
+                          Apply
+                        </button>
+                      </div>
+                      {appliedPromo && (
+                        <p className={`text-[11px] font-mono mt-1 ${appliedPromo.percent > 0 ? "text-[#10b981]" : "text-red-400"}`}>
+                          {appliedPromo.msg}
+                        </p>
+                      )}
+                    </div>
+
+                    {/* GSTIN Field (B2B Tax Credit) */}
+                    <div className="pt-2 border-t border-[#242432]">
+                      <label className="text-[10px] text-[#747888] font-mono block mb-1">Company GSTIN (Optional B2B Tax Invoice)</label>
+                      <input
+                        type="text"
+                        placeholder="27AABCL8899Z1Z5"
+                        value={gstinInput}
+                        onChange={(e) => setGstinInput(e.target.value.toUpperCase())}
+                        className="w-full bg-[#181822] text-xs font-mono text-white p-2 rounded border border-[#282838] uppercase"
+                      />
+                      {gstinError && <p className="text-[11px] font-mono text-red-400 mt-1">{gstinError}</p>}
+                    </div>
                   </div>
                 </div>
               )}
@@ -603,6 +696,19 @@ export default function SubscriptionPricingModal({
                 {actionMessage ||
                   `Your account has been upgraded to ${checkoutPlan?.name}. Zero-GC LMAX Disruptor stream and direct LALAN HFT telemetry unlocked.`}
               </p>
+
+              {invoiceDetails && (
+                <div className="pt-2">
+                  <button
+                    onClick={() => printOrDownloadInvoice(invoiceDetails)}
+                    className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-[#1a1b26] border border-[#387ed1] text-[#387ed1] hover:bg-[#387ed1] hover:text-white font-mono text-xs font-bold transition-all shadow"
+                  >
+                    <FileText className="h-4 w-4" />
+                    <span>Download GST Tax Invoice</span>
+                  </button>
+                </div>
+              )}
+
               <button
                 onClick={resetAndClose}
                 className="bg-[#387ed1] hover:bg-[#306ec0] text-white font-mono text-xs font-bold px-8 py-3 rounded-xl transition-all shadow-lg mt-2"
