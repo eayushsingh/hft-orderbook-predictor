@@ -1,15 +1,8 @@
 "use client";
 
 import React, { useState, useMemo } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import {
-  Layers,
-  ArrowUpRight,
-  ArrowDownRight,
-  SlidersHorizontal,
-  ChevronDown,
-  Zap,
-} from "lucide-react";
+import { motion } from "framer-motion";
+import { Layers, Zap } from "lucide-react";
 
 export interface DepthLevel {
   price: number;
@@ -226,7 +219,9 @@ export default function LalanOrderBook({
                     onClick={() => onSelectPrice && onSelectPrice(bid.price, "BUY")}
                     onMouseEnter={() => setHoveredRow({ price: bid.price, type: "BUY" })}
                     onMouseLeave={() => setHoveredRow(null)}
-                    className="relative flex items-center justify-between px-2 py-1 rounded cursor-pointer transition-all duration-200 hover:bg-[#10b981]/20 hover:scale-[1.01] active:scale-[0.99]"
+                    className={`relative flex items-center justify-between px-2 py-1 rounded cursor-pointer transition-all duration-200 hover:bg-[#10b981]/20 hover:scale-[1.01] active:scale-[0.99] ${
+                      hoveredRow?.price === bid.price && hoveredRow.type === "BUY" ? "ring-1 ring-[#10b981]/50 bg-[#10b981]/20" : ""
+                    }`}
                   >
                     <div
                       className="absolute inset-y-0 left-0 rounded bg-[#10b981]/15 pointer-events-none transition-all duration-300 ease-out transform-gpu"
@@ -251,7 +246,9 @@ export default function LalanOrderBook({
                     onClick={() => onSelectPrice && onSelectPrice(ask.price, "SELL")}
                     onMouseEnter={() => setHoveredRow({ price: ask.price, type: "SELL" })}
                     onMouseLeave={() => setHoveredRow(null)}
-                    className="relative flex items-center justify-between px-2 py-1 rounded cursor-pointer transition-all duration-200 hover:bg-[#f43f5e]/20 hover:scale-[1.01] active:scale-[0.99]"
+                    className={`relative flex items-center justify-between px-2 py-1 rounded cursor-pointer transition-all duration-200 hover:bg-[#f43f5e]/20 hover:scale-[1.01] active:scale-[0.99] ${
+                      hoveredRow?.price === ask.price && hoveredRow.type === "SELL" ? "ring-1 ring-[#f43f5e]/50 bg-[#f43f5e]/20" : ""
+                    }`}
                   >
                     <div
                       className="absolute inset-y-0 right-0 rounded bg-[#f43f5e]/15 pointer-events-none transition-all duration-300 ease-out transform-gpu"

@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Menu, X, Zap, Sun, Moon, LogIn, User as UserIcon, LogOut, ChevronDown, ShieldAlert } from "lucide-react";
+import { Menu, X, Zap, Sun, Moon, LogIn, LogOut, ChevronDown, ShieldAlert } from "lucide-react";
 import { useTheme } from "@/context/ThemeContext";
 import { useAuth } from "@/context/AuthContext";
 import WorldMarketClock from "@/components/WorldMarketClock";

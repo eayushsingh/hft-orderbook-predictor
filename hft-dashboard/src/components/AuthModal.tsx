@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, Mail, Lock, User, ArrowRight, ShieldCheck, Sparkles, CheckCircle, KeyRound } from "lucide-react";
+import { X, Mail, Lock, User, ArrowRight, Sparkles, CheckCircle } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 
 interface GoogleCredentialResponse {
@@ -99,7 +99,7 @@ export default function AuthModal() {
       } else {
         await signupWithEmail(name, email, password);
       }
-    } catch (err) {
+    } catch {
       setError("Authentication failed. Please check your credentials.");
     } finally {
       setIsLoading(false);
@@ -122,7 +122,7 @@ export default function AuthModal() {
           console.warn("Google OAuth prompt notice", e);
         }
       }
-    } catch (err) {
+    } catch {
       await loginWithEmail("trader@lalan-hft.com", "demo123");
     } finally {
       setIsLoading(false);
