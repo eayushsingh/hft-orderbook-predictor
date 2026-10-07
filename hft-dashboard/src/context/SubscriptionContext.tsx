@@ -1,6 +1,8 @@
 "use client";
 
 import React, { createContext, useContext, useState, useEffect, useCallback } from "react";
+import { validatePromoCode } from "../lib/subscription/promoCodeEngine";
+import { downloadTransactionsAsCSV, PaymentTransactionRecord } from "../lib/subscription/paymentReceiptExporter";
 
 export type SubscriptionPlanId = "retail" | "pro" | "institutional";
 
@@ -13,6 +15,9 @@ export interface PaymentRecord {
   paymentMethod: string;
   status: "TRIAL_ACTIVATED" | "PAID" | "EXPIRED" | "CANCELLED";
   trialDurationDays?: number;
+  invoiceNumber?: string;
+  gstin?: string;
+  promoCode?: string;
 }
 
 export interface SubscriptionState {
@@ -24,6 +29,8 @@ export interface SubscriptionState {
   trialDaysTotal: number;
   hasUsedTrial: boolean;
   paymentHistory: PaymentRecord[];
+  appliedPromoCode: string | null;
+  discountPercentage: number;
 }
 
 interface SubscriptionContextType {
@@ -36,8 +43,12 @@ interface SubscriptionContextType {
   daysRemainingInTrial: number;
   hasUsedTrial: boolean;
   paymentHistory: PaymentRecord[];
+  appliedPromoCode: string | null;
+  discountPercentage: number;
   startFreeTrial: (planId: SubscriptionPlanId, durationDays?: number) => Promise<{ success: boolean; message: string }>;
-  upgradePlan: (planId: SubscriptionPlanId, paymentMethod: string, amount: number, currency: string) => Promise<{ success: boolean; message: string }>;
+  upgradePlan: (planId: SubscriptionPlanId, paymentMethod: string, amount: number, currency: string, promoCode?: string, gstin?: string) => Promise<{ success: boolean; message: string }>;
+  applyPromoCode: (code: string) => { success: boolean; discountPercent: number; message: string };
+  exportPaymentHistoryCSV: () => void;
   cancelSubscription: () => void;
   hasFeatureAccess: (requiredTier: SubscriptionPlanId) => boolean;
   getPlanBadgeLabel: () => string;
@@ -53,6 +64,8 @@ const DEFAULT_STATE: SubscriptionState = {
   trialEndDate: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000).toISOString(), // 14 days from now
   trialDaysTotal: 14,
   hasUsedTrial: true,
+  appliedPromoCode: null,
+  discountPercentage: 0,
   paymentHistory: [
     {
       id: "TRL-PRO-INIT-2026",
@@ -187,13 +200,44 @@ export function SubscriptionProvider({ children }: { children: React.ReactNode }
     };
   };
 
+  // Apply Promo Code
+  const applyPromoCode = (code: string): { success: boolean; discountPercent: number; message: string } => {
+    const res = validatePromoCode(code);
+    if (res.valid) {
+      setState(prev => ({ ...prev, appliedPromoCode: res.code, discountPercentage: res.discountPercent }));
+      return { success: true, discountPercent: res.discountPercent, message: res.description };
+    }
+    return { success: false, discountPercent: 0, message: res.error || "Invalid promo code" };
+  };
+
+  // Export transaction history to CSV
+  const exportPaymentHistoryCSV = () => {
+    const records: PaymentTransactionRecord[] = state.paymentHistory.map(ph => ({
+      id: ph.id,
+      timestamp: ph.date,
+      planId: ph.planId,
+      planName: ph.planId === "institutional" ? "INSTITUTIONAL QUANT" : ph.planId === "pro" ? "PRO QUANT" : "RETAIL FREE",
+      amount: ph.amount,
+      currency: ph.currency,
+      paymentMethod: ph.paymentMethod,
+      status: ph.status === "PAID" ? "COMPLETED" : "COMPLETED",
+      invoiceNumber: ph.invoiceNumber || `INV-${ph.id}`,
+      gstin: ph.gstin,
+      promoCode: ph.promoCode,
+    }));
+    downloadTransactionsAsCSV(records);
+  };
+
   // Full Paid Upgrade (Post-trial or direct)
   const upgradePlan = async (
     planId: SubscriptionPlanId,
     paymentMethod: string,
     amount: number,
-    currency: string
+    currency: string,
+    promoCode?: string,
+    gstin?: string
   ): Promise<{ success: boolean; message: string }> => {
+    const invoiceNum = `INV-LHFT-${Date.now().toString(36).toUpperCase()}`;
     const paymentRecord: PaymentRecord = {
       id: "PAY-" + Date.now().toString(36).toUpperCase(),
       date: new Date().toISOString(),
@@ -202,6 +246,9 @@ export function SubscriptionProvider({ children }: { children: React.ReactNode }
       currency,
       paymentMethod,
       status: "PAID",
+      invoiceNumber: invoiceNum,
+      gstin: gstin || undefined,
+      promoCode: promoCode || state.appliedPromoCode || undefined,
     };
 
     const newState: SubscriptionState = {
@@ -223,6 +270,9 @@ export function SubscriptionProvider({ children }: { children: React.ReactNode }
           paymentMethod,
           amount,
           currency,
+          promoCode,
+          gstin,
+          invoiceNumber: invoiceNum,
         }),
       });
     } catch (e) {
@@ -286,8 +336,12 @@ export function SubscriptionProvider({ children }: { children: React.ReactNode }
         daysRemainingInTrial: daysRemaining,
         hasUsedTrial: state.hasUsedTrial,
         paymentHistory: state.paymentHistory,
+        appliedPromoCode: state.appliedPromoCode,
+        discountPercentage: state.discountPercentage,
         startFreeTrial,
         upgradePlan,
+        applyPromoCode,
+        exportPaymentHistoryCSV,
         cancelSubscription,
         hasFeatureAccess,
         getPlanBadgeLabel,

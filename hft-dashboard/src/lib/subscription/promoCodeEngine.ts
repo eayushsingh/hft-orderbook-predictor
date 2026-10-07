@@ -47,6 +47,33 @@ export const ACTIVE_PROMO_CODES: Record<string, PromoCode> = {
   },
 };
 
+export interface PromoValidationResult {
+  valid: boolean;
+  code: string;
+  discountPercent: number;
+  description: string;
+  error?: string;
+}
+
+export function validatePromoCode(rawCode: string, planId?: string): PromoValidationResult {
+  const code = rawCode.trim().toUpperCase();
+  if (!code) return { valid: false, code: "", discountPercent: 0, description: "", error: "Code cannot be empty" };
+
+  const promo = ACTIVE_PROMO_CODES[code];
+  if (!promo) return { valid: false, code, discountPercent: 0, description: "", error: `Coupon '${code}' is invalid or expired` };
+
+  if (planId && promo.applicablePlans && !promo.applicablePlans.includes(planId)) {
+    return { valid: false, code, discountPercent: 0, description: "", error: `Coupon '${code}' is not valid for plan ${planId}` };
+  }
+
+  return {
+    valid: true,
+    code,
+    discountPercent: promo.discountType === "PERCENTAGE" ? promo.discountValue : 0,
+    description: promo.description,
+  };
+}
+
 export interface PromoCalculationResult {
   isValid: boolean;
   code: string;
