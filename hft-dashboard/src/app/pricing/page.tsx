@@ -4,7 +4,9 @@ import React, { useState } from "react";
 import LalanSiteHeader from "@/components/LalanSiteHeader";
 import LalanSiteFooter from "@/components/LalanSiteFooter";
 import SubscriptionPricingModal, { PRICING_PLANS } from "@/components/SubscriptionPricingModal";
-import { Check, Gift, Sparkles, Clock, ShieldCheck } from "lucide-react";
+import EnterpriseQuoteModal from "@/components/EnterpriseQuoteModal";
+import TrialExtensionModal from "@/components/TrialExtensionModal";
+import { Check, Gift, Sparkles, Clock, ShieldCheck, Download, Building2, Lock, Award, FileSpreadsheet } from "lucide-react";
 import { useSubscription } from "@/context/SubscriptionContext";
 
 /**
@@ -16,12 +18,15 @@ import { useSubscription } from "@/context/SubscriptionContext";
  * 2. Billing Cycle Toggle: Allows switching between Monthly & Annual billing (with 20% annual discount).
  * 3. Currency Selector: Toggles display between Indian Rupee (₹ INR) and US Dollar ($ USD).
  * 4. Active Badge: Reads `useSubscription()` context to display active tier status and remaining trial days.
+ * 5. Transaction Exporter: Export CSV transaction history directly from payment context.
  */
 export default function PricingPage() {
   const [billingCycle, setBillingCycle] = useState<"monthly" | "annual">("annual");
   const [currency, setCurrency] = useState<"INR" | "USD">("INR");
   const [pricingModalOpen, setPricingModalOpen] = useState(false);
-  const { activePlanId, isTrialActive, daysRemainingInTrial } = useSubscription();
+  const [enterpriseModalOpen, setEnterpriseModalOpen] = useState(false);
+  const [extensionModalOpen, setExtensionModalOpen] = useState(false);
+  const { activePlanId, isTrialActive, daysRemainingInTrial, exportPaymentHistoryCSV } = useSubscription();
 
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-[#060609] text-slate-900 dark:text-[#e0e0e0] font-sans selection:bg-[#387ed1] selection:text-white flex flex-col transition-colors duration-200">
@@ -44,17 +49,24 @@ export default function PricingPage() {
             </p>
 
             <div className="pt-2 flex flex-wrap justify-center items-center gap-4 text-xs font-mono text-slate-600 dark:text-zinc-400">
-              <span className="flex items-center gap-1 text-[#10b981]">
-                <ShieldCheck className="h-4 w-4" /> No Credit Card Required
-              </span>
-              <span className="text-slate-300 dark:text-[#262638]">•</span>
-              <span className="flex items-center gap-1 text-[#387ed1]">
-                <Sparkles className="h-4 w-4" /> Full Pro &amp; Institutional Features
-              </span>
-              <span className="text-slate-300 dark:text-[#262638]">•</span>
-              <span className="flex items-center gap-1 text-purple-500 dark:text-purple-400">
-                <Clock className="h-4 w-4" /> Instant 1-Click Activation
-              </span>
+              <button
+                onClick={() => setExtensionModalOpen(true)}
+                className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-[#387ed1]/15 text-[#387ed1] border border-[#387ed1]/30 hover:bg-[#387ed1]/25 transition-all font-bold"
+              >
+                <Award className="h-4 w-4" /> Claim +7 Days Extension
+              </button>
+              <button
+                onClick={() => setEnterpriseModalOpen(true)}
+                className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-[#10b981]/15 text-[#10b981] border border-[#10b981]/30 hover:bg-[#10b981]/25 transition-all font-bold"
+              >
+                <Building2 className="h-4 w-4" /> Request Institutional Co-Location
+              </button>
+              <button
+                onClick={exportPaymentHistoryCSV}
+                className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-purple-500/15 text-purple-400 border border-purple-500/30 hover:bg-purple-500/25 transition-all font-bold"
+              >
+                <FileSpreadsheet className="h-4 w-4" /> Export Payment Receipts (CSV)
+              </button>
             </div>
           </div>
         </section>
@@ -226,6 +238,24 @@ export default function PricingPage() {
           </div>
         </section>
 
+        {/* ── SECURITY & PAYMENT COMPLIANCE FOOTER BADGES ── */}
+        <section className="py-10 px-4 sm:px-8 max-w-[1100px] mx-auto border-b border-slate-200 dark:border-[#181824]">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 font-mono text-center">
+            <div className="p-4 rounded-2xl bg-white dark:bg-[#0e0e14] border border-slate-200 dark:border-[#1f1f2c] flex items-center justify-center space-x-3 text-xs text-[#387ed1]">
+              <Lock className="h-5 w-5 shrink-0" />
+              <span className="font-bold">256-bit SSL Bank Grade Encryption</span>
+            </div>
+            <div className="p-4 rounded-2xl bg-white dark:bg-[#0e0e14] border border-slate-200 dark:border-[#1f1f2c] flex items-center justify-center space-x-3 text-xs text-[#10b981]">
+              <ShieldCheck className="h-5 w-5 shrink-0" />
+              <span className="font-bold">PCI-DSS Level 1 Gateway Compliant</span>
+            </div>
+            <div className="p-4 rounded-2xl bg-white dark:bg-[#0e0e14] border border-slate-200 dark:border-[#1f1f2c] flex items-center justify-center space-x-3 text-xs text-purple-400">
+              <Award className="h-5 w-5 shrink-0" />
+              <span className="font-bold">18% GST Input Tax Credit (B2B Tax Invoice)</span>
+            </div>
+          </div>
+        </section>
+
         {/* ── CHARGES BREAKDOWN TABLE ── */}
         <section className="py-16 px-4 sm:px-8 max-w-[1100px] mx-auto font-mono text-xs space-y-6">
           <h2 className="text-xl font-bold text-slate-900 dark:text-white">Detailed Statutory &amp; Regulatory Charges</h2>
@@ -283,6 +313,17 @@ export default function PricingPage() {
         isOpen={pricingModalOpen}
         onClose={() => setPricingModalOpen(false)}
       />
+
+      <EnterpriseQuoteModal
+        isOpen={enterpriseModalOpen}
+        onClose={() => setEnterpriseModalOpen(false)}
+      />
+
+      <TrialExtensionModal
+        isOpen={extensionModalOpen}
+        onClose={() => setExtensionModalOpen(false)}
+      />
     </div>
   );
 }
+
