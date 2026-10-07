@@ -67,12 +67,21 @@ const DEFAULT_STATE: SubscriptionState = {
   ],
 };
 
+/**
+ * Subscription Tier & Launch Free Trial Management Context
+ * 
+ * Humanized Explanation for Maintainers:
+ * Handles tier licensing (RETAIL, PRO QUANT, INSTITUTIONAL) and launch free trials:
+ * 1. Default Launch State: All new users receive a 14-Day Unlimited Free Trial of PRO QUANT.
+ * 2. Expiration Check: Automatically downgrades expired trial accounts to RETAIL tier if unpaid.
+ * 3. Feature Gating: `hasFeatureAccess(requiredTier)` enforces feature accessibility based on tier hierarchy.
+ */
 const SubscriptionContext = createContext<SubscriptionContextType | undefined>(undefined);
 
 export function SubscriptionProvider({ children }: { children: React.ReactNode }) {
   const [state, setState] = useState<SubscriptionState>(DEFAULT_STATE);
 
-  // Synchronize state from localStorage on initial render
+  // Synchronize subscription state from localStorage and verify trial expiry
   useEffect(() => {
     queueMicrotask(() => {
       try {
@@ -80,11 +89,11 @@ export function SubscriptionProvider({ children }: { children: React.ReactNode }
         if (saved) {
           const parsed: SubscriptionState = JSON.parse(saved);
           
-          // Check if trial has expired
+          // Check if 14-day trial has elapsed
           if (parsed.isTrialActive && parsed.trialEndDate) {
             const endDate = new Date(parsed.trialEndDate).getTime();
             if (Date.now() > endDate) {
-              // Trial expired, downgrade to retail if not paid
+              // Trial expired, downgrade to retail tier if not upgraded
               parsed.isTrialActive = false;
               parsed.activePlanId = "retail";
             }

@@ -25,6 +25,15 @@ interface AuthContextType {
   logout: () => void;
 }
 
+/**
+ * Authentication Context & Provider
+ * 
+ * Humanized Explanation for Maintainers:
+ * Manages user authentication state across the web application:
+ * 1. Supports Email/Password authentication & Google OAuth Identity One-Tap sign-in.
+ * 2. Persists active session state to `localStorage` (`lalan_auth_user`).
+ * 3. Controls modal visibility state for Sign In and Sign Up drawers.
+ */
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
@@ -33,6 +42,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [authModalTab, setAuthModalTab] = useState<"signin" | "signup">("signin");
   const [mounted, setMounted] = useState(false);
 
+  // Restore authenticated session from localStorage on client mount
   useEffect(() => {
     queueMicrotask(() => {
       setMounted(true);
