@@ -5,8 +5,11 @@ import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Institutional Iceberg & Spoofing Wall Detector.
- * Identifies hidden liquidity refills and high-frequency spoofing order walls
- * by tracking fill-to-refill patterns and abnormal volume concentrations.
+ * 
+ * Humanized Explanation for Maintainers:
+ * Real-time order book telemetry analysis engine that flags institutional activity:
+ * 1. Iceberg Refills: Detects repeated quantity refills at the exact same price level after partial fills (>= 3 refills).
+ * 2. Spoofing Liquidity Walls: Flags abnormal liquidity walls (> 4x volume average) placed to manipulate market sentiment.
  */
 public class IcebergDetector {
     private final Map<Long, Integer> bidRefillCounts = new ConcurrentHashMap<>();

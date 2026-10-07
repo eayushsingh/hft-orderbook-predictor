@@ -6,9 +6,13 @@ import com.hft.engine.structure.OrderNode;
 import com.hft.engine.util.LongObjectHashMap;
 
 /**
- * The core order book implementation.
- * Maintains bid/ask price levels and a direct order index for O(1) order cancellations.
- * Avoids object allocation and autoboxing during standard operations.
+ * The core low-latency order book implementation.
+ * 
+ * Humanized Explanation for Maintainers:
+ * Designed for sub-microsecond high-frequency execution:
+ * 1. O(1) Direct Lookup: Uses primitive `LongObjectHashMap` to map order IDs directly to `OrderNode` pointers for zero-allocation cancellations.
+ * 2. Price Levels: Bids and Asks are tracked via price level linked lists to preserve FIFO queue ordering.
+ * 3. Zero GC Overhead: Avoids Boxing/Unboxing primitive `long` price keys to eliminate Garbage Collection pauses.
  */
 public class OrderBook {
     // Arbitrarily large maps for a typical day of trading (to avoid resizing in this simple implementation)
