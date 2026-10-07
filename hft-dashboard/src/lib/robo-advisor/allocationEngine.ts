@@ -20,6 +20,16 @@ export const DEFAULT_ETF_MAPPINGS: Record<AssetCategory, ETFMapping> = {
 
 /**
  * Generates an optimal target portfolio allocation array given an investor's risk profile and financial goal.
+ * 
+ * Humanized Explanation for Maintainers:
+ * This function takes the high-level equity/bond/alternatives target split computed by `riskEngine.ts`
+ * and breaks it down into 10 granular asset classes (US Large Cap, Emerging Markets, TIPS, REITs, Gold, etc.).
+ * It adjusts weights based on goal priorities (e.g., Emergency Fund vs Retirement vs Wealth Accumulation)
+ * and normalizes the final portfolio weights to sum to exactly 100.0%.
+ * 
+ * @param riskProfile The computed risk profile containing high-level target asset split.
+ * @param goalType The investor's primary financial goal.
+ * @returns Array of TargetAllocation objects detailing exact target weights and ETF tickers.
  */
 export function generateTargetAllocation(
   riskProfile: RiskProfile,
@@ -27,7 +37,9 @@ export function generateTargetAllocation(
 ): TargetAllocation[] {
   const { equityTargetPct, fixedIncomeTargetPct, alternativesTargetPct } = riskProfile;
 
+  // -------------------------------------------------------------------------
   // Base asset breakdown proportions within categories
+  // -------------------------------------------------------------------------
   let usLargePct = equityTargetPct * 0.50;
   let usSmallPct = equityTargetPct * 0.20;
   let intlDevPct = equityTargetPct * 0.20;
@@ -41,9 +53,11 @@ export function generateTargetAllocation(
   let goldPct = alternativesTargetPct * 0.40;
   let cashPct = 0;
 
+  // -------------------------------------------------------------------------
   // Adjust allocation based on specific financial goal requirements
+  // -------------------------------------------------------------------------
   if (goalType === 'EMERGENCY_FUND') {
-    // For emergency funds, cash & core bonds dominate regardless of overall risk
+    // For emergency funds, cash & short-term core bonds dominate for capital preservation
     cashPct = 40;
     coreBondPct = 40;
     tipsPct = 20;
@@ -55,12 +69,12 @@ export function generateTargetAllocation(
     reitPct = 0;
     goldPct = 0;
   } else if (goalType === 'RETIREMENT') {
-    // Boost inflation-protected assets & steady dividend REITs
+    // Boost inflation-protected assets (TIPS) & steady dividend REITs
     tipsPct += 5;
     reitPct += 3;
     if (coreBondPct >= 8) coreBondPct -= 8;
   } else if (goalType === 'MAJOR_PURCHASE') {
-    // Reduce extreme volatility, shift 10% from emerging/small cap to cash/bills
+    // Reduce extreme volatility, shift weight from small cap to liquid T-Bills
     const shift = usSmallPct * 0.5;
     usSmallPct -= shift;
     cashPct += shift;
@@ -79,7 +93,9 @@ export function generateTargetAllocation(
     CASH_EQUIVALENTS: cashPct,
   };
 
-  // Normalize to ensure total is exactly 100.0%
+  // -------------------------------------------------------------------------
+  // Normalize to ensure total sums to exactly 100.0% without rounding drift
+  // -------------------------------------------------------------------------
   const totalRaw = Object.values(rawAllocations).reduce((sum, val) => sum + val, 0);
   const normalizedAllocations: TargetAllocation[] = [];
 
@@ -96,6 +112,7 @@ export function generateTargetAllocation(
   currentSum = Math.round(currentSum * 10) / 10;
   const diff = Math.round((100.0 - currentSum) * 10) / 10;
 
+  // Assign any remaining fraction of a percent to the largest asset class
   if (diff !== 0 && unadjustedAllocations.length > 0) {
     let maxIdx = 0;
     for (let i = 1; i < unadjustedAllocations.length; i++) {
@@ -109,7 +126,7 @@ export function generateTargetAllocation(
   categories.forEach((cat, index) => {
     const weight = unadjustedAllocations[index].weight;
     const etf = DEFAULT_ETF_MAPPINGS[cat];
-    // Dynamic rebalance thresholds based on target weight size
+    // Dynamic rebalance tolerance bands based on target weight size
     const tolerancePct = Math.max(2.0, weight * 0.25);
 
     normalizedAllocations.push({
