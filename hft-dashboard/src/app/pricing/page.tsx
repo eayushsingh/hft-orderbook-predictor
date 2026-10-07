@@ -6,6 +6,8 @@ import LalanSiteFooter from "@/components/LalanSiteFooter";
 import SubscriptionPricingModal, { PRICING_PLANS } from "@/components/SubscriptionPricingModal";
 import EnterpriseQuoteModal from "@/components/EnterpriseQuoteModal";
 import TrialExtensionModal from "@/components/TrialExtensionModal";
+import SubscriptionUsageMeter from "@/components/SubscriptionUsageMeter";
+import PaymentFaqAccordion from "@/components/PaymentFaqAccordion";
 import { Check, Gift, Sparkles, Clock, ShieldCheck, Download, Building2, Lock, Award, FileSpreadsheet } from "lucide-react";
 import { useSubscription } from "@/context/SubscriptionContext";
 
@@ -236,6 +238,12 @@ export default function PricingPage() {
               );
             })}
           </div>
+        </section>
+
+        {/* ── USAGE QUOTA METER & FAQ ── */}
+        <section className="py-12 px-4 sm:px-8 max-w-[1100px] mx-auto grid grid-cols-1 md:grid-cols-2 gap-6 border-b border-slate-200 dark:border-[#181824]">
+          <SubscriptionUsageMeter onUpgradeClick={() => setPricingModalOpen(true)} />
+          <PaymentFaqAccordion />
         </section>
 
         {/* ── SECURITY & PAYMENT COMPLIANCE FOOTER BADGES ── */}
