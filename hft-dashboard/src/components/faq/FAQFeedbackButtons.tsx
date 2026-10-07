@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { ThumbsUp, ThumbsDown, Check } from 'lucide-react';
 
 interface FAQFeedbackButtonsProps {
@@ -16,15 +16,14 @@ export const FAQFeedbackButtons: React.FC<FAQFeedbackButtonsProps> = ({
 }) => {
   const [helpfulCount, setHelpfulCount] = useState(initialHelpful);
   const [unhelpfulCount, setUnhelpfulCount] = useState(initialUnhelpful);
-  const [userVote, setUserVote] = useState<'HELPFUL' | 'UNHELPFUL' | null>(null);
-
-  useEffect(() => {
-    if (typeof window === 'undefined') return;
+  const [userVote, setUserVote] = useState<'HELPFUL' | 'UNHELPFUL' | null>(() => {
+    if (typeof window === 'undefined') return null;
     const savedVote = localStorage.getItem(`faq_vote_${faqId}`);
     if (savedVote === 'HELPFUL' || savedVote === 'UNHELPFUL') {
-      setUserVote(savedVote);
+      return savedVote;
     }
-  }, [faqId]);
+    return null;
+  });
 
   const handleVote = (vote: 'HELPFUL' | 'UNHELPFUL') => {
     if (userVote) return; // Prevent double voting

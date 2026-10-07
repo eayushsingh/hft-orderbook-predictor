@@ -15,9 +15,9 @@ export const QuickFAQDrawerModal: React.FC<QuickFAQDrawerModalProps> = ({ isOpen
   const [searchQuery, setSearchQuery] = useState('');
   const [expandedFaqId, setExpandedFaqId] = useState<string | null>('faq-gen-1');
 
-  if (!isOpen) return null;
-
   const faqs = React.useMemo(() => filterFAQs('all', searchQuery), [searchQuery]);
+
+  if (!isOpen) return null;
 
   return (
     <AnimatePresence>
