@@ -14,6 +14,7 @@ export default function QueuePositionPredictor() {
   useEffect(() => {
     const interval = setInterval(() => {
       setQueuePos((prev) => Math.max(1, prev - Math.floor(Math.random() * 4 + 1)));
+      setTotalQueueQty((prev) => Math.max(2500, prev - Math.floor(Math.random() * 500 + 100)));
       setEstWaitTimeMs((prev) => Math.max(12, prev - Math.floor(Math.random() * 15 + 5)));
       setHawkesIntensity(parseFloat((0.4 + Math.random() * 0.5).toFixed(2)));
     }, 1500);

@@ -1,18 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { ExecutedOrder } from "./LalanOrderTicketModal";
-import {
-  TrendingUp,
-  TrendingDown,
-  Briefcase,
-  BookOpen,
-  XCircle,
-  ShieldCheck,
-  CheckCircle,
-  RefreshCw,
-} from "lucide-react";
+import { Briefcase, BookOpen, CheckCircle } from "lucide-react";
 
 export interface ActivePosition {
   symbol: string;

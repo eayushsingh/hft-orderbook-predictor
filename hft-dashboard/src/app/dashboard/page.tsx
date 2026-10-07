@@ -6,7 +6,6 @@ import {
   ArrowUpRight,
   ArrowDownRight,
   Gauge,
-  Wifi,
   Zap,
   ListFilter,
   Briefcase,
@@ -481,61 +480,7 @@ function DepthCard({ side, level, maxQty }: { side: "ask" | "bid"; level: DepthL
   );
 }
 
-function DepthLadder({ bids, asks }: { bids: DepthLevel[]; asks: DepthLevel[] }) {
-  const rows = Array.from({ length: 5 });
-  const maxQty = Math.max(1, ...bids.map((b) => b.qty || 0), ...asks.map((a) => a.qty || 0));
 
-  return (
-    <div className="col-span-1 sm:col-span-2 overflow-hidden rounded-2xl border border-[#262634] bg-[#14141a] p-4 font-sans lg:col-span-1">
-      <div className="mb-2 flex items-center justify-between font-mono">
-        <span className="text-[10px] font-bold uppercase tracking-wider text-[#747888]">
-          Microstructure L2 Ladder
-        </span>
-        <span className="text-[9px] text-[#747888]">5 Depth Levels</span>
-      </div>
-
-      <div className="grid grid-cols-2 gap-2 text-[10px] uppercase font-mono text-[#747888] border-b border-[#242432] pb-1">
-        <span>Bids (Buy)</span>
-        <span className="text-right">Asks (Sell)</span>
-      </div>
-
-      <div className="mt-1 space-y-1">
-        {rows.map((_, i) => {
-          const bid = bids[i];
-          const ask = asks[i];
-          const bidPct = bid ? clamp(((bid.qty || 0) / maxQty) * 100, 0, 100) : 0;
-          const askPct = ask ? clamp(((ask.qty || 0) / maxQty) * 100, 0, 100) : 0;
-
-          return (
-            <div key={i} className="grid grid-cols-2 gap-2 text-xs font-mono">
-              <div className="relative flex items-center justify-between overflow-hidden rounded px-1.5 py-0.5 bg-[#10b981]/5">
-                <div
-                  className="absolute inset-y-0 right-0 rounded bg-[#10b981]/15"
-                  style={{ width: `${bidPct}%` }}
-                />
-                <span className="relative z-10 text-[#10b981] font-bold text-[11px]">
-                  {bid ? formatUsd(bid.price) : "—"}
-                </span>
-                <span className="relative z-10 text-white text-[10px]">{bid ? formatBtc(bid.qty) : ""}</span>
-              </div>
-
-              <div className="relative flex items-center justify-between overflow-hidden rounded px-1.5 py-0.5 bg-[#f43f5e]/5">
-                <div
-                  className="absolute inset-y-0 left-0 rounded bg-[#f43f5e]/15"
-                  style={{ width: `${askPct}%` }}
-                />
-                <span className="relative z-10 text-white text-[10px]">{ask ? formatBtc(ask.qty) : ""}</span>
-                <span className="relative z-10 text-[#f43f5e] font-bold text-[11px]">
-                  {ask ? formatUsd(ask.price) : "—"}
-                </span>
-              </div>
-            </div>
-          );
-        })}
-      </div>
-    </div>
-  );
-}
 
 function AnalyticsPanel({ metrics }: { metrics: EngineMetrics }) {
   const obiPct = ((clamp(metrics.obi, -1, 1) + 1) / 2) * 100;
@@ -640,9 +585,9 @@ function Sparkline({ data }: { data: number[] }) {
    ============================================================ */
 
 export default function DashboardPage() {
-  const { metrics, connectionState, sparkline } = useMarketEngine();
+  const { metrics, sparkline } = useMarketEngine();
 
-  const { activePlanId, isTrialActive, daysRemainingInTrial } = useSubscription();
+  const { activePlanId } = useSubscription();
   const [activeTab, setActiveTab] = useState<string>("terminal");
   const [availableFunds, setAvailableFunds] = useState<number>(542800.0);
   const [selectedStock, setSelectedStock] = useState<WatchlistStock>(INITIAL_WATCHLIST[0]);
