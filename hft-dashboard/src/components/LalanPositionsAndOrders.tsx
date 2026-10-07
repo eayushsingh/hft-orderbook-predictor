@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import { Briefcase, BookOpen, CheckCircle } from "lucide-react";
+import type { ExecutedOrder } from "./LalanOrderTicketModal";
 
 export interface ActivePosition {
   symbol: string;
