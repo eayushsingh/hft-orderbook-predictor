@@ -26,6 +26,15 @@ interface LalanOrderTicketModalProps {
   onExecuteOrder: (order: ExecutedOrder) => void;
 }
 
+/**
+ * High-Speed Order Execution Ticket Modal Component
+ * 
+ * Humanized Explanation for Maintainers:
+ * Real-time order placement interface supporting institutional order varieties:
+ * 1. Product Types: Intraday MIS (5x leverage with 20% margin requirement), CNC (Delivery), NRML (Derivatives).
+ * 2. Order Varieties: Market, Limit, and Stop Loss (SL) with Trigger Price.
+ * 3. Validation: Pre-flight check verifies available account funds vs margin required before submitting.
+ */
 export default function LalanOrderTicketModal({
   isOpen,
   onClose,

@@ -22,6 +22,17 @@ interface LalanOrderBookProps {
 
 type ViewMode = "both" | "bids" | "asks" | "sideBySide";
 
+/**
+ * Level-2 Order Book & Microstructure Depth Ladder Component
+ * 
+ * Humanized Explanation for Maintainers:
+ * Displays real-time exchange order book depth up to 50 price levels:
+ * 1. Bids (Buy Orders): Rendered in emerald green with cumulative volume fill background bars.
+ * 2. Asks (Sell Orders): Rendered in rose red with cumulative volume fill background bars.
+ * 3. Spread Indicator: Displays bid-ask spread in absolute currency and basis points (bps).
+ * 4. View Modes: Toggle between Combined Vertical Ladder, Bids Only, Asks Only, or Side-by-Side Split.
+ * 5. Interactive Price Selection: Clicking any price level pre-fills the Lalan Order Ticket modal.
+ */
 export default function LalanOrderBook({
   bids = [],
   asks = [],

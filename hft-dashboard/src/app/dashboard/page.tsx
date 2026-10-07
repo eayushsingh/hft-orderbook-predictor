@@ -584,6 +584,17 @@ function Sparkline({ data }: { data: number[] }) {
    MAIN DASHBOARD PAGE COMPOSITION
    ============================================================ */
 
+/**
+ * Flagship L2 Terminal Dashboard Page Component
+ * 
+ * Humanized Explanation for Maintainers:
+ * This is the central high-frequency trading workspace. It orchestrates real-time market data flows and sub-components:
+ * 1. `useMarketEngine()`: Connects to exchange Level-2 tick stream, computing real-time OBI, Micro-Price drift, and VPIN toxicity.
+ * 2. L2 Depth Ladder & Orderbook (`LalanOrderBook.tsx`): Displays real-time bids/asks with cumulative volume bars.
+ * 3. Multi-Source Intelligence Hub: Embedded analysis widgets (Screener.in, NSE India, TradingView, Moneycontrol).
+ * 4. Microstructure Radar: Spoofing detection, Market Impact calculator, and FIFO Queue Position Predictor.
+ * 5. Order Ticket & Position Manager: Instant order execution, margin calculation, and position tracking.
+ */
 export default function DashboardPage() {
   const { metrics, sparkline } = useMarketEngine();
 
