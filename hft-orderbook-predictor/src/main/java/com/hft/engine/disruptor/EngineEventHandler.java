@@ -4,8 +4,12 @@ import com.hft.engine.core.MatchingEngine;
 import com.lmax.disruptor.EventHandler;
 
 /**
- * Single-threaded consumer that polls events from the Ring Buffer and delegates 
- * them synchronously to the Matching Engine.
+ * Single-threaded Disruptor Ring Buffer Event Consumer.
+ * 
+ * Humanized Explanation for Maintainers:
+ * Dedicated single-thread event handler pinned to an execution core:
+ * 1. Single Writer Principle: Eliminates concurrency locks on the inner `MatchingEngine`.
+ * 2. Event Dispatch: Synchronously routes `ADD` commands to orderbook matching and `CANCEL` commands to O(1) order cancellation.
  */
 public class EngineEventHandler implements EventHandler<OrderCommandEvent> {
     private final MatchingEngine matchingEngine;
