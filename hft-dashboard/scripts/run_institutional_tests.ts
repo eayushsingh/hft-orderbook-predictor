@@ -1,6 +1,4 @@
 import { normalizeInstitutionName } from "../src/lib/institutional/normalization/institutionNormalizer";
-import { calculateAllSignals } from "../src/lib/institutional/signals/signalCalculator";
-import { computeAccumulationScore } from "../src/lib/institutional/scoring/scoringEngine";
 import { InstitutionalRepository } from "../src/lib/institutional/repository/institutionalRepository";
 
 function runTests() {

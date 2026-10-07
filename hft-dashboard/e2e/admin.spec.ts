@@ -10,7 +10,7 @@ test.describe('Admin Control Panel & Telemetry', () => {
       await pinInput.waitFor({ state: 'visible', timeout: 4000 });
       await pinInput.fill('8899');
       await page.getByRole('button', { name: /Authorize Admin Access/i }).click();
-    } catch (e) {
+    } catch {
       // Auth gate not present or already authorized
     }
 

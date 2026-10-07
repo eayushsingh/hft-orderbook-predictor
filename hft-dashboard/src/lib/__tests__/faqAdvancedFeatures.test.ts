@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach, vi } from 'vitest';
+import { describe, it, expect, beforeEach } from 'vitest';
 import { generateFAQJsonLd, generateFAQJsonLdString } from '../faqSchemaGenerator';
 import { trackFAQSearch, getSearchHistory, getTopSearchTerms } from '../faqAnalyticsTracker';
 import { getPopularFAQs, ALL_FAQS } from '../faqData';

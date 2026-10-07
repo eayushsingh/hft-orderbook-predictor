@@ -9,7 +9,7 @@ export function getBookmarkedFAQIds(): string[] {
   try {
     const raw = localStorage.getItem(BOOKMARKS_STORAGE_KEY);
     return raw ? JSON.parse(raw) : inMemoryBookmarks;
-  } catch (err) {
+  } catch {
     return inMemoryBookmarks;
   }
 }

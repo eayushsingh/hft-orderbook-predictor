@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test } from '@playwright/test';
 
 test.describe('Terminal Dashboard & Multi-Source Intelligence Hub', () => {
   test.beforeEach(async ({ page }) => {

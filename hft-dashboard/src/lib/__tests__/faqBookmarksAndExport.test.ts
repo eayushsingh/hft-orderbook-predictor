@@ -15,6 +15,7 @@ describe('FAQ Bookmarks Storage Test Suite', () => {
     expect(isBookmarked).toBe(true);
     expect(updatedIds).toContain('faq-gen-1');
     expect(isFAQBookmarked('faq-gen-1')).toBe(true);
+    expect(getBookmarkedFAQIds()).toContain('faq-gen-1');
 
     const result2 = toggleFAQBookmark('faq-gen-1');
     expect(result2.isBookmarked).toBe(false);

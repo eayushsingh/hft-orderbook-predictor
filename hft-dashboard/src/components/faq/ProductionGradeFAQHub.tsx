@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useMemo, useRef } from 'react';
+import React, { useState, useMemo } from 'react';
 import { FAQCategory, ALL_FAQS, filterFAQs } from '@/lib/faqData';
 import { FAQSearchBar } from './FAQSearchBar';
 import { FAQCategoryFilterPills } from './FAQCategoryFilterPills';
@@ -22,8 +22,6 @@ export const ProductionGradeFAQHub: React.FC = () => {
   const [isAskModalOpen, setIsAskModalOpen] = useState(false);
   const [isKeyboardModalOpen, setIsKeyboardModalOpen] = useState(false);
   const [isMetricsModalOpen, setIsMetricsModalOpen] = useState(false);
-
-  const searchInputRef = useRef<HTMLInputElement>(null);
 
   const filteredFaqs = useMemo(() => {
     return filterFAQs(selectedCategory, searchQuery);
