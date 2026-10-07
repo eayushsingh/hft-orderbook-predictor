@@ -11,6 +11,14 @@ interface QuickFAQDrawerModalProps {
   onClose: () => void;
 }
 
+/**
+ * Quick Terminal FAQ Drawer Modal Component
+ * 
+ * Humanized Explanation for Maintainers:
+ * Slide-over drawer modal accessible directly from the Terminal Dashboard header:
+ * 1. Allows traders to look up microstructure formulas (OBI, Micro-Price drift, Hawkes process) without navigating away from live trading.
+ * 2. `React.useMemo` is executed at the top level (before the `if (!isOpen)` check) to satisfy React's Rules of Hooks.
+ */
 export const QuickFAQDrawerModal: React.FC<QuickFAQDrawerModalProps> = ({ isOpen, onClose }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [expandedFaqId, setExpandedFaqId] = useState<string | null>('faq-gen-1');

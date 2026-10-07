@@ -15,6 +15,16 @@ import { useFAQKeyboardShortcuts } from '@/hooks/useFAQKeyboardShortcuts';
 import { exportFAQsAsJSON, exportFAQsAsMarkdown } from '@/lib/faqExportUtility';
 import { MessageSquarePlus, Sparkles, Download, Printer, Keyboard, BarChart3 } from 'lucide-react';
 
+/**
+ * Production Grade FAQ Knowledge Hub Component
+ * 
+ * Humanized Explanation for Maintainers:
+ * Central help center component powering the `/support` page:
+ * 1. Filtered Search: Real-time memoized keyword matching across categories, questions, and tags.
+ * 2. Export Modes: One-click export to JSON format or formatted Markdown documentation.
+ * 3. Hotkeys Engine: Pressing `/` focuses the search bar; `Escape` clears queries; `?` opens keyboard shortcuts modal.
+ * 4. Modals: Integrates "Ask a Question", "Community Helpful Metrics", and "Keyboard Shortcuts" drawers.
+ */
 export const ProductionGradeFAQHub: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<FAQCategory | 'all'>('all');
