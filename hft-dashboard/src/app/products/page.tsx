@@ -6,6 +6,16 @@ import LalanSiteHeader from "@/components/LalanSiteHeader";
 import LalanSiteFooter from "@/components/LalanSiteFooter";
 import { Layers, Cpu, ArrowRight, Activity, Terminal } from "lucide-react";
 
+/**
+ * Products Ecosystem Page Component (`/products`)
+ * 
+ * Humanized Explanation for Maintainers:
+ * Suite overview of LALAN's flagship high-frequency software products:
+ * 1. LALAN HFT Terminal: Low-latency L2 order book visualization and ticket execution.
+ * 2. LMAX Disruptor Core: Micro-price & OBI calculation engine.
+ * 3. Robo-Advisor AI: Portfolio rebalancing & tax-loss harvesting engine.
+ * 4. Multi-Broker Gateway: Unified WebSocket & REST API proxy.
+ */
 export default function ProductsPage() {
   const products = [
     {

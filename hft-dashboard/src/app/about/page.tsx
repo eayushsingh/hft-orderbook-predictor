@@ -8,6 +8,14 @@ import { WhatWeDoOverview } from '@/components/presentation/WhatWeDoOverview';
 import { InteractivePresentationDeck } from '@/components/presentation/InteractivePresentationDeck';
 import { Sparkles, Presentation, Info } from 'lucide-react';
 
+/**
+ * Platform Presentation & About Page Component (`/about`)
+ * 
+ * Humanized Explanation for Maintainers:
+ * Dual-view presentation workspace:
+ * 1. Slide Deck View: 11-slide interactive slide deck with keyboard controls (Arrow keys, J/K, Fullscreen).
+ * 2. Executive Overview View: Platform metrics, architecture diagram, and capability matrix.
+ */
 export default function AboutPage() {
   const [viewMode, setViewMode] = useState<'OVERVIEW' | 'PRESENTATION'>('PRESENTATION');
 
