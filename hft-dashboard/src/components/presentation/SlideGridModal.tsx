@@ -13,6 +13,15 @@ interface SlideGridModalProps {
   onSelectSlide: (index: number) => void;
 }
 
+/**
+ * Presentation Slide Index Grid Modal Component
+ * 
+ * Humanized Explanation for Maintainers:
+ * Visual thumbnail navigation overlay for the 11-slide presentation deck:
+ * 1. Filtered Jump: Instant fuzzy text search across slide titles, subtitles, and categories.
+ * 2. Active Indicator: Highlights active slide card with emerald ring and checkmark.
+ * 3. React Rules of Hooks: `useMemo` is declared before early returns to preserve render consistency.
+ */
 export const SlideGridModal: React.FC<SlideGridModalProps> = ({
   slides,
   currentSlideIndex,

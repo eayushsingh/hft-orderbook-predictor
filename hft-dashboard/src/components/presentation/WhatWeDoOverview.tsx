@@ -46,6 +46,16 @@ export const PLATFORM_METRICS: PlatformMetricItem[] = [
   },
 ];
 
+/**
+ * Platform Capabilities & Metrics Overview Component
+ * 
+ * Humanized Explanation for Maintainers:
+ * High-impact landing page summary component showcasing key quantitative platform metrics:
+ * 1. Engine Throughput: 1,000,000+ events/sec via zero-GC LMAX Disruptor ring buffer.
+ * 2. Order Book Latency: Sub-450 microsecond Level-2 tick calculation.
+ * 3. Institutional Coverage: 500+ Indian equities tracked across BSE & NSE exchanges.
+ * 4. Multi-Broker Access: Integrated order gateways for DhanHQ, Zerodha, Upstox, and Angel One.
+ */
 export const WhatWeDoOverview: React.FC = () => {
   return (
     <motion.div
