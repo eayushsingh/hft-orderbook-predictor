@@ -1,3 +1,12 @@
+/**
+ * FAQ Search Query Analytics Tracker
+ * 
+ * Humanized Explanation for Maintainers:
+ * Tracks user search queries executed within the FAQ hub to collect query frequency metrics.
+ * 1. `trackFAQSearch`: Logs non-empty search terms along with the result count to `localStorage`.
+ * 2. `getSearchHistory`: Retrieves search history entries (safely falling back to memory if SSR).
+ * 3. `getTopSearchTerms`: Aggregates query strings by frequency to populate "Popular / Trending" pills.
+ */
 const SEARCH_HISTORY_KEY = 'hft_faq_search_analytics_v1';
 const POPULAR_SEARCH_MAX = 10;
 let inMemoryHistory: SearchLogEntry[] = [];
@@ -21,6 +30,7 @@ export function trackFAQSearch(query: string, resultsCount: number): void {
       timestamp: Date.now(),
       resultsCount,
     };
+    // Keep most recent 100 search logs to prevent unbounded storage growth
     const updated = [newEntry, ...existing].slice(0, 100);
     inMemoryHistory = updated;
 

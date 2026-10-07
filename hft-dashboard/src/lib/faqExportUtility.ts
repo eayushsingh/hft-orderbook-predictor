@@ -1,6 +1,15 @@
 import { FAQItem } from './faqData';
 
 /**
+ * FAQ Data Exporter Utility
+ * 
+ * Humanized Explanation for Maintainers:
+ * Client-side browser download triggers allowing traders & developers to export FAQ articles:
+ * 1. `exportFAQsAsJSON`: Serializes FAQ items to formatted JSON and triggers anchor download.
+ * 2. `exportFAQsAsMarkdown`: Generates clean Markdown documentation with headers and tags, downloading via Blob URL.
+ */
+
+/**
  * Downloads a list of FAQs as a formatted JSON file.
  */
 export function exportFAQsAsJSON(faqs: FAQItem[], filename = 'hft-faq-knowledgebase.json') {

@@ -1,7 +1,12 @@
 import { FAQItem } from './faqData';
 
 /**
- * Generates Schema.org JSON-LD structured data object for Google Search rich results (FAQPage schema).
+ * Schema.org JSON-LD FAQPage Generator for Search Engine Optimization (SEO)
+ * 
+ * Humanized Explanation for Maintainers:
+ * Generates Schema.org `FAQPage` microdata for Google Search indexing.
+ * Strips code backticks and line breaks to output clean plain text schema required by Google Search Console.
+ * 
  * @param faqs List of FAQ items to format into JSON-LD
  * @returns JSON-LD object compliant with schema.org/FAQPage specification
  */
