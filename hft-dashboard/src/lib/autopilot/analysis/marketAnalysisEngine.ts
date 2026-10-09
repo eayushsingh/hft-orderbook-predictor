@@ -1,4 +1,5 @@
 import {
+  ConstituentRanking,
   DataFreshness,
   IndexMarketData,
   MarketRegime,
@@ -308,6 +309,61 @@ export class MarketAnalysisEngine {
       source: "NSE Normalized Market Telemetry Engine",
       isStale: false,
     };
+  }
+
+  /**
+   * Computes ordered constituent rankings across all Nifty 50 constituents
+   */
+  public static computeConstituentRankings(existingSnapshot?: MarketAnalysisSnapshot): ConstituentRanking[] {
+    const snapshot = existingSnapshot || this.getMarketSnapshot();
+    const constituents = UniverseService.getAllConstituents();
+    const rankings: ConstituentRanking[] = [];
+
+    for (const c of constituents) {
+      const stock = snapshot.stocksData.get(c.symbol);
+      if (!stock) continue;
+
+      const isBullish = stock.ltp > stock.sma50;
+      const trend = isBullish ? "BULLISH" : "BEARISH";
+      const compositeScore = Math.round(((stock.rsRating * 0.5) + (stock.volumeSurgeRatio * 20) + (stock.changePct * 5)) * 10) / 10;
+
+      let signalStatus: "BUY" | "SELL" | "NO_TRADE" = "NO_TRADE";
+      let reason = "Watching market structure";
+
+      if (isBullish && stock.rsRating >= 65 && stock.volumeSurgeRatio >= 1.15) {
+        signalStatus = "BUY";
+        reason = `RS rating ${stock.rsRating}/100 with ${stock.volumeSurgeRatio.toFixed(2)}x volume surge`;
+      } else if (!isBullish && stock.rsRating < 40) {
+        signalStatus = "SELL";
+        reason = `Lagging index with weak RS rating ${stock.rsRating}/100 below 50-day EMA`;
+      } else {
+        reason = `RS ${stock.rsRating}/100, volume ${stock.volumeSurgeRatio.toFixed(2)}x (Thresholds: RS>=65, Vol>=1.15x)`;
+      }
+
+      rankings.push({
+        rank: 0,
+        symbol: c.symbol,
+        name: c.name,
+        sector: c.sector,
+        ltp: stock.ltp,
+        changePct: stock.changePct,
+        rsRating: stock.rsRating,
+        trend,
+        volumeSurge: stock.volumeSurgeRatio,
+        compositeScore,
+        signal: signalStatus,
+        reason,
+        weightagePct: c.weightagePct,
+        freshness: stock.freshness,
+      });
+    }
+
+    rankings.sort((a, b) => b.compositeScore - a.compositeScore);
+    rankings.forEach((r, idx) => {
+      r.rank = idx + 1;
+    });
+
+    return rankings;
   }
 
   /**

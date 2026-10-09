@@ -8,7 +8,16 @@ export async function GET() {
   try {
     const config = AutopilotRepository.getConfig();
     const marketSnapshot = MarketAnalysisEngine.getMarketSnapshot();
-    const rankings = AutopilotRepository.getRankings();
+    let rankings = AutopilotRepository.getRankings();
+    if (rankings.length === 0) {
+      rankings = MarketAnalysisEngine.computeConstituentRankings(marketSnapshot);
+      try {
+        AutopilotRepository.saveRankings(rankings);
+      } catch {
+        // Cache write fallback
+      }
+    }
+
     const positions = AutopilotRepository.getPositions();
     const orders = AutopilotRepository.getOrders(30);
     const auditLogs = AutopilotRepository.getAuditLogs(25);
@@ -25,7 +34,7 @@ export async function GET() {
         funds,
         indexData: marketSnapshot.indexData,
         newsAdvisories: marketSnapshot.newsAdvisories,
-        rankings: rankings.length > 0 ? rankings : [],
+        rankings,
         positions,
         orders,
         auditLogs,

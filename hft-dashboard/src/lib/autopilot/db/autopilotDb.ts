@@ -17,18 +17,35 @@ export function getAutopilotDatabase(): Database.Database {
     return autopilotDbInstance;
   }
 
-  const dbDir = path.join(process.cwd(), "data");
-  if (!fs.existsSync(dbDir)) {
-    fs.mkdirSync(dbDir, { recursive: true });
+  let dbPath = process.env.AUTOPILOT_DB_PATH;
+  if (!dbPath) {
+    if (process.env.VERCEL || process.env.AWS_LAMBDA_FUNCTION_NAME) {
+      dbPath = path.join("/tmp", "autopilot_engine.db");
+    } else {
+      const dbDir = path.join(process.cwd(), "data");
+      try {
+        if (!fs.existsSync(dbDir)) {
+          fs.mkdirSync(dbDir, { recursive: true });
+        }
+        dbPath = path.join(dbDir, "autopilot_engine.db");
+      } catch {
+        dbPath = path.join("/tmp", "autopilot_engine.db");
+      }
+    }
   }
 
-  const dbPath = path.join(dbDir, "autopilot_engine.db");
-  autopilotDbInstance = new Database(dbPath, {
-    verbose: process.env.NODE_ENV === "development" ? undefined : undefined,
-  });
+  try {
+    autopilotDbInstance = new Database(dbPath);
+  } catch {
+    autopilotDbInstance = new Database(path.join("/tmp", "autopilot_engine.db"));
+  }
 
-  autopilotDbInstance.pragma("journal_mode = WAL");
-  autopilotDbInstance.pragma("synchronous = NORMAL");
+  try {
+    autopilotDbInstance.pragma("journal_mode = WAL");
+    autopilotDbInstance.pragma("synchronous = NORMAL");
+  } catch {
+    // WAL fallback
+  }
 
   initializeAutopilotSchema(autopilotDbInstance);
 

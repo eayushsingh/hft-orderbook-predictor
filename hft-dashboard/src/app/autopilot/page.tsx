@@ -93,7 +93,19 @@ export default function AutopilotPage() {
           setIndexData(json.data.indexData);
           if (json.data.funds) setFunds(json.data.funds);
           if (json.data.marketStatus) setMarketStatus(json.data.marketStatus);
-          if (json.data.rankings) setRankings(json.data.rankings);
+          if (json.data.rankings && json.data.rankings.length > 0) {
+            setRankings(json.data.rankings);
+          } else {
+            // Auto-trigger initial scan cycle if empty
+            fetch("/api/autopilot/cycle", { method: "POST" })
+              .then((cRes) => cRes.json())
+              .then((cJson) => {
+                if (isMounted && cJson.success && cJson.data?.rankings) {
+                  setRankings(cJson.data.rankings);
+                }
+              })
+              .catch(() => {});
+          }
           if (json.data.positions) setPositions(json.data.positions);
           if (json.data.orders) setOrders(json.data.orders);
           if (json.data.auditLogs) setAuditLogs(json.data.auditLogs);
