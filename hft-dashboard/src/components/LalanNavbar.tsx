@@ -25,6 +25,7 @@ import {
   Compass,
   Bot,
   Presentation,
+  Activity,
 } from "lucide-react";
 import { useTheme } from "@/context/ThemeContext";
 import { useSubscription } from "@/context/SubscriptionContext";
@@ -77,6 +78,7 @@ export default function LalanNavbar({
 
   const navItems = [
     { id: "terminal", label: "Terminal", icon: Zap },
+    { id: "autopilot", label: "Autopilot", icon: Activity, href: "/autopilot" },
     { id: "robo", label: "Robo-Advisor", icon: Bot, href: "/robo-advisor" },
     { id: "allinone", label: "Screener & NSE", icon: Globe },
     { id: "orders", label: "Orders", icon: BookOpen },

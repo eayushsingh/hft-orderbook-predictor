@@ -18,9 +18,11 @@ export default function LalanSiteHeader() {
   const { user, isLoggedIn, openSignIn, logout } = useAuth();
 
   const navLinks = [
-    { href: "/about", label: "About" },
+    { href: "/autopilot", label: "Autopilot" },
+    { href: "/robo-advisor", label: "Robo-Advisor" },
     { href: "/products", label: "Products" },
     { href: "/pricing", label: "Pricing" },
+    { href: "/about", label: "About" },
     { href: "/support", label: "Support" },
   ];
 
