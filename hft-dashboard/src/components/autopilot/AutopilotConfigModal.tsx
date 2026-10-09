@@ -81,24 +81,24 @@ export default function AutopilotConfigModal({
 
   return (
     <AnimatePresence>
-      <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/80 backdrop-blur-md overflow-y-auto">
+      <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/60 dark:bg-black/80 backdrop-blur-md overflow-y-auto">
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           exit={{ opacity: 0, scale: 0.95 }}
-          className="w-full max-w-3xl bg-[#111116] border border-[#242434] rounded-2xl shadow-2xl overflow-hidden my-6 text-zinc-200 font-sans"
+          className="w-full max-w-3xl bg-white dark:bg-[#111116] border border-slate-200 dark:border-[#242434] rounded-2xl shadow-2xl overflow-hidden my-6 text-slate-800 dark:text-zinc-200 font-sans transition-colors"
         >
           {/* Header */}
-          <div className="flex items-center justify-between px-5 py-4 border-b border-[#20202e] bg-[#0c0c10]">
+          <div className="flex items-center justify-between px-5 py-4 border-b border-slate-200 dark:border-[#20202e] bg-slate-50 dark:bg-[#0c0c10]">
             <div className="flex items-center space-x-2.5">
-              <div className="p-1.5 rounded-lg bg-[#387ed1]/20 text-[#387ed1]">
+              <div className="p-1.5 rounded-lg bg-[#387ed1]/15 text-[#387ed1]">
                 <Sliders className="w-5 h-5" />
               </div>
               <div>
-                <h2 className="text-base sm:text-lg font-black font-mono text-white">
+                <h2 className="text-base sm:text-lg font-black font-mono text-slate-900 dark:text-white">
                   AUTOPILOT CONFIGURATION
                 </h2>
-                <p className="text-[11px] text-zinc-400 font-mono">
+                <p className="text-[11px] text-slate-500 dark:text-zinc-400 font-mono">
                   Config Version {currentConfig?.version || 1} • Last Updated:{" "}
                   {currentConfig?.updatedAt ? new Date(currentConfig.updatedAt).toLocaleTimeString() : "N/A"}
                 </p>
@@ -107,7 +107,7 @@ export default function AutopilotConfigModal({
 
             <button
               onClick={onClose}
-              className="p-1.5 rounded-lg bg-[#181822] text-zinc-400 hover:text-white transition-colors"
+              className="p-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 dark:bg-[#181822] dark:hover:bg-[#20202e] text-slate-500 dark:text-zinc-400 hover:text-slate-950 dark:hover:text-white transition-colors"
             >
               <X className="w-5 h-5" />
             </button>
@@ -116,7 +116,7 @@ export default function AutopilotConfigModal({
           {/* Form Content */}
           <div className="p-5 space-y-6 max-h-[75vh] overflow-y-auto no-scrollbar font-mono text-xs">
             {error && (
-              <div className="p-3.5 rounded-xl bg-red-500/15 border border-red-500/40 text-red-400 flex items-start gap-2.5">
+              <div className="p-3.5 rounded-xl bg-red-500/15 border border-red-500/40 text-red-700 dark:text-red-400 flex items-start gap-2.5">
                 <AlertTriangle className="w-4 h-4 shrink-0 mt-0.5" />
                 <span className="text-xs">{error}</span>
               </div>
@@ -125,7 +125,7 @@ export default function AutopilotConfigModal({
             {/* Strategy & Mode Row */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="space-y-1.5">
-                <label className="text-zinc-400 font-bold uppercase tracking-wider text-[11px]">
+                <label className="text-slate-600 dark:text-zinc-400 font-bold uppercase tracking-wider text-[11px]">
                   STRATEGY ENGINE
                 </label>
                 <div className="grid grid-cols-2 gap-2">
@@ -134,8 +134,8 @@ export default function AutopilotConfigModal({
                     onClick={() => setStrategy("SWING")}
                     className={`p-2.5 rounded-xl border text-center font-bold transition-all ${
                       strategy === "SWING"
-                        ? "bg-[#387ed1]/20 border-[#387ed1] text-cyan-300"
-                        : "bg-[#161620] border-[#222230] text-zinc-400"
+                        ? "bg-[#387ed1]/15 border-[#387ed1] text-[#1d4ed8] dark:text-cyan-300 shadow-sm"
+                        : "bg-slate-50 dark:bg-[#161620] border-slate-200 dark:border-[#222230] text-slate-600 dark:text-zinc-400 hover:bg-slate-100 dark:hover:bg-[#1c1c28]"
                     }`}
                   >
                     SWING (ATR Momentum)
@@ -145,8 +145,8 @@ export default function AutopilotConfigModal({
                     onClick={() => setStrategy("LONG_TERM")}
                     className={`p-2.5 rounded-xl border text-center font-bold transition-all ${
                       strategy === "LONG_TERM"
-                        ? "bg-[#387ed1]/20 border-[#387ed1] text-cyan-300"
-                        : "bg-[#161620] border-[#222230] text-zinc-400"
+                        ? "bg-[#387ed1]/15 border-[#387ed1] text-[#1d4ed8] dark:text-cyan-300 shadow-sm"
+                        : "bg-slate-50 dark:bg-[#161620] border-slate-200 dark:border-[#222230] text-slate-600 dark:text-zinc-400 hover:bg-slate-100 dark:hover:bg-[#1c1c28]"
                     }`}
                   >
                     LONG-TERM (Factor Rebalance)
@@ -155,7 +155,7 @@ export default function AutopilotConfigModal({
               </div>
 
               <div className="space-y-1.5">
-                <label className="text-zinc-400 font-bold uppercase tracking-wider text-[11px]">
+                <label className="text-slate-600 dark:text-zinc-400 font-bold uppercase tracking-wider text-[11px]">
                   EXECUTION MODE
                 </label>
                 <div className="grid grid-cols-3 gap-1.5">
@@ -164,8 +164,8 @@ export default function AutopilotConfigModal({
                     onClick={() => setMode("DEMO")}
                     className={`p-2 rounded-xl border text-center font-bold transition-all ${
                       mode === "DEMO"
-                        ? "bg-amber-500/20 border-amber-500 text-amber-300"
-                        : "bg-[#161620] border-[#222230] text-zinc-400"
+                        ? "bg-amber-500/15 border-amber-500 text-amber-700 dark:text-amber-300 shadow-sm"
+                        : "bg-slate-50 dark:bg-[#161620] border-slate-200 dark:border-[#222230] text-slate-600 dark:text-zinc-400 hover:bg-slate-100 dark:hover:bg-[#1c1c28]"
                     }`}
                   >
                     DEMO
@@ -175,8 +175,8 @@ export default function AutopilotConfigModal({
                     onClick={() => setMode("PAPER")}
                     className={`p-2 rounded-xl border text-center font-bold transition-all ${
                       mode === "PAPER"
-                        ? "bg-cyan-500/20 border-cyan-500 text-cyan-300"
-                        : "bg-[#161620] border-[#222230] text-zinc-400"
+                        ? "bg-cyan-500/15 border-cyan-500 text-cyan-700 dark:text-cyan-300 shadow-sm"
+                        : "bg-slate-50 dark:bg-[#161620] border-slate-200 dark:border-[#222230] text-slate-600 dark:text-zinc-400 hover:bg-slate-100 dark:hover:bg-[#1c1c28]"
                     }`}
                   >
                     PAPER
@@ -186,8 +186,8 @@ export default function AutopilotConfigModal({
                     onClick={() => setMode("LIVE")}
                     className={`p-2 rounded-xl border text-center font-bold transition-all ${
                       mode === "LIVE"
-                        ? "bg-rose-500/20 border-rose-500 text-rose-300"
-                        : "bg-[#161620] border-[#222230] text-zinc-400"
+                        ? "bg-rose-500/15 border-rose-500 text-rose-700 dark:text-rose-300 shadow-sm"
+                        : "bg-slate-50 dark:bg-[#161620] border-slate-200 dark:border-[#222230] text-slate-600 dark:text-zinc-400 hover:bg-slate-100 dark:hover:bg-[#1c1c28]"
                     }`}
                   >
                     LIVE
@@ -198,7 +198,7 @@ export default function AutopilotConfigModal({
 
             {/* Broker Adapter */}
             <div className="space-y-1.5">
-              <label className="text-zinc-400 font-bold uppercase tracking-wider text-[11px]">
+              <label className="text-slate-600 dark:text-zinc-400 font-bold uppercase tracking-wider text-[11px]">
                 BROKER GATEWAY
               </label>
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
@@ -214,8 +214,8 @@ export default function AutopilotConfigModal({
                     onClick={() => setBroker(b.id)}
                     className={`p-2 rounded-xl border text-center font-bold text-[11px] transition-all ${
                       broker === b.id
-                        ? "bg-[#387ed1]/20 border-[#387ed1] text-cyan-300"
-                        : "bg-[#161620] border-[#222230] text-zinc-400"
+                        ? "bg-[#387ed1]/15 border-[#387ed1] text-[#1d4ed8] dark:text-cyan-300 shadow-sm"
+                        : "bg-slate-50 dark:bg-[#161620] border-slate-200 dark:border-[#222230] text-slate-600 dark:text-zinc-400 hover:bg-slate-100 dark:hover:bg-[#1c1c28]"
                     }`}
                   >
                     {b.label}
@@ -227,34 +227,34 @@ export default function AutopilotConfigModal({
             {/* Capital & Limits */}
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               <div className="space-y-1">
-                <label className="text-zinc-400 text-[11px]">ALLOCATED CAPITAL (₹)</label>
+                <label className="text-slate-600 dark:text-zinc-400 text-[11px]">ALLOCATED CAPITAL (₹)</label>
                 <input
                   type="number"
                   value={capital}
                   onChange={(e) => setCapital(parseFloat(e.target.value) || 0)}
-                  className="w-full bg-[#161620] border border-[#2a2a3c] rounded-xl px-3 py-2 text-white font-mono focus:border-[#387ed1] outline-none"
+                  className="w-full bg-slate-50 dark:bg-[#161620] border border-slate-300 dark:border-[#2a2a3c] rounded-xl px-3 py-2 text-slate-900 dark:text-white font-mono focus:border-[#387ed1] outline-none transition-colors"
                 />
               </div>
 
               <div className="space-y-1">
-                <label className="text-zinc-400 text-[11px]">RISK PER TRADE (%)</label>
+                <label className="text-slate-600 dark:text-zinc-400 text-[11px]">RISK PER TRADE (%)</label>
                 <input
                   type="number"
                   step="0.1"
                   value={riskPerTradePct}
                   onChange={(e) => setRiskPerTradePct(parseFloat(e.target.value) || 0)}
-                  className="w-full bg-[#161620] border border-[#2a2a3c] rounded-xl px-3 py-2 text-white font-mono focus:border-[#387ed1] outline-none"
+                  className="w-full bg-slate-50 dark:bg-[#161620] border border-slate-300 dark:border-[#2a2a3c] rounded-xl px-3 py-2 text-slate-900 dark:text-white font-mono focus:border-[#387ed1] outline-none transition-colors"
                 />
               </div>
 
               <div className="space-y-1">
-                <label className="text-zinc-400 text-[11px]">MAX DAILY LOSS (%)</label>
+                <label className="text-slate-600 dark:text-zinc-400 text-[11px]">MAX DAILY LOSS (%)</label>
                 <input
                   type="number"
                   step="0.5"
                   value={maxDailyLossPct}
                   onChange={(e) => setMaxDailyLossPct(parseFloat(e.target.value) || 0)}
-                  className="w-full bg-[#161620] border border-[#2a2a3c] rounded-xl px-3 py-2 text-white font-mono focus:border-[#387ed1] outline-none"
+                  className="w-full bg-slate-50 dark:bg-[#161620] border border-slate-300 dark:border-[#2a2a3c] rounded-xl px-3 py-2 text-slate-900 dark:text-white font-mono focus:border-[#387ed1] outline-none transition-colors"
                 />
               </div>
             </div>
@@ -262,33 +262,33 @@ export default function AutopilotConfigModal({
             {/* Drawdown & Position Constraints */}
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               <div className="space-y-1">
-                <label className="text-zinc-400 text-[11px]">MAX PORTFOLIO DRAWDOWN (%)</label>
+                <label className="text-slate-600 dark:text-zinc-400 text-[11px]">MAX PORTFOLIO DRAWDOWN (%)</label>
                 <input
                   type="number"
                   step="0.5"
                   value={maxDrawdownPct}
                   onChange={(e) => setMaxDrawdownPct(parseFloat(e.target.value) || 0)}
-                  className="w-full bg-[#161620] border border-[#2a2a3c] rounded-xl px-3 py-2 text-white font-mono focus:border-[#387ed1] outline-none"
+                  className="w-full bg-slate-50 dark:bg-[#161620] border border-slate-300 dark:border-[#2a2a3c] rounded-xl px-3 py-2 text-slate-900 dark:text-white font-mono focus:border-[#387ed1] outline-none transition-colors"
                 />
               </div>
 
               <div className="space-y-1">
-                <label className="text-zinc-400 text-[11px]">MAX CONCURRENT POSITIONS</label>
+                <label className="text-slate-600 dark:text-zinc-400 text-[11px]">MAX CONCURRENT POSITIONS</label>
                 <input
                   type="number"
                   value={maxPositions}
                   onChange={(e) => setMaxPositions(parseInt(e.target.value, 10) || 1)}
-                  className="w-full bg-[#161620] border border-[#2a2a3c] rounded-xl px-3 py-2 text-white font-mono focus:border-[#387ed1] outline-none"
+                  className="w-full bg-slate-50 dark:bg-[#161620] border border-slate-300 dark:border-[#2a2a3c] rounded-xl px-3 py-2 text-slate-900 dark:text-white font-mono focus:border-[#387ed1] outline-none transition-colors"
                 />
               </div>
 
               <div className="space-y-1">
-                <label className="text-zinc-400 text-[11px]">MAX SINGLE ORDER VALUE (₹)</label>
+                <label className="text-slate-600 dark:text-zinc-400 text-[11px]">MAX SINGLE ORDER VALUE (₹)</label>
                 <input
                   type="number"
                   value={maxOrderValue}
                   onChange={(e) => setMaxOrderValue(parseFloat(e.target.value) || 0)}
-                  className="w-full bg-[#161620] border border-[#2a2a3c] rounded-xl px-3 py-2 text-white font-mono focus:border-[#387ed1] outline-none"
+                  className="w-full bg-slate-50 dark:bg-[#161620] border border-slate-300 dark:border-[#2a2a3c] rounded-xl px-3 py-2 text-slate-900 dark:text-white font-mono focus:border-[#387ed1] outline-none transition-colors"
                 />
               </div>
             </div>
@@ -296,57 +296,57 @@ export default function AutopilotConfigModal({
             {/* Position Cap, Sector Cap & Slippage */}
             <div className="grid grid-cols-1 sm:grid-cols-4 gap-3">
               <div className="space-y-1">
-                <label className="text-zinc-400 text-[11px]">POSITION CAP (%)</label>
+                <label className="text-slate-600 dark:text-zinc-400 text-[11px]">POSITION CAP (%)</label>
                 <input
                   type="number"
                   value={maxPositionCapPct}
                   onChange={(e) => setMaxPositionCapPct(parseFloat(e.target.value) || 0)}
-                  className="w-full bg-[#161620] border border-[#2a2a3c] rounded-xl px-3 py-2 text-white font-mono focus:border-[#387ed1] outline-none"
+                  className="w-full bg-slate-50 dark:bg-[#161620] border border-slate-300 dark:border-[#2a2a3c] rounded-xl px-3 py-2 text-slate-900 dark:text-white font-mono focus:border-[#387ed1] outline-none transition-colors"
                 />
               </div>
 
               <div className="space-y-1">
-                <label className="text-zinc-400 text-[11px]">SECTOR CAP (%)</label>
+                <label className="text-slate-600 dark:text-zinc-400 text-[11px]">SECTOR CAP (%)</label>
                 <input
                   type="number"
                   value={maxSectorCapPct}
                   onChange={(e) => setMaxSectorCapPct(parseFloat(e.target.value) || 0)}
-                  className="w-full bg-[#161620] border border-[#2a2a3c] rounded-xl px-3 py-2 text-white font-mono focus:border-[#387ed1] outline-none"
+                  className="w-full bg-slate-50 dark:bg-[#161620] border border-slate-300 dark:border-[#2a2a3c] rounded-xl px-3 py-2 text-slate-900 dark:text-white font-mono focus:border-[#387ed1] outline-none transition-colors"
                 />
               </div>
 
               <div className="space-y-1">
-                <label className="text-zinc-400 text-[11px]">SLIPPAGE (BPS)</label>
+                <label className="text-slate-600 dark:text-zinc-400 text-[11px]">SLIPPAGE (BPS)</label>
                 <input
                   type="number"
                   value={maxSlippageBps}
                   onChange={(e) => setMaxSlippageBps(parseInt(e.target.value, 10) || 10)}
-                  className="w-full bg-[#161620] border border-[#2a2a3c] rounded-xl px-3 py-2 text-white font-mono focus:border-[#387ed1] outline-none"
+                  className="w-full bg-slate-50 dark:bg-[#161620] border border-slate-300 dark:border-[#2a2a3c] rounded-xl px-3 py-2 text-slate-900 dark:text-white font-mono focus:border-[#387ed1] outline-none transition-colors"
                 />
               </div>
 
               <div className="space-y-1">
-                <label className="text-zinc-400 text-[11px]">DRIFT BAND (%)</label>
+                <label className="text-slate-600 dark:text-zinc-400 text-[11px]">DRIFT BAND (%)</label>
                 <input
                   type="number"
                   step="0.5"
                   value={rebalanceBandPct}
                   onChange={(e) => setRebalanceBandPct(parseFloat(e.target.value) || 3.0)}
-                  className="w-full bg-[#161620] border border-[#2a2a3c] rounded-xl px-3 py-2 text-white font-mono focus:border-[#387ed1] outline-none"
+                  className="w-full bg-slate-50 dark:bg-[#161620] border border-slate-300 dark:border-[#2a2a3c] rounded-xl px-3 py-2 text-slate-900 dark:text-white font-mono focus:border-[#387ed1] outline-none transition-colors"
                 />
               </div>
             </div>
 
             {/* Toggles */}
-            <div className="space-y-3 pt-2 border-t border-[#1e1e2c]">
+            <div className="space-y-3 pt-2 border-t border-slate-200 dark:border-[#1e1e2c]">
               <label className="flex items-center space-x-3 cursor-pointer">
                 <input
                   type="checkbox"
                   checked={requireApproval}
                   onChange={(e) => setRequireApproval(e.target.checked)}
-                  className="w-4 h-4 rounded border-zinc-700 bg-zinc-900 text-[#387ed1] focus:ring-0"
+                  className="w-4 h-4 rounded border-slate-300 dark:border-zinc-700 bg-white dark:bg-zinc-900 text-[#387ed1] focus:ring-0 cursor-pointer"
                 />
-                <span className="text-zinc-300">
+                <span className="text-slate-700 dark:text-zinc-300 font-medium">
                   Require Operator Approval Before Placing Orders (Semi-Automated Mode)
                 </span>
               </label>
@@ -357,16 +357,16 @@ export default function AutopilotConfigModal({
                     type="checkbox"
                     checked={trailingStopEnabled}
                     onChange={(e) => setTrailingStopEnabled(e.target.checked)}
-                    className="w-4 h-4 rounded border-zinc-700 bg-zinc-900 text-[#387ed1] focus:ring-0"
+                    className="w-4 h-4 rounded border-slate-300 dark:border-zinc-700 bg-white dark:bg-zinc-900 text-[#387ed1] focus:ring-0 cursor-pointer"
                   />
-                  <span className="text-zinc-300">
+                  <span className="text-slate-700 dark:text-zinc-300 font-medium">
                     Enable ATR Trailing Stops for Swing Positions
                   </span>
                 </label>
 
                 {trailingStopEnabled && (
                   <div className="flex items-center space-x-2">
-                    <span className="text-zinc-400 text-[11px]">Multiplier:</span>
+                    <span className="text-slate-500 dark:text-zinc-400 text-[11px]">Multiplier:</span>
                     <input
                       type="number"
                       step="0.5"
@@ -374,21 +374,21 @@ export default function AutopilotConfigModal({
                       max="5.0"
                       value={trailingAtrMultiplier}
                       onChange={(e) => setTrailingAtrMultiplier(parseFloat(e.target.value) || 2.0)}
-                      className="w-16 bg-[#161620] border border-[#2a2a3c] rounded-lg px-2 py-1 text-white font-mono text-center outline-none focus:border-[#387ed1]"
+                      className="w-16 bg-slate-50 dark:bg-[#161620] border border-slate-300 dark:border-[#2a2a3c] rounded-lg px-2 py-1 text-slate-900 dark:text-white font-mono text-center outline-none focus:border-[#387ed1] transition-colors"
                     />
-                    <span className="text-zinc-500 text-[11px]">x ATR</span>
+                    <span className="text-slate-400 dark:text-zinc-500 text-[11px]">x ATR</span>
                   </div>
                 )}
               </div>
             </div>
 
             {/* SEBI Compliance Checkbox */}
-            <div className="p-3.5 rounded-xl bg-[#14141e] border border-[#262638] space-y-2">
-              <div className="flex items-center space-x-2 text-amber-400 font-bold">
+            <div className="p-3.5 rounded-xl bg-slate-50 dark:bg-[#14141e] border border-slate-200 dark:border-[#262638] space-y-2">
+              <div className="flex items-center space-x-2 text-amber-600 dark:text-amber-400 font-bold">
                 <Shield className="w-4 h-4" />
                 <span>SEBI Algorithmic Trading Regulatory Acknowledgment</span>
               </div>
-              <p className="text-[10px] text-zinc-400 leading-relaxed font-sans">
+              <p className="text-[10px] text-slate-600 dark:text-zinc-400 leading-relaxed font-sans">
                 Nifty 50 Autopilot is a self-directed algorithmic execution system. Cash equities only. No profit guarantees. Stop loss fills are subject to exchange liquidity and circuit limits.
               </p>
               <label className="flex items-center space-x-2 cursor-pointer pt-1">
@@ -396,9 +396,9 @@ export default function AutopilotConfigModal({
                   type="checkbox"
                   checked={sebiDisclaimerAccepted}
                   onChange={(e) => setSebiDisclaimerAccepted(e.target.checked)}
-                  className="w-4 h-4 rounded border-zinc-700 bg-zinc-900 text-emerald-500 focus:ring-0"
+                  className="w-4 h-4 rounded border-slate-300 dark:border-zinc-700 bg-white dark:bg-zinc-900 text-emerald-500 focus:ring-0 cursor-pointer"
                 />
-                <span className="text-[11px] text-zinc-300 font-bold">
+                <span className="text-[11px] text-slate-800 dark:text-zinc-300 font-bold">
                   I understand and accept the SEBI Algorithmic Risk Disclosure.
                 </span>
               </label>
@@ -406,10 +406,10 @@ export default function AutopilotConfigModal({
           </div>
 
           {/* Footer */}
-          <div className="flex items-center justify-between px-5 py-3.5 border-t border-[#20202e] bg-[#0c0c10]">
+          <div className="flex items-center justify-between px-5 py-3.5 border-t border-slate-200 dark:border-[#20202e] bg-slate-50 dark:bg-[#0c0c10]">
             <button
               onClick={onClose}
-              className="px-4 py-2 rounded-xl bg-[#181822] hover:bg-[#20202e] text-zinc-400 hover:text-white font-mono text-xs font-bold transition-all"
+              className="px-4 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-[#181822] dark:hover:bg-[#20202e] text-slate-600 dark:text-zinc-400 hover:text-slate-900 dark:hover:text-white font-mono text-xs font-bold transition-all"
             >
               Cancel
             </button>

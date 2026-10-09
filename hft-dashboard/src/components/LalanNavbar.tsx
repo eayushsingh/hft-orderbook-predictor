@@ -94,18 +94,18 @@ export default function LalanNavbar({
     : activePlanId.toUpperCase();
 
   return (
-    <header className="sticky top-0 z-40 border-b border-[#22222e] dark:border-[#22222e] bg-[#0c0c10] text-[#e0e0e0] font-sans transition-colors duration-200">
+    <header className="sticky top-0 z-40 border-b border-slate-200 dark:border-[#22222e] bg-white/95 dark:bg-[#0c0c10] text-slate-800 dark:text-[#e0e0e0] font-sans transition-colors duration-200 backdrop-blur-md">
       {/* ── TOP BACKPACK-STYLE TICKER & STATUS BAR ── */}
-      <div className="flex h-7 items-center justify-between border-b border-[#1f1f2e] bg-[#09090e] px-3 text-[11px] font-mono text-slate-200">
+      <div className="flex h-7 items-center justify-between border-b border-slate-200 dark:border-[#1f1f2e] bg-slate-100/90 dark:bg-[#09090e] px-3 text-[11px] font-mono text-slate-700 dark:text-slate-200">
         {/* Indices Ticker */}
         <div className="flex items-center space-x-4 overflow-x-auto no-scrollbar py-0.5">
           <div className="flex items-center space-x-1.5 shrink-0">
-            <span className="font-extrabold text-cyan-300">NIFTY 50</span>
-            <span className="font-black text-white">
+            <span className="font-extrabold text-cyan-700 dark:text-cyan-300">NIFTY 50</span>
+            <span className="font-black text-slate-950 dark:text-white">
               {niftyPrice.toLocaleString("en-IN", { minimumFractionDigits: 2 })}
             </span>
             <span
-              className={`flex items-center text-[10px] font-extrabold ${niftyChange >= 0 ? "text-emerald-400" : "text-rose-400"
+              className={`flex items-center text-[10px] font-extrabold ${niftyChange >= 0 ? "text-emerald-600 dark:text-emerald-400" : "text-rose-600 dark:text-rose-400"
                 }`}
             >
               {niftyChange >= 0 ? "+" : ""}
@@ -113,15 +113,15 @@ export default function LalanNavbar({
             </span>
           </div>
 
-          <div className="h-3 w-px bg-[#262638] shrink-0" />
+          <div className="h-3 w-px bg-slate-300 dark:bg-[#262638] shrink-0" />
 
           <div className="flex items-center space-x-1.5 shrink-0">
-            <span className="font-extrabold text-cyan-300">BANK NIFTY</span>
-            <span className="font-black text-white">
+            <span className="font-extrabold text-cyan-700 dark:text-cyan-300">BANK NIFTY</span>
+            <span className="font-black text-slate-950 dark:text-white">
               {bankNiftyPrice.toLocaleString("en-IN", { minimumFractionDigits: 2 })}
             </span>
             <span
-              className={`flex items-center text-[10px] font-extrabold ${bankNiftyChange >= 0 ? "text-emerald-400" : "text-rose-400"
+              className={`flex items-center text-[10px] font-extrabold ${bankNiftyChange >= 0 ? "text-emerald-600 dark:text-emerald-400" : "text-rose-600 dark:text-rose-400"
                 }`}
             >
               {bankNiftyChange >= 0 ? "+" : ""}
@@ -129,15 +129,15 @@ export default function LalanNavbar({
             </span>
           </div>
 
-          <div className="h-3 w-px bg-[#262638] shrink-0 hidden sm:block" />
+          <div className="h-3 w-px bg-slate-300 dark:bg-[#262638] shrink-0 hidden sm:block" />
 
           <div className="hidden sm:flex items-center space-x-1.5 shrink-0">
-            <span className="font-extrabold text-cyan-300">BTC/USDT</span>
-            <span className="font-black text-white">
+            <span className="font-extrabold text-cyan-700 dark:text-cyan-300">BTC/USDT</span>
+            <span className="font-black text-slate-950 dark:text-white">
               ${btcPrice.toLocaleString("en-US", { minimumFractionDigits: 2 })}
             </span>
             <span
-              className={`flex items-center text-[10px] font-extrabold ${btcChange >= 0 ? "text-emerald-400" : "text-rose-400"
+              className={`flex items-center text-[10px] font-extrabold ${btcChange >= 0 ? "text-emerald-600 dark:text-emerald-400" : "text-rose-600 dark:text-rose-400"
                 }`}
             >
               {btcChange >= 0 ? "+" : ""}
@@ -155,16 +155,17 @@ export default function LalanNavbar({
               <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#10b981] opacity-75" />
               <span className="relative inline-flex h-2 w-2 rounded-full bg-[#10b981]" />
             </span>
-            <span className="text-[#10b981] font-bold hidden lg:inline">LALAN STREAM</span>
+            <span className="text-[#059669] dark:text-[#10b981] font-bold hidden lg:inline">LALAN STREAM</span>
           </div>
 
-          <div className="hidden xs:flex items-center space-x-1 text-[#8a8d9b]">
-            <Wifi className="h-3 w-3 text-[#10b981]" />
+          <div className="hidden xs:flex items-center space-x-1 text-slate-500 dark:text-[#8a8d9b]">
+            <Wifi className="h-3 w-3 text-[#059669] dark:text-[#10b981]" />
             <span>{latencyMs.toFixed(1)} ms</span>
           </div>
         </div>
       </div>
-      {/* ── MAIN NAVBAR (BACKPACK.EXCHANGE UI REF) ── */}
+
+      {/* ── MAIN NAVBAR ── */}
       <div className="mx-auto flex h-13 items-center justify-between px-3 sm:px-5">
         {/* Left Section: Logo + Symbol Selector + Plan Badge */}
         <div className="flex items-center space-x-2.5">
@@ -175,12 +176,12 @@ export default function LalanNavbar({
               alt="LALAN Logo"
               className="h-7 w-auto object-contain transition-transform group-hover:scale-105"
             />
-            <span className="text-base font-black uppercase tracking-wider text-white">
+            <span className="text-base font-black uppercase tracking-wider text-slate-900 dark:text-white">
               LALAN
             </span>
           </Link>
 
-          <div className="hidden sm:inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#387ed1]/15 border border-[#387ed1]/50 shadow-sm backdrop-blur-md shrink-0">
+          <div className="hidden sm:inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#387ed1]/10 dark:bg-[#387ed1]/15 border border-[#387ed1]/30 dark:border-[#387ed1]/50 shadow-sm backdrop-blur-md shrink-0">
             <span className="relative flex h-2 w-2">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
               <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
@@ -190,12 +191,12 @@ export default function LalanNavbar({
             </span>
           </div>
 
-          <div className="h-4 w-px bg-[#22222e] hidden xs:block" />
+          <div className="h-4 w-px bg-slate-300 dark:bg-[#22222e] hidden xs:block" />
 
           {/* Pair Selector Pill */}
-          <div className="hidden xs:flex items-center space-x-1.5 bg-[#161620] border border-[#262636] px-2.5 py-1 rounded-lg text-xs font-mono">
-            <span className="font-bold text-white">{selectedSymbol}</span>
-            <span className="text-[10px] text-[#10b981] font-bold">+2.10%</span>
+          <div className="hidden xs:flex items-center space-x-1.5 bg-slate-100 dark:bg-[#161620] border border-slate-300 dark:border-[#262636] px-2.5 py-1 rounded-lg text-xs font-mono">
+            <span className="font-bold text-slate-900 dark:text-white">{selectedSymbol}</span>
+            <span className="text-[10px] text-emerald-600 dark:text-[#10b981] font-bold">+2.10%</span>
           </div>
 
           {/* Sleek Free Trial / Plan Badge */}
@@ -203,19 +204,19 @@ export default function LalanNavbar({
             onClick={() => {
               if (onOpenPricingModal) onOpenPricingModal();
             }}
-            className="hidden sm:flex items-center space-x-1.5 bg-emerald-500/15 hover:bg-emerald-500/25 border border-emerald-500/40 text-emerald-400 text-[10px] font-mono font-bold px-2.5 py-1 rounded-full transition-all active:scale-95 shadow-sm whitespace-nowrap"
+            className="hidden sm:flex items-center space-x-1.5 bg-emerald-500/10 dark:bg-emerald-500/15 hover:bg-emerald-500/20 dark:hover:bg-emerald-500/25 border border-emerald-500/30 dark:border-emerald-500/40 text-emerald-700 dark:text-emerald-400 text-[10px] font-mono font-bold px-2.5 py-1 rounded-full transition-all active:scale-95 shadow-sm whitespace-nowrap"
           >
             {isTrialActive ? (
-              <Clock className="h-3 w-3 animate-spin text-emerald-400" />
+              <Clock className="h-3 w-3 animate-spin text-emerald-600 dark:text-emerald-400" />
             ) : (
-              <Crown className="h-3 w-3 text-amber-400" />
+              <Crown className="h-3 w-3 text-amber-500 dark:text-amber-400" />
             )}
             <span>{planBadgeText}</span>
           </button>
         </div>
 
         {/* Center Section: Compact Navigation Tabs */}
-        <nav className="hidden xl:flex items-center space-x-1 bg-[#14141c] p-1 rounded-xl border border-[#222230] shrink-0">
+        <nav className="hidden xl:flex items-center space-x-1 bg-slate-100/90 dark:bg-[#14141c] p-1 rounded-xl border border-slate-200 dark:border-[#222230] shrink-0 shadow-sm">
           {navItems.map((item) => {
             const Icon = item.icon;
             const isActive = activeTab === item.id;
@@ -235,7 +236,7 @@ export default function LalanNavbar({
                 }}
                 className={`relative flex items-center space-x-1.5 px-2.5 py-1.5 rounded-lg text-xs font-semibold font-mono whitespace-nowrap transition-colors ${isActive
                     ? "text-white font-bold"
-                    : "text-[#9e9ea8] hover:bg-[#1e1e2a] hover:text-white"
+                    : "text-slate-600 dark:text-[#9e9ea8] hover:bg-slate-200/70 dark:hover:bg-[#1e1e2a] hover:text-slate-950 dark:hover:text-white"
                   }`}
               >
                 {isActive && (
@@ -245,7 +246,7 @@ export default function LalanNavbar({
                     transition={{ type: "spring", stiffness: 400, damping: 30 }}
                   />
                 )}
-                <Icon className={`relative z-10 h-3.5 w-3.5 ${isActive ? "text-white" : "text-[#747888]"}`} />
+                <Icon className={`relative z-10 h-3.5 w-3.5 ${isActive ? "text-white" : "text-slate-500 dark:text-[#747888]"}`} />
                 <span className="relative z-10 whitespace-nowrap">{item.label}</span>
               </button>
             );
@@ -270,19 +271,19 @@ export default function LalanNavbar({
             </button>
           </div>
 
-          <div className="h-4 w-px bg-[#22222e] hidden sm:block" />
+          <div className="h-4 w-px bg-slate-300 dark:bg-[#22222e] hidden sm:block" />
 
           {/* Theme Switcher Button */}
           <button
             onClick={toggleTheme}
             aria-label="Toggle Theme"
             title={`Switch to ${theme === "dark" ? "Light" : "Dark"} Mode`}
-            className="p-1.5 rounded-lg bg-[#161620] border border-[#262636] text-[#a0a3b0] hover:text-white hover:border-[#387ed1] transition-all text-xs font-mono font-semibold active:scale-95"
+            className="p-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 dark:bg-[#161620] dark:hover:bg-[#1f1f28] border border-slate-300 dark:border-[#262636] text-slate-700 dark:text-[#a0a3b0] hover:text-slate-950 dark:hover:text-white transition-all text-xs font-mono font-semibold active:scale-95 shadow-sm"
           >
             {theme === "dark" ? (
               <Sun className="h-4 w-4 text-amber-400" />
             ) : (
-              <Moon className="h-4 w-4 text-indigo-400" />
+              <Moon className="h-4 w-4 text-indigo-500" />
             )}
           </button>
 
@@ -291,7 +292,7 @@ export default function LalanNavbar({
             onClick={() => onOpenGuideModal && onOpenGuideModal()}
             aria-label="Guided Tour"
             title="First-Time Trader Interactive Guide"
-            className="hidden sm:flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-[#161620] border border-[#262636] text-[#a0a3b0] hover:text-white hover:border-[#387ed1] transition-all text-xs font-mono font-semibold active:scale-95"
+            className="hidden sm:flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 dark:bg-[#161620] dark:hover:bg-[#1f1f28] border border-slate-300 dark:border-[#262636] text-slate-700 dark:text-[#a0a3b0] hover:text-slate-950 dark:hover:text-white transition-all text-xs font-mono font-semibold active:scale-95 shadow-sm"
           >
             <Compass className="h-3.5 w-3.5 text-[#387ed1]" />
             <span className="text-[11px] hidden md:inline">Guided Tour</span>
@@ -301,7 +302,7 @@ export default function LalanNavbar({
           <div className="relative hidden sm:block">
             <button
               onClick={() => setNotificationsOpen((v) => !v)}
-              className="relative p-1.5 rounded-lg text-[#9e9ea8] hover:bg-[#1f1f28] hover:text-white transition-colors"
+              className="relative p-1.5 rounded-lg text-slate-600 dark:text-[#9e9ea8] hover:bg-slate-100 dark:hover:bg-[#1f1f28] hover:text-slate-950 dark:hover:text-white transition-colors"
             >
               <Bell className="h-4 w-4" />
               <span className="absolute top-1 right-1 h-2 w-2 rounded-full bg-[#10b981]" />
@@ -313,18 +314,18 @@ export default function LalanNavbar({
                   initial={{ opacity: 0, y: 8, scale: 0.95 }}
                   animate={{ opacity: 1, y: 0, scale: 1 }}
                   exit={{ opacity: 0, y: 8, scale: 0.95 }}
-                  className="absolute right-0 mt-2 w-72 rounded-xl border border-[#262636] bg-[#14141c] p-3 text-xs shadow-2xl z-50"
+                  className="absolute right-0 mt-2 w-72 rounded-xl border border-slate-200 dark:border-[#262636] bg-white dark:bg-[#14141c] p-3 text-xs shadow-2xl z-50 transition-colors"
                 >
-                  <div className="flex items-center justify-between border-b border-[#222230] pb-2 mb-2 font-bold text-white">
+                  <div className="flex items-center justify-between border-b border-slate-200 dark:border-[#222230] pb-2 mb-2 font-bold text-slate-900 dark:text-white">
                     <span>System Notifications</span>
-                    <span className="text-[10px] text-[#10b981] font-mono">14D Trial Active</span>
+                    <span className="text-[10px] text-emerald-600 dark:text-[#10b981] font-mono">14D Trial Active</span>
                   </div>
-                  <div className="space-y-2 text-[#b0b3c0]">
-                    <div className="p-2 rounded bg-[#10b981]/10 border border-[#10b981]/20 text-[11px]">
-                      <span className="font-bold text-[#10b981]">14-Day Free Trial:</span> Full access enabled. $0 charge.
+                  <div className="space-y-2 text-slate-700 dark:text-[#b0b3c0]">
+                    <div className="p-2 rounded bg-emerald-500/10 border border-emerald-500/20 text-[11px]">
+                      <span className="font-bold text-emerald-700 dark:text-[#10b981]">14-Day Free Trial:</span> Full access enabled. $0 charge.
                     </div>
                     <div className="p-2 rounded bg-[#387ed1]/10 border border-[#387ed1]/20 text-[11px]">
-                      <span className="font-bold text-[#387ed1]">Disruptor Ring-Buffer:</span> Sub-millisecond latency.
+                      <span className="font-bold text-[#1d4ed8] dark:text-[#387ed1]">Disruptor Ring-Buffer:</span> Sub-millisecond latency.
                     </div>
                   </div>
                 </motion.div>
@@ -337,15 +338,15 @@ export default function LalanNavbar({
             <div className="relative">
               <button
                 onClick={() => setProfileDropdownOpen((v) => !v)}
-                className="flex items-center space-x-1.5 rounded-lg bg-[#161620] border border-[#262636] px-2.5 py-1 hover:border-[#387ed1] transition-all"
+                className="flex items-center space-x-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 dark:bg-[#161620] dark:hover:bg-[#1f1f28] border border-slate-300 dark:border-[#262636] px-2.5 py-1 hover:border-[#387ed1] transition-all shadow-sm"
               >
                 <div className="flex h-5 w-5 items-center justify-center rounded-full bg-[#387ed1] text-white font-bold text-[10px]">
                   {user.name.charAt(0).toUpperCase()}
                 </div>
-                <span className="font-mono text-xs font-bold text-white hidden sm:inline max-w-[110px] truncate">
+                <span className="font-mono text-xs font-bold text-slate-900 dark:text-white hidden sm:inline max-w-[110px] truncate">
                   {user.name}
                 </span>
-                <ChevronDown className="h-3 w-3 text-[#747888]" />
+                <ChevronDown className="h-3 w-3 text-slate-500 dark:text-[#747888]" />
               </button>
 
               <AnimatePresence>
@@ -354,30 +355,30 @@ export default function LalanNavbar({
                     initial={{ opacity: 0, y: 8, scale: 0.95 }}
                     animate={{ opacity: 1, y: 0, scale: 1 }}
                     exit={{ opacity: 0, y: 8, scale: 0.95 }}
-                    className="absolute right-0 mt-2 w-64 rounded-xl border border-[#262636] bg-[#14141c] p-3 text-xs shadow-2xl z-50"
+                    className="absolute right-0 mt-2 w-64 rounded-xl border border-slate-200 dark:border-[#262636] bg-white dark:bg-[#14141c] p-3 text-xs shadow-2xl z-50 transition-colors"
                   >
-                    <div className="border-b border-[#222230] pb-2.5 mb-2.5">
-                      <p className="font-bold text-white truncate">{user.name}</p>
-                      <p className="font-mono text-[11px] text-[#747888] truncate">{user.email}</p>
+                    <div className="border-b border-slate-200 dark:border-[#222230] pb-2.5 mb-2.5">
+                      <p className="font-bold text-slate-900 dark:text-white truncate">{user.name}</p>
+                      <p className="font-mono text-[11px] text-slate-500 dark:text-[#747888] truncate">{user.email}</p>
                     </div>
-                    <div className="space-y-1.5 text-[#b0b3c0]">
+                    <div className="space-y-1.5 text-slate-700 dark:text-[#b0b3c0]">
                       <div className="flex justify-between py-1 items-center">
                         <span>Display Theme</span>
                         <button
                           onClick={toggleTheme}
-                          className="flex items-center gap-1 text-xs font-mono font-bold text-[#387ed1] hover:underline"
+                          className="flex items-center gap-1 text-xs font-mono font-bold text-[#1d4ed8] dark:text-[#387ed1] hover:underline"
                         >
-                          {theme === "dark" ? <Sun className="h-3 w-3 text-amber-400" /> : <Moon className="h-3 w-3 text-indigo-400" />}
+                          {theme === "dark" ? <Sun className="h-3 w-3 text-amber-400" /> : <Moon className="h-3 w-3 text-indigo-500" />}
                           <span>{theme === "dark" ? "Light" : "Dark"}</span>
                         </button>
                       </div>
                       <div className="flex justify-between py-1">
                         <span>Active Plan</span>
-                        <span className="font-mono font-bold text-[#10b981]">{planBadgeText}</span>
+                        <span className="font-mono font-bold text-emerald-600 dark:text-[#10b981]">{planBadgeText}</span>
                       </div>
                       <div className="flex justify-between py-1">
                         <span>Available Funds</span>
-                        <span className="font-mono font-bold text-white">
+                        <span className="font-mono font-bold text-slate-900 dark:text-white">
                           ₹{availableFunds.toLocaleString("en-IN")}
                         </span>
                       </div>
@@ -386,7 +387,7 @@ export default function LalanNavbar({
                           setProfileDropdownOpen(false);
                           if (onOpenGuideModal) onOpenGuideModal();
                         }}
-                        className="w-full mt-2 py-1.5 bg-[#387ed1]/15 hover:bg-[#387ed1]/25 text-[#387ed1] border border-[#387ed1]/35 font-mono font-bold text-[11px] rounded-lg transition-all flex items-center justify-center gap-1.5"
+                        className="w-full mt-2 py-1.5 bg-[#387ed1]/10 hover:bg-[#387ed1]/20 dark:bg-[#387ed1]/15 dark:hover:bg-[#387ed1]/25 text-[#1d4ed8] dark:text-[#387ed1] border border-[#387ed1]/35 font-mono font-bold text-[11px] rounded-lg transition-all flex items-center justify-center gap-1.5"
                       >
                         <Compass className="w-3.5 h-3.5" />
                         <span>First-Time Trader Guide</span>
@@ -396,14 +397,14 @@ export default function LalanNavbar({
                           setProfileDropdownOpen(false);
                           if (onOpenAboutModal) onOpenAboutModal();
                         }}
-                        className="w-full mt-1.5 py-1.5 bg-[#181824] hover:bg-[#222230] text-white border border-[#282838] font-mono font-bold text-[11px] rounded-lg transition-all"
+                        className="w-full mt-1.5 py-1.5 bg-slate-100 hover:bg-slate-200 dark:bg-[#181824] dark:hover:bg-[#222230] text-slate-800 dark:text-white border border-slate-300 dark:border-[#282838] font-mono font-bold text-[11px] rounded-lg transition-all"
                       >
                         About Specs &amp; Architecture
                       </button>
                       <a
                         href="/admin"
                         onClick={() => setProfileDropdownOpen(false)}
-                        className="w-full mt-1 py-1.5 bg-[#387ed1]/15 hover:bg-[#387ed1]/25 text-[#387ed1] border border-[#387ed1]/35 font-mono font-bold text-[11px] rounded-lg transition-all flex items-center justify-center gap-1.5"
+                        className="w-full mt-1 py-1.5 bg-[#387ed1]/10 hover:bg-[#387ed1]/20 dark:bg-[#387ed1]/15 dark:hover:bg-[#387ed1]/25 text-[#1d4ed8] dark:text-[#387ed1] border border-[#387ed1]/35 font-mono font-bold text-[11px] rounded-lg transition-all flex items-center justify-center gap-1.5"
                       >
                         <ShieldAlert className="w-3.5 h-3.5" />
                         <span>Admin Telemetry Panel</span>
@@ -414,7 +415,7 @@ export default function LalanNavbar({
                           logout();
                           setProfileDropdownOpen(false);
                         }}
-                        className="w-full mt-2 py-1.5 bg-red-500/10 hover:bg-red-500/20 text-red-400 border border-red-500/30 font-mono font-bold text-[11px] rounded-lg transition-all flex items-center justify-center gap-1.5"
+                        className="w-full mt-2 py-1.5 bg-red-500/10 hover:bg-red-500/20 text-red-600 dark:text-red-400 border border-red-500/30 font-mono font-bold text-[11px] rounded-lg transition-all flex items-center justify-center gap-1.5"
                       >
                         <LogOut className="w-3.5 h-3.5" />
                         <span>Sign Out</span>
@@ -437,7 +438,7 @@ export default function LalanNavbar({
           {/* Mobile Drawer Menu Toggle */}
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="p-1.5 rounded-lg text-[#9e9ea8] hover:text-white xl:hidden"
+            className="p-1.5 rounded-lg text-slate-600 dark:text-[#9e9ea8] hover:text-slate-950 dark:hover:text-white xl:hidden"
           >
             {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
           </button>
@@ -446,7 +447,7 @@ export default function LalanNavbar({
 
       {/* ── MOBILE DRAWER NAVIGATION MENU ── */}
       {mobileMenuOpen && (
-        <div className="xl:hidden border-t border-[#222230] bg-[#0e0e14] px-4 py-3 space-y-2 font-mono text-xs">
+        <div className="xl:hidden border-t border-slate-200 dark:border-[#222230] bg-white dark:bg-[#0e0e14] px-4 py-3 space-y-2 font-mono text-xs shadow-lg">
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 pb-2">
             {navItems.map((item) => {
               const Icon = item.icon;
@@ -466,7 +467,7 @@ export default function LalanNavbar({
                     }
                     setMobileMenuOpen(false);
                   }}
-                  className={`flex items-center space-x-2 p-2 rounded-lg font-bold transition-all ${isActive ? "bg-[#387ed1] text-white shadow-md" : "bg-[#161620] text-[#a0a3b0] hover:text-white"
+                  className={`flex items-center space-x-2 p-2 rounded-lg font-bold transition-all ${isActive ? "bg-[#387ed1] text-white shadow-md" : "bg-slate-100 dark:bg-[#161620] text-slate-700 dark:text-[#a0a3b0] hover:text-slate-950 dark:hover:text-white"
                     }`}
                 >
                   <Icon className="h-4 w-4" />

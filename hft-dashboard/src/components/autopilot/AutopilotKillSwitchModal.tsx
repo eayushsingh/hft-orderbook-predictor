@@ -44,24 +44,24 @@ export default function AutopilotKillSwitchModal({
 
   return (
     <AnimatePresence>
-      <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md">
+      <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 dark:bg-black/85 backdrop-blur-md">
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           exit={{ opacity: 0, scale: 0.95 }}
-          className="w-full max-w-lg bg-[#121218] border border-red-500/50 rounded-2xl shadow-2xl overflow-hidden text-zinc-200 font-sans"
+          className="w-full max-w-lg bg-white dark:bg-[#121218] border border-red-500/40 dark:border-red-500/50 rounded-2xl shadow-2xl overflow-hidden text-slate-800 dark:text-zinc-200 font-sans transition-colors"
         >
           {/* Header */}
-          <div className="flex items-center justify-between px-5 py-4 border-b border-red-500/30 bg-red-950/40">
+          <div className="flex items-center justify-between px-5 py-4 border-b border-red-200 dark:border-red-500/30 bg-red-50 dark:bg-red-950/40">
             <div className="flex items-center space-x-2.5">
-              <div className="p-1.5 rounded-lg bg-red-500/20 text-red-400">
+              <div className="p-1.5 rounded-lg bg-red-500/15 text-red-600 dark:text-red-400">
                 <ShieldAlert className="w-5 h-5" />
               </div>
               <div>
-                <h2 className="text-base font-black font-mono text-white">
+                <h2 className="text-base font-black font-mono text-slate-900 dark:text-white">
                   {isEngageAction ? "EMERGENCY KILL SWITCH" : "RESET KILL SWITCH"}
                 </h2>
-                <p className="text-[11px] text-red-300 font-mono">
+                <p className="text-[11px] text-red-600 dark:text-red-300 font-mono">
                   {isEngageAction ? "Immediate trade halting protocol" : "Safety recovery procedure"}
                 </p>
               </div>
@@ -69,7 +69,7 @@ export default function AutopilotKillSwitchModal({
 
             <button
               onClick={onClose}
-              className="p-1.5 rounded-lg bg-[#181822] text-zinc-400 hover:text-white"
+              className="p-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 dark:bg-[#181822] dark:hover:bg-[#222230] text-slate-500 dark:text-zinc-400 hover:text-slate-950 dark:hover:text-white transition-colors"
             >
               <X className="w-5 h-5" />
             </button>
@@ -79,45 +79,45 @@ export default function AutopilotKillSwitchModal({
           <div className="p-5 space-y-4 font-mono text-xs">
             {isEngageAction ? (
               <>
-                <div className="p-3.5 rounded-xl bg-red-500/10 border border-red-500/30 text-red-300 leading-relaxed font-sans">
+                <div className="p-3.5 rounded-xl bg-red-500/10 border border-red-500/30 text-red-700 dark:text-red-300 leading-relaxed font-sans">
                   <strong>WARNING:</strong> Engaging the kill switch will immediately block all new entry orders across Nifty 50 cash equities. Active positions will NOT be automatically squared off unless explicitly requested.
                 </div>
 
                 <div className="space-y-1">
-                  <label className="text-zinc-400 text-[11px]">TRIGGER REASON / NOTE</label>
+                  <label className="text-slate-500 dark:text-zinc-400 text-[11px]">TRIGGER REASON / NOTE</label>
                   <input
                     type="text"
                     value={reason}
                     onChange={(e) => setReason(e.target.value)}
-                    className="w-full bg-[#161622] border border-[#2a2a3c] rounded-xl px-3 py-2 text-white font-mono outline-none focus:border-red-500"
+                    className="w-full bg-slate-50 dark:bg-[#161622] border border-slate-300 dark:border-[#2a2a3c] rounded-xl px-3 py-2 text-slate-900 dark:text-white font-mono outline-none focus:border-red-500 transition-colors"
                   />
                 </div>
 
                 <div className="space-y-1">
-                  <label className="text-zinc-400 text-[11px]">
-                    TYPE <span className="text-red-400 font-black">&quot;STOP&quot;</span> TO CONFIRM
+                  <label className="text-slate-500 dark:text-zinc-400 text-[11px]">
+                    TYPE <span className="text-red-600 dark:text-red-400 font-black">&quot;STOP&quot;</span> TO CONFIRM
                   </label>
                   <input
                     type="text"
                     placeholder="STOP"
                     value={confirmText}
                     onChange={(e) => setConfirmText(e.target.value)}
-                    className="w-full bg-[#161622] border border-[#2a2a3c] rounded-xl px-3 py-2 text-white font-mono outline-none focus:border-red-500 text-center font-black tracking-widest uppercase"
+                    className="w-full bg-slate-50 dark:bg-[#161622] border border-slate-300 dark:border-[#2a2a3c] rounded-xl px-3 py-2 text-slate-900 dark:text-white font-mono outline-none focus:border-red-500 text-center font-black tracking-widest uppercase transition-colors"
                   />
                 </div>
               </>
             ) : (
-              <div className="p-3.5 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-300 leading-relaxed font-sans">
+              <div className="p-3.5 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-800 dark:text-amber-300 leading-relaxed font-sans">
                 <strong>SAFETY PROTOCOL:</strong> Resetting the kill switch will move the engine to <strong>PAUSED</strong> state. It will NOT automatically resume live trading. You must review risk limits and manually resume when ready.
               </div>
             )}
           </div>
 
           {/* Footer */}
-          <div className="flex items-center justify-between px-5 py-3.5 border-t border-[#20202e] bg-[#0c0c10]">
+          <div className="flex items-center justify-between px-5 py-3.5 border-t border-slate-200 dark:border-[#20202e] bg-slate-50 dark:bg-[#0c0c10]">
             <button
               onClick={onClose}
-              className="px-4 py-2 rounded-xl bg-[#181822] text-zinc-400 hover:text-white font-mono text-xs font-bold"
+              className="px-4 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-[#181822] dark:hover:bg-[#20202e] text-slate-600 dark:text-zinc-400 hover:text-slate-900 dark:hover:text-white font-mono text-xs font-bold transition-colors"
             >
               Cancel
             </button>

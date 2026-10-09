@@ -321,7 +321,7 @@ export default function AutopilotPage() {
   const pendingOrdersCount = orders.filter((o) => o.status === "PENDING_APPROVAL").length;
 
   return (
-    <div className="min-h-screen bg-[#08080c] text-zinc-100 font-sans selection:bg-[#387ed1] selection:text-white flex flex-col">
+    <div className="min-h-screen bg-slate-50 dark:bg-[#08080c] text-slate-900 dark:text-zinc-100 font-sans selection:bg-[#387ed1] selection:text-white flex flex-col transition-colors duration-200">
       {/* Navbar */}
       <LalanNavbar
         activeTab="autopilot"
@@ -346,21 +346,21 @@ export default function AutopilotPage() {
               exit={{ opacity: 0, y: -10 }}
               className={`p-3.5 rounded-xl border font-mono text-xs flex items-center justify-between shadow-lg ${
                 feedbackMessage.type === "success"
-                  ? "bg-emerald-500/15 border-emerald-500/40 text-emerald-300"
-                  : "bg-rose-500/15 border-rose-500/40 text-rose-300"
+                  ? "bg-emerald-500/15 border-emerald-500/40 text-emerald-700 dark:text-emerald-300"
+                  : "bg-rose-500/15 border-rose-500/40 text-rose-700 dark:text-rose-300"
               }`}
             >
               <div className="flex items-center gap-2">
                 {feedbackMessage.type === "success" ? (
-                  <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+                  <CheckCircle2 className="w-4 h-4 text-emerald-500 dark:text-emerald-400" />
                 ) : (
-                  <AlertTriangle className="w-4 h-4 text-rose-400" />
+                  <AlertTriangle className="w-4 h-4 text-rose-500 dark:text-rose-400" />
                 )}
                 <span>{feedbackMessage.text}</span>
               </div>
               <button
                 onClick={() => setFeedbackMessage(null)}
-                className="text-zinc-400 hover:text-white text-xs font-bold"
+                className="text-slate-500 dark:text-zinc-400 hover:text-slate-900 dark:hover:text-white text-xs font-bold"
               >
                 Dismiss
               </button>
@@ -383,14 +383,14 @@ export default function AutopilotPage() {
 
         {/* Pending Approval Banner */}
         {pendingOrdersCount > 0 && (
-          <div className="p-4 rounded-2xl bg-amber-500/15 border border-amber-500/40 text-amber-300 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-lg font-mono">
+          <div className="p-4 rounded-2xl bg-amber-500/15 border border-amber-500/40 text-amber-800 dark:text-amber-300 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-lg font-mono">
             <div className="flex items-center gap-2.5">
-              <Clock className="w-5 h-5 text-amber-400 animate-pulse" />
+              <Clock className="w-5 h-5 text-amber-500 dark:text-amber-400 animate-pulse" />
               <div>
-                <div className="font-black text-sm text-white">
+                <div className="font-black text-sm text-slate-900 dark:text-white">
                   {pendingOrdersCount} ORDER{pendingOrdersCount > 1 ? "S" : ""} AWAITING APPROVAL
                 </div>
-                <div className="text-xs text-amber-200/80 font-sans">
+                <div className="text-xs text-amber-700 dark:text-amber-200/80 font-sans">
                   Semi-automated mode requires operator authorization before submitting orders to broker.
                 </div>
               </div>
@@ -408,90 +408,90 @@ export default function AutopilotPage() {
         {/* Telemetry Summary Bento Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 font-mono">
           {/* Index Card */}
-          <div className="p-4 rounded-2xl bg-[#121218] border border-[#222230] shadow-md space-y-2">
-            <div className="flex items-center justify-between text-[11px] text-zinc-400 font-bold">
+          <div className="p-4 rounded-2xl bg-white dark:bg-[#121218] border border-slate-200 dark:border-[#222230] shadow-sm dark:shadow-md space-y-2 transition-colors">
+            <div className="flex items-center justify-between text-[11px] text-slate-500 dark:text-zinc-400 font-bold">
               <span>NIFTY 50 BENCHMARK</span>
-              <span className="px-1.5 py-0.5 rounded bg-[#1c1c28] text-cyan-400">
+              <span className="px-1.5 py-0.5 rounded bg-slate-100 dark:bg-[#1c1c28] text-cyan-700 dark:text-cyan-400 border border-slate-200 dark:border-transparent">
                 {indexData?.marketRegime || "BULLISH_TREND"}
               </span>
             </div>
             <div className="flex items-baseline justify-between">
-              <div className="text-2xl font-black text-white">
+              <div className="text-2xl font-black text-slate-900 dark:text-white">
                 ₹{indexData?.ltp ? indexData.ltp.toLocaleString("en-IN", { minimumFractionDigits: 2 }) : "24,850.75"}
               </div>
-              <div className={`text-xs font-bold ${indexData?.changePct && indexData.changePct >= 0 ? "text-emerald-400" : "text-rose-400"}`}>
+              <div className={`text-xs font-bold ${indexData?.changePct && indexData.changePct >= 0 ? "text-emerald-600 dark:text-emerald-400" : "text-rose-600 dark:text-rose-400"}`}>
                 {indexData?.changePct && indexData.changePct >= 0 ? "+" : ""}{indexData?.changePct?.toFixed(2) || "0.62"}%
               </div>
             </div>
-            <div className="flex items-center justify-between text-[10px] text-zinc-400 pt-1 border-t border-[#1c1c28]">
+            <div className="flex items-center justify-between text-[10px] text-slate-500 dark:text-zinc-400 pt-1 border-t border-slate-100 dark:border-[#1c1c28]">
               <span>India VIX: {indexData?.indiaVix?.toFixed(1) || "13.8"}</span>
               <span>Adv/Dec: {indexData?.advancers || 34}/{indexData?.decliners || 16}</span>
             </div>
           </div>
 
           {/* Capital & Equity */}
-          <div className="p-4 rounded-2xl bg-[#121218] border border-[#222230] shadow-md space-y-2">
-            <div className="flex items-center justify-between text-[11px] text-zinc-400 font-bold">
+          <div className="p-4 rounded-2xl bg-white dark:bg-[#121218] border border-slate-200 dark:border-[#222230] shadow-sm dark:shadow-md space-y-2 transition-colors">
+            <div className="flex items-center justify-between text-[11px] text-slate-500 dark:text-zinc-400 font-bold">
               <span>PORTFOLIO EQUITY</span>
               <Wallet className="w-3.5 h-3.5 text-[#387ed1]" />
             </div>
             <div className="flex items-baseline justify-between">
-              <div className="text-2xl font-black text-white">
+              <div className="text-2xl font-black text-slate-900 dark:text-white">
                 ₹{totalEquity.toLocaleString("en-IN", { minimumFractionDigits: 2 })}
               </div>
-              <div className={`text-xs font-bold ${totalPnl >= 0 ? "text-emerald-400" : "text-rose-400"}`}>
+              <div className={`text-xs font-bold ${totalPnl >= 0 ? "text-emerald-600 dark:text-emerald-400" : "text-rose-600 dark:text-rose-400"}`}>
                 {totalPnl >= 0 ? "+" : ""}₹{totalPnl.toLocaleString("en-IN", { minimumFractionDigits: 0 })} ({totalPnlPct.toFixed(2)}%)
               </div>
             </div>
-            <div className="flex items-center justify-between text-[10px] text-zinc-400 pt-1 border-t border-[#1c1c28]">
+            <div className="flex items-center justify-between text-[10px] text-slate-500 dark:text-zinc-400 pt-1 border-t border-slate-100 dark:border-[#1c1c28]">
               <span>Cash: ₹{funds.availableCash.toLocaleString("en-IN", { maximumFractionDigits: 0 })}</span>
               <span>Invested: ₹{totalInvested.toLocaleString("en-IN", { maximumFractionDigits: 0 })}</span>
             </div>
           </div>
 
           {/* Positions & Risk Limits */}
-          <div className="p-4 rounded-2xl bg-[#121218] border border-[#222230] shadow-md space-y-2">
-            <div className="flex items-center justify-between text-[11px] text-zinc-400 font-bold">
+          <div className="p-4 rounded-2xl bg-white dark:bg-[#121218] border border-slate-200 dark:border-[#222230] shadow-sm dark:shadow-md space-y-2 transition-colors">
+            <div className="flex items-center justify-between text-[11px] text-slate-500 dark:text-zinc-400 font-bold">
               <span>POSITIONS & CAPACITY</span>
-              <Briefcase className="w-3.5 h-3.5 text-emerald-400" />
+              <Briefcase className="w-3.5 h-3.5 text-emerald-500 dark:text-emerald-400" />
             </div>
             <div className="flex items-baseline justify-between">
-              <div className="text-2xl font-black text-white">
+              <div className="text-2xl font-black text-slate-900 dark:text-white">
                 {positions.length} / {config?.maxPositions || 5}
               </div>
-              <div className="text-xs font-bold text-zinc-400">
+              <div className="text-xs font-bold text-slate-500 dark:text-zinc-400">
                 Max {config?.maxPositionCapPct || 20}% / Stock
               </div>
             </div>
-            <div className="flex items-center justify-between text-[10px] text-zinc-400 pt-1 border-t border-[#1c1c28]">
+            <div className="flex items-center justify-between text-[10px] text-slate-500 dark:text-zinc-400 pt-1 border-t border-slate-100 dark:border-[#1c1c28]">
               <span>Risk/Trade: {config?.riskPerTradePct || 1.0}%</span>
               <span>Max Sector: {config?.maxSectorCapPct || 35}%</span>
             </div>
           </div>
 
           {/* Drawdown & Loss Meter */}
-          <div className="p-4 rounded-2xl bg-[#121218] border border-[#222230] shadow-md space-y-2">
-            <div className="flex items-center justify-between text-[11px] text-zinc-400 font-bold">
+          <div className="p-4 rounded-2xl bg-white dark:bg-[#121218] border border-slate-200 dark:border-[#222230] shadow-sm dark:shadow-md space-y-2 transition-colors">
+            <div className="flex items-center justify-between text-[11px] text-slate-500 dark:text-zinc-400 font-bold">
               <span>DAILY LOSS & DRAWDOWN</span>
-              <Gauge className="w-3.5 h-3.5 text-purple-400" />
+              <Gauge className="w-3.5 h-3.5 text-purple-500 dark:text-purple-400" />
             </div>
             <div className="flex items-baseline justify-between">
-              <div className="text-2xl font-black text-white">
+              <div className="text-2xl font-black text-slate-900 dark:text-white">
                 0.00%
               </div>
-              <div className="text-xs font-bold text-zinc-400">
+              <div className="text-xs font-bold text-slate-500 dark:text-zinc-400">
                 Max Limit: {config?.maxDrawdownPct || 10}%
               </div>
             </div>
-            <div className="flex items-center justify-between text-[10px] text-zinc-400 pt-1 border-t border-[#1c1c28]">
+            <div className="flex items-center justify-between text-[10px] text-slate-500 dark:text-zinc-400 pt-1 border-t border-slate-100 dark:border-[#1c1c28]">
               <span>Daily Loss Cap: {config?.maxDailyLossPct || 3}%</span>
-              <span className="text-emerald-400 font-bold">Within Limits</span>
+              <span className="text-emerald-600 dark:text-emerald-400 font-bold">Within Limits</span>
             </div>
           </div>
         </div>
 
         {/* Navigation Tabs */}
-        <div className="flex items-center space-x-1 border-b border-[#20202e] pb-1 overflow-x-auto no-scrollbar font-mono text-xs">
+        <div className="flex items-center space-x-1 border-b border-slate-200 dark:border-[#20202e] pb-1 overflow-x-auto no-scrollbar font-mono text-xs">
           {[
             { id: "rankings", label: "Universe Rankings", icon: Layers },
             { id: "positions", label: `Active Positions (${positions.length})`, icon: Briefcase },
@@ -507,11 +507,11 @@ export default function AutopilotPage() {
                 onClick={() => setActiveTab(tab.id)}
                 className={`flex items-center space-x-2 px-4 py-2.5 rounded-xl font-bold transition-all whitespace-nowrap cursor-pointer ${
                   isActive
-                    ? "bg-[#1c1c28] text-cyan-300 border border-[#2e2e42] shadow-sm"
-                    : "text-zinc-400 hover:text-zinc-200 hover:bg-[#121218]"
+                    ? "bg-slate-100 dark:bg-[#1c1c28] text-[#1d4ed8] dark:text-cyan-300 border border-slate-300 dark:border-[#2e2e42] shadow-sm"
+                    : "text-slate-600 dark:text-zinc-400 hover:text-slate-950 dark:hover:text-zinc-200 hover:bg-slate-100/60 dark:hover:bg-[#121218]"
                 }`}
               >
-                <Icon className={`w-4 h-4 ${isActive ? "text-[#387ed1]" : "text-zinc-500"}`} />
+                <Icon className={`w-4 h-4 ${isActive ? "text-[#1d4ed8] dark:text-[#387ed1]" : "text-slate-400 dark:text-zinc-500"}`} />
                 <span>{tab.label}</span>
               </button>
             );

@@ -88,27 +88,9 @@ body {
 
 /* Light Theme Header & Navigation */
 html.light header {
-  background-color: rgba(255, 255, 255, 0.96) !important;
-  border-color: #cbd5e1 !important;
-  color: #0f172a !important;
-}
-
-html.light header div.bg-\[\#0c0c0f\],
-html.light header div.bg-\[\#08080c\] {
-  background-color: #f1f5f9 !important;
-  border-color: #e2e8f0 !important;
-  color: #334155 !important;
-}
-
-/* Light Theme Header Navigation Links */
-html.light nav a,
-html.light header nav button {
-  color: #334155 !important;
-}
-
-html.light nav a:hover,
-html.light header nav button:hover {
-  color: #0284c7 !important;
+  background-color: rgba(255, 255, 255, 0.96);
+  border-color: #e2e8f0;
+  color: #0f172a;
 }
 
 /* Light Theme Page & Root Section Backgrounds */
@@ -117,7 +99,7 @@ html.light main {
   color: inherit;
 }
 
-/* Solid Colored Action Buttons: Always preserve white text in Light Mode */
+/* Solid Colored Action Buttons: Always preserve readable text */
 html.light button.bg-\[\#387ed1\],
 html.light a.bg-\[\#387ed1\],
 html.light .bg-\[\#387ed1\],
@@ -127,64 +109,26 @@ html.light .bg-indigo-600,
 html.light button.bg-\[\#ff5722\],
 html.light a.bg-\[\#ff5722\],
 html.light .bg-\[\#ff5722\] {
-  color: #ffffff !important;
-}
-
-html.light button.bg-\[\#387ed1\] *,
-html.light a.bg-\[\#387ed1\] *,
-html.light .bg-\[\#387ed1\] *,
-html.light button.bg-indigo-600 *,
-html.light a.bg-indigo-600 * {
-  color: #ffffff !important;
+  color: #ffffff;
 }
 
 html.light button.bg-\[\#10b981\],
 html.light a.bg-\[\#10b981\],
 html.light .bg-\[\#10b981\] {
-  color: #000000 !important;
+  color: #000000;
 }
 
-/* Form Inputs & Selects in Light Mode */
-html.light input,
-html.light select,
-html.light textarea {
-  background-color: #ffffff !important;
-  color: #0f172a !important;
-  border-color: #cbd5e1 !important;
-}
-
-html.light input::placeholder {
-  color: #64748b !important;
-}
-
-/* Table Header and Row Overrides in Light Mode */
-html.light table th {
-  color: #475569 !important;
-  background-color: #f1f5f9 !important;
-  border-color: #cbd5e1 !important;
-}
-
-html.light table td {
-  border-color: #e2e8f0 !important;
-}
-
-html.light table tr:hover {
-  background-color: #f1f5f9 !important;
-}
-
-/* Modals & Dialog Windows in Light Mode */
-html.light .modal-container,
-html.light [role="dialog"] {
-  background-color: #ffffff !important;
-  color: #0f172a !important;
-  border-color: #cbd5e1 !important;
+/* Base input placeholder styling in light mode */
+html.light input::placeholder,
+html.light textarea::placeholder {
+  color: #94a3b8;
 }
 
 /* Footer in Light Mode */
 html.light footer {
-  background-color: #f1f5f9 !important;
-  border-color: #cbd5e1 !important;
-  color: #475569 !important;
+  background-color: #f8fafc;
+  border-color: #e2e8f0;
+  color: #475569;
 }
 
 /* Production FAQ Print & PDF Export Stylesheet */
