@@ -1,6 +1,6 @@
 <div align="center">
 
-  # ⚡ LALAN HFT Predictor & Market Microstructure Engine
+  # ⚡ LALAN HFT Predictor & Market Microstructure Engine(Algo Trading)
 
   **Ultra-Low Latency L2 Order Book Forecasting, Multi-Source Market Intelligence Hub & Institutional Liquidity Telemetry**
 
